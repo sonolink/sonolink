@@ -71,7 +71,7 @@ class CurlHTTPManager(BaseHTTPManager[AsyncSession[Response]]):
 
         assert self._session is not None
 
-        response = await self._session.request(  # pyright: ignore[reportUnknownMemberType]
+        response = await self._session.request(
             method=cast("HttpMethod", method.upper()),
             url=url,
             headers=cast("HeaderTypes", headers),
@@ -119,7 +119,7 @@ class CurlWebsocketManager(
         headers: Mapping[str, str] | None = None,
     ) -> None:
         try:
-            self._ws = await self._session.ws_connect(  # pyright: ignore[reportUnknownMemberType]
+            self._ws = await self._session.ws_connect(
                 url=url,
                 headers=headers,
             )
