@@ -249,25 +249,25 @@ class PlaybackHandler(HandlerBase):
         skipped: list[str] = []
 
         for key, value in vars(extras).items():
-            try:
-                msgspec.json.encode(value)
+            if isinstance(value, (str, int, float, bool)) or value is None:
                 result[key] = value
-            except TypeError:
+            else:
                 skipped.append(repr(key))
 
         if skipped:
-            if len(skipped) > 2:
-                keys_str = f"{', '.join(skipped[:-1])}, and {skipped[-1]}"
-            else:
-                keys_str = " and ".join(skipped)
-
+            count = len(skipped)
+            keys_str = (
+                f"{', '.join(skipped[:-1])}, and {skipped[-1]}"
+                if count > 2
+                else " and ".join(skipped)
+            )
             _log.warning(
                 "Track extras %s (%s) %s not json-serializable and will not be sent as "
                 "user_data to Lavalink.\nUse event.original.extras to access %s.",
-                "keys" if len(skipped) > 1 else "key",
+                "keys" if count > 1 else "key",
                 keys_str,
-                "are" if len(skipped) > 1 else "is",
-                "them" if len(skipped) > 1 else "it",
+                "are" if count > 1 else "is",
+                "them" if count > 1 else "it",
             )
 
         return result or msgspec.UNSET
