@@ -68,6 +68,8 @@ class LifecycleHandler(HandlerBase):
         if not node:
             node = self._player._ensure_node()
 
+        self._player._connection._connected_flag.clear()
+
         await guild.change_voice_state(
             channel=cast(Snowflake, channel),
             self_mute=self_mute,
