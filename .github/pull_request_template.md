@@ -19,7 +19,7 @@
 
 ### Code & Review
 - [ ] I have self-reviewed my changes.
-- [ ] My code follows Speculare's **strict typing** standards.
+- [ ] My code follows Sonolink's **strict typing** standards.
 - [ ] Complex or non-obvious logic is documented where appropriate.
 - [ ] No dead code, debug prints, or leftover TODOs were introduced.
 ### Documentation & Compatibility
