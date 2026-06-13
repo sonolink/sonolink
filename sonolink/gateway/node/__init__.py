@@ -31,7 +31,7 @@ from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, Literal
 
 from sonolink.gateway.cache import LFUCache
-from sonolink.gateway.enums import NodeStatus, QueueMode
+from sonolink.gateway.enums import NodeRegion, NodeStatus, QueueMode
 from sonolink.gateway.player._factory import PlayerFactory
 from sonolink.models.filters import Filters
 from sonolink.models.info import ServerInfo
@@ -94,6 +94,11 @@ class Node:
     auto_reconnect: :class:`bool`
         Whether the node should attempt to reconnect automatically after an unexpected
         disconnect.
+    regions: :class:`list[str | NodeRegion]` | :data:`None`
+        The regions of this node. This is used to determine the best node to use based on
+        the channel region. If ``None`` is passed, the node is considered to have no specific region.
+
+        .. versionadded:: 1.2.0
     """
 
     retries: int | None
@@ -123,6 +128,7 @@ class Node:
         inactivity_settings: InactivitySettings,
         session: SessionType | None = None,
         auto_reconnect: bool = True,
+        regions: list[str | NodeRegion] | None = None,
     ) -> None:
         self._client = client
         self._id = id or os.urandom(16).hex()
@@ -145,6 +151,8 @@ class Node:
         self._player_factory = PlayerFactory()
         self._inactivity_settings = inactivity_settings
         self._waiting_to_disconnect: dict[int, asyncio.Task[None]] = {}
+
+        self.regions = regions or []
 
         self._cache: LFUCache[str, Any] = LFUCache(settings=cache_settings)
         self._connection = ConnectionManager(self)
@@ -195,6 +203,18 @@ class Node:
     def inactivity_settings(self) -> InactivitySettings:
         """The inactivity configuration for all players on this node."""
         return self._inactivity_settings
+
+    @property
+    def regions(self) -> list[str | NodeRegion]:
+        """The regions for this node.
+
+        .. versionadded:: 1.2.0
+        """
+        return self._regions
+
+    @regions.setter
+    def regions(self, value: list[str | NodeRegion]) -> None:
+        self._regions = [r.removeprefix("vip-") if isinstance(r, str) else r for r in value]
 
     @property
     def password(self) -> str:

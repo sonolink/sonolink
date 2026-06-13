@@ -21,6 +21,21 @@ in specific versions.
 - Serializable extras are now forwarded to Lavalink as ``user_data`` and accessible via
   :attr:`Playable.extras` on reconstructed tracks. Non-serializable values are warned and
   accessible via ``.original.extras``.
+- Added support for region-aware node selection:
+
+  - Added :class:`NodeRegion` enum representing the available Discord voice channel regions a node can serve.
+  - Added :class:`NodeStrategy` enum with two strategies:
+
+    - :attr:`NodeStrategy.PENALTY` — default; selects the node with the lowest penalty score.
+    - :attr:`NodeStrategy.REGION` — prefers nodes matching the voice channel's RTC region, falling back to penalty.
+  - Added ``regions`` parameter to :meth:`Client.create_node` and :class:`Node` to associate a node with one or more
+    :class:`NodeRegion` values (or raw strings).
+  - Added ``node_strategy`` parameter to :class:`Client` to set the selection strategy at construction time, also
+    exposed as the settable :attr:`Client.node_strategy` property.
+  - Added ``channel`` parameter to :meth:`Client.get_best_node`, :meth:`Client.search_track`, :meth:`Client.decode_track`,
+    and :meth:`Client.decode_tracks` to drive region-aware node selection.
+  - :class:`~sonolink.gateway.player._base.BasePlayer` now automatically passes its ``channel`` to
+    :meth:`Client.get_best_node` when selecting a node on connect.
   
 **Fixed**
 ~~~~~~~~~

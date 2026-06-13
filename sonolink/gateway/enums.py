@@ -30,7 +30,9 @@ __all__ = (
     "AutoPlayMode",
     "DisconnectTriggerType",
     "InactivityMode",
+    "NodeRegion",
     "NodeStatus",
+    "NodeStrategy",
     "QueueMode",
     "SearchProvider",
     "TrackEndReason",
@@ -164,3 +166,51 @@ class TrackExceptionSeverity(StrEnum):
     COMMON = "common"
     SUSPICIOUS = "suspicious"
     FAULT = "fault"
+
+
+class NodeStrategy(Enum):
+    """Represents the strategy used to select a node for a new player.
+
+    .. versionadded:: 1.2.0
+
+    :ivar REGION: Select the node based on region preference. Nodes in preferred regions are prioritized,
+    but if no nodes are available in those regions, other nodes may be selected.
+    :ivar PENALTY: Select the node with the lowest penalty score, which is calculated based on factors like CPU load,
+    player count, and frame statistics. This strategy aims to distribute players across nodes in a way that optimizes performance.
+    """
+
+    REGION = 1
+    PENALTY = 4
+
+
+class NodeRegion(StrEnum):
+    """Represents the available regions of a node.
+
+    .. versionadded:: 1.2.0
+
+    :ivar BRAZIL: Brazil
+    :ivar HONG_KONG: Hong Kong
+    :ivar INDIA: India
+    :ivar JAPAN: Japan
+    :ivar ROTTERDAM: Rotterdam
+    :ivar SINGAPORE: Singapore
+    :ivar SOUTH_AFRICA: South Africa
+    :ivar SYDNEY: Sydney
+    :ivar US_EAST: US East
+    :ivar US_WEST: US West
+    :ivar US_CENTRAL: US Central
+    :ivar US_SOUTH: US South
+    """
+
+    BRAZIL = "brazil"
+    HONG_KONG = "hongkong"
+    INDIA = "india"
+    JAPAN = "japan"
+    ROTTERDAM = "rotterdam"
+    SINGAPORE = "singapore"
+    SOUTH_AFRICA = "southafrica"
+    SYDNEY = "sydney"
+    US_EAST = "us-east"
+    US_WEST = "us-west"
+    US_CENTRAL = "us-central"
+    US_SOUTH = "us-south"
