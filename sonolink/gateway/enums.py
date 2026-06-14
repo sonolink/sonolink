@@ -180,7 +180,7 @@ class NodeStrategy(Enum):
     """
 
     REGION = 1
-    PENALTY = 4
+    PENALTY = 2
 
 
 class NodeRegion(StrEnum):

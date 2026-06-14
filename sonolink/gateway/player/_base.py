@@ -813,7 +813,7 @@ class BasePlayer(abc.ABC):
                     f"No sonolink.Client is associated with {self.client!r}"
                 )
 
-            node = sl_client.get_best_node(channel=self.channel)
+            node = sl_client.get_best_node(region=self.channel.rtc_region)
             self._node = node
 
         if self.guild.id not in node._players:

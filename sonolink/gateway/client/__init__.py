@@ -27,7 +27,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
-from typing import TYPE_CHECKING, Any, Generic, Literal, Protocol, cast, overload
+from typing import TYPE_CHECKING, Any, Generic, Literal, overload
 
 from typing_extensions import TypeVar
 
@@ -59,10 +59,6 @@ _log = logging.getLogger(__name__)
 
 
 N = TypeVar("N", bound=Node, default=Node)
-
-
-class _Channel(Protocol):
-    rtc_region: str | None
 
 
 class Client(Generic[N]):
@@ -288,7 +284,7 @@ class Client(Generic[N]):
             Whether the node should attempt to reconnect automatically after an unexpected
             disconnect. Defaults to ``True``.
 
-            versionadded:: 1.2.0
+            .. versionadded:: 1.2.0
         regions: :class:`list[str | NodeRegion]` | :data:`None`
             The regions of this node. This is used to determine the best node to use based on
             the channel region. If ``None`` is passed, the node is considered to have no specific region.
@@ -416,18 +412,17 @@ class Client(Generic[N]):
 
         self._nodes.clear()
 
-    def get_best_node(self, *, channel: _Channel | None = None) -> N:
+    def get_best_node(self, *, region: str | None = None) -> N:
         """
         Returns the best available :class:`Node` based on current load and connectivity.
 
         Parameters
         ----------
-        channel: :class:`typing.Any` | :data:`None`
-            An optional object representing the voice channel for which the node will be used. This is used to
-            determine the best node based on the channel's region and the nodes' regions if ``node_strategy`` is set to
-            :attr:`NodeStrategy.REGION`. If ``None``, the best node is determined solely based on penalty.
-
-            The type depends on the framework you are using.
+        region: :class:`str` | :data:`None`
+            An optional voice region string. When provided and ``node_strategy`` is set to
+            :attr:`NodeStrategy.REGION`, this is used to select the best matching node.
+            If ``None``, omitted, or no matching regional node is found, selection falls back to
+            penalty-based scoring.
 
         Returns
         -------
@@ -445,19 +440,13 @@ class Client(Generic[N]):
 
         nodes_to_consider = connected_nodes
 
-        if self.node_strategy is NodeStrategy.REGION and channel is not None:
-            channel_region = channel.rtc_region
-            if channel_region:
-                if hasattr(channel_region, "value"):
-                    channel_region = cast(str, channel_region.value)  # pyright: ignore[reportAttributeAccessIssue, reportOptionalMemberAccess]
-
-                channel_region = channel_region.removeprefix("vip-")
-
-                nodes_to_consider = [
-                    node
-                    for node in connected_nodes
-                    if node.regions and channel_region in node.regions
-                ]
+        if self.node_strategy is NodeStrategy.REGION and region is not None:
+            normalized = region.removeprefix("vip-")
+            nodes_to_consider = [
+                node
+                for node in connected_nodes
+                if node.regions and normalized in node.regions
+            ]
 
         return min(
             nodes_to_consider or connected_nodes,
@@ -468,8 +457,8 @@ class Client(Generic[N]):
         self,
         query: str,
         *,
-        channel: _Channel | None = None,
         source: TrackSourceType | str = TrackSourceType.YOUTUBE,
+        region: str | None = None,
     ) -> SearchResult:
         """
         Searches for ``query`` in the best Node available, obtained with :meth:`Client.get_best_node`.
@@ -482,22 +471,26 @@ class Client(Generic[N]):
             The source to search from. This is, essentially, providing a host to ``query``. The library
             provides default source types under :class:`TrackSourceType`, but custom ones can be passed
             with a raw string.
-        channel: :class:`typing.Any` | :data:`None`
-            An optional object representing the voice channel for which the search result will be used. This is
-            used to determine the best node based on the channel's region and the nodes' regions if ``node_strategy`` 
-            is set to :attr:`NodeStrategy.REGION`. If ``None``, the best node is determined solely based on penalty.
-
-            The type depends on the framework you are using.
+        region: :class:`str` | :data:`None`
+            An optional voice region string. When provided and ``node_strategy`` is set to
+            :attr:`NodeStrategy.REGION`, this is used to select the best matching node.
+            If ``None``, omitted, or no matching regional node is found, selection falls back to
+            penalty-based scoring.
 
         Returns
         -------
         :class:`SearchResult`
             The search result.
         """
-        node = self.get_best_node(channel=channel)
+        node = self.get_best_node(region=region)
         return await node.search_track(query, source=source)
 
-    async def decode_track(self, encoded: str, *, channel: _Channel | None = None) -> Playable:
+    async def decode_track(
+        self,
+        encoded: str,
+        *,
+        region: str | None = None,
+    ) -> Playable:
         """
         Decodes a track from its encoded data using the best Node available, obtained with
         :meth:`Client.get_best_node`.
@@ -509,22 +502,25 @@ class Client(Generic[N]):
         ----------
         encoded: :class:`str`
             The encoded data to resolve the track from.
-        channel: :class:`typing.Any` | :data:`None`
-            An optional object representing the voice channel for which the track will be used. This is
-            used to determine the best node based on the channel's region and the nodes' regions if ``node_strategy``
-            is set to :attr:`NodeStrategy.REGION`. If ``None``, the best node is determined solely based on penalty.
-            
-            The type depends on the framework you are using.
+        region: :class:`str` | :data:`None`
+            An optional voice region string. When provided and ``node_strategy`` is set to
+            :attr:`NodeStrategy.REGION`, this is used to select the best matching node.
+            If ``None``, omitted, or no matching regional node is found, selection falls back to
+            penalty-based scoring.
 
         Returns
         -------
         :class:`sonolink.models.Playable`
             The decoded resolved track.
         """
-        node = self.get_best_node(channel=channel)
+        node = self.get_best_node(region=region)
         return await node.decode_track(encoded)
 
-    async def decode_tracks(self, *encoded: str, channel: _Channel | None = None) -> list[Playable]:
+    async def decode_tracks(
+        self,
+        *encoded: str,
+        region: str | None = None,
+    ) -> list[Playable]:
         """
         Bulk decode encoded tracks using the best Node available, obtained with :meth:`Client.get_best_node`.
 
@@ -532,19 +528,18 @@ class Client(Generic[N]):
         ----------
         *encoded: :class:`str`
             The encoded data for each track to be decoded.
-        channel: :class:`typing.Any` | :data:`None`
-            An optional object representing the voice channel for which the tracks will be used. This is
-            used to determine the best node based on the channel's region and the nodes' regions if ``node_strategy``
-            is set to :attr:`NodeStrategy.REGION`. If ``None``, the best node is determined solely based on penalty.
-
-            The type depends on the framework you are using.
+        region: :class:`str` | :data:`None`
+            An optional voice region string. When provided and ``node_strategy`` is set to
+            :attr:`NodeStrategy.REGION`, this is used to select the best matching node.
+            If ``None``, omitted, or no matching regional node is found, selection falls back to
+            penalty-based scoring.
 
         Returns
         -------
         ``list[Playable]``
             The decoded resolved tracks.
         """
-        node = self.get_best_node(channel=channel)
+        node = self.get_best_node(region=region)
         return await node.decode_tracks(*encoded)
 
     def _cleanup_node(self, node: N) -> asyncio.Task[None]:
