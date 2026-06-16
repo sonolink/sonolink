@@ -136,6 +136,62 @@ Calling :meth:`sonolink.Client.create_node` registers the node. Calling
 :meth:`sonolink.Client.start` opens the connection to Lavalink. If you skip this step,
 :class:`sonolink.Player` will not have a node to use.
 
+Region-aware nodes
+~~~~~~~~~~~~~~~~~~
+
+Nodes do not need a region. If you omit ``regions``, SonoLink treats the node as a normal
+candidate and selects by penalty:
+
+.. code-block:: python
+
+   bot.sl_client.create_node(
+       uri="http://localhost:2333",
+       password="youshallnotpass",
+       id="default",
+   )
+
+If you run multiple Lavalink nodes in different regions, assign each regional node the
+Discord voice regions it should serve. SonoLink will prefer a node whose ``regions`` include
+the connected voice channel's ``rtc_region``, then fall back to normal penalty-based selection
+across all connected nodes if the channel uses automatic region detection or no matching node
+is connected.
+
+.. code-block:: python
+
+   bot.sl_client.create_node(
+       uri="http://us-east.example.com:2333",
+       password="youshallnotpass",
+       id="us-east",
+       regions=[sonolink.NodeRegion.US_EAST, sonolink.NodeRegion.US_CENTRAL],
+   )
+
+   bot.sl_client.create_node(
+       uri="http://rotterdam.example.com:2333",
+       password="youshallnotpass",
+       id="rotterdam",
+       regions=[sonolink.NodeRegion.ROTTERDAM],
+   )
+
+   # Nodes without regions can still act as general fallback capacity.
+   bot.sl_client.create_node(
+       uri="http://fallback.example.com:2333",
+       password="youshallnotpass",
+       id="fallback",
+   )
+
+Automatic player selection uses the channel's ``rtc_region`` with the supported adapters for
+discord.py, py-cord, disnake, and nextcord. You can also pass a raw Discord region string in
+``regions`` if :class:`NodeRegion` does not include a newer Discord region yet.
+
+For REST-style operations that happen before a player exists, pass ``region=`` yourself:
+
+.. code-block:: python
+
+   result = await bot.sl_client.search_track(
+       "lofi beats",
+       region=sonolink.NodeRegion.US_EAST,
+   )
+
 .. note::
    :meth:`sonolink.Client.start` should be called once your Discord client is ready,
    typically in :func:`pycord:discord.on_connect` (py-cord),

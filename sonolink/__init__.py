@@ -30,6 +30,7 @@ __all__ = (
     "InvalidNodePassword",
     "Node",
     "NodeError",
+    "NodeRegion",
     "NodeStatus",
     "NodeURINotFound",
     "Player",

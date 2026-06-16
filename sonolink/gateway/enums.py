@@ -30,6 +30,7 @@ __all__ = (
     "AutoPlayMode",
     "DisconnectTriggerType",
     "InactivityMode",
+    "NodeRegion",
     "NodeStatus",
     "QueueMode",
     "SearchProvider",
@@ -164,3 +165,36 @@ class TrackExceptionSeverity(StrEnum):
     COMMON = "common"
     SUSPICIOUS = "suspicious"
     FAULT = "fault"
+
+
+class NodeRegion(StrEnum):
+    """Represents the available regions of a node.
+
+    .. versionadded:: 1.2.0
+
+    :ivar BRAZIL: Brazil
+    :ivar HONG_KONG: Hong Kong
+    :ivar INDIA: India
+    :ivar JAPAN: Japan
+    :ivar ROTTERDAM: Rotterdam
+    :ivar SINGAPORE: Singapore
+    :ivar SOUTH_AFRICA: South Africa
+    :ivar SYDNEY: Sydney
+    :ivar US_EAST: US East
+    :ivar US_WEST: US West
+    :ivar US_CENTRAL: US Central
+    :ivar US_SOUTH: US South
+    """
+
+    BRAZIL = "brazil"
+    HONG_KONG = "hongkong"
+    INDIA = "india"
+    JAPAN = "japan"
+    ROTTERDAM = "rotterdam"
+    SINGAPORE = "singapore"
+    SOUTH_AFRICA = "southafrica"
+    SYDNEY = "sydney"
+    US_EAST = "us-east"
+    US_WEST = "us-west"
+    US_CENTRAL = "us-central"
+    US_SOUTH = "us-south"

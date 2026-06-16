@@ -33,6 +33,7 @@ from typing_extensions import TypeVar
 
 from sonolink import _registry
 from sonolink._version import __version__
+from sonolink.gateway.enums import NodeRegion
 from sonolink.gateway.player import FrameworkLiteral, PlayerFactory
 from sonolink.models.settings import CacheSettings, InactivitySettings
 from sonolink.rest.enums import TrackSourceType
@@ -80,7 +81,6 @@ class Client(Generic[N]):
         If multiple are present, the one already imported is preferred; if that
         is ambiguous, the first available is used and a warning is logged.
         Defaults to ``None``.
-
     Raises
     ------
     RuntimeError
@@ -193,6 +193,7 @@ class Client(Generic[N]):
         cache_settings: CacheSettings | None = ...,
         inactivity_settings: InactivitySettings | None = ...,
         session: SessionType | None = ...,
+        regions: list[str | NodeRegion] | None = ...,
     ) -> N: ...
 
     @overload
@@ -207,6 +208,7 @@ class Client(Generic[N]):
         cache_settings: CacheSettings | None = ...,
         inactivity_settings: InactivitySettings | None = ...,
         session: SessionType | None = ...,
+        regions: list[str | NodeRegion] | None = ...,
     ) -> N: ...
 
     def create_node(
@@ -223,6 +225,7 @@ class Client(Generic[N]):
         inactivity_settings: InactivitySettings | None = None,
         session: SessionType | None = None,
         auto_reconnect: bool = True,
+        regions: list[str | NodeRegion] | None = None,
     ) -> N:
         """
         Creates a :class:`Node` attached to this client.
@@ -266,7 +269,10 @@ class Client(Generic[N]):
             Whether the node should attempt to reconnect automatically after an unexpected
             disconnect. Defaults to ``True``.
 
-            versionadded:: 1.2.0
+            .. versionadded:: 1.2.0
+        regions: :class:`list[str | NodeRegion]` | :data:`None`
+            The regions of this node. This is used to determine the best node to use based on
+            the channel region. If ``None`` is passed, the node is considered to have no specific region.
 
         Raises
         ------
@@ -302,6 +308,7 @@ class Client(Generic[N]):
             inactivity_settings=i_settings,
             session=session,
             auto_reconnect=auto_reconnect,
+            regions=regions,
         )
         self._nodes[node.id] = node
         return node
@@ -390,9 +397,17 @@ class Client(Generic[N]):
 
         self._nodes.clear()
 
-    def get_best_node(self) -> N:
+    def get_best_node(self, *, region: str | None = None) -> N:
         """
         Returns the best available :class:`Node` based on current load and connectivity.
+
+        Parameters
+        ----------
+        region: :class:`str` | :data:`None`
+            An optional voice region string. When provided, this is used to select
+            the best matching node.
+            If ``None``, omitted, or no matching regional node is found, selection falls back to
+            penalty-based scoring.
 
         Returns
         -------
@@ -404,13 +419,22 @@ class Client(Generic[N]):
         RuntimeError
             No nodes are currently connected to handle the request.
         """
-
         connected_nodes = [node for node in self.nodes if node.is_connected]
         if not connected_nodes:
             raise RuntimeError("No nodes are currently connected.")
 
+        nodes_to_consider = connected_nodes
+
+        if region is not None:
+            normalized = region.removeprefix("vip-")
+            nodes_to_consider = [
+                node
+                for node in connected_nodes
+                if node.regions and normalized in node.regions
+            ]
+
         return min(
-            connected_nodes,
+            nodes_to_consider or connected_nodes,
             key=lambda node: node.stats.penalty if node.stats else float("inf"),
         )
 
@@ -419,6 +443,7 @@ class Client(Generic[N]):
         query: str,
         *,
         source: TrackSourceType | str = TrackSourceType.YOUTUBE,
+        region: str | None = None,
     ) -> SearchResult:
         """
         Searches for ``query`` in the best Node available, obtained with :meth:`Client.get_best_node`.
@@ -431,16 +456,26 @@ class Client(Generic[N]):
             The source to search from. This is, essentially, providing a host to ``query``. The library
             provides default source types under :class:`TrackSourceType`, but custom ones can be passed
             with a raw string.
+        region: :class:`str` | :data:`None`
+            An optional voice region string. When provided, this is used to select
+            the best matching node.
+            If ``None``, omitted, or no matching regional node is found, selection falls back to
+            penalty-based scoring.
 
         Returns
         -------
         :class:`SearchResult`
             The search result.
         """
-        node = self.get_best_node()
+        node = self.get_best_node(region=region)
         return await node.search_track(query, source=source)
 
-    async def decode_track(self, encoded: str) -> Playable:
+    async def decode_track(
+        self,
+        encoded: str,
+        *,
+        region: str | None = None,
+    ) -> Playable:
         """
         Decodes a track from its encoded data using the best Node available, obtained with
         :meth:`Client.get_best_node`.
@@ -452,16 +487,25 @@ class Client(Generic[N]):
         ----------
         encoded: :class:`str`
             The encoded data to resolve the track from.
+        region: :class:`str` | :data:`None`
+            An optional voice region string. When provided, this is used to select
+            the best matching node.
+            If ``None``, omitted, or no matching regional node is found, selection falls back to
+            penalty-based scoring.
 
         Returns
         -------
         :class:`sonolink.models.Playable`
             The decoded resolved track.
         """
-        node = self.get_best_node()
+        node = self.get_best_node(region=region)
         return await node.decode_track(encoded)
 
-    async def decode_tracks(self, *encoded: str) -> list[Playable]:
+    async def decode_tracks(
+        self,
+        *encoded: str,
+        region: str | None = None,
+    ) -> list[Playable]:
         """
         Bulk decode encoded tracks using the best Node available, obtained with :meth:`Client.get_best_node`.
 
@@ -469,13 +513,18 @@ class Client(Generic[N]):
         ----------
         *encoded: :class:`str`
             The encoded data for each track to be decoded.
+        region: :class:`str` | :data:`None`
+            An optional voice region string. When provided, this is used to select
+            the best matching node.
+            If ``None``, omitted, or no matching regional node is found, selection falls back to
+            penalty-based scoring.
 
         Returns
         -------
         ``list[Playable]``
             The decoded resolved tracks.
         """
-        node = self.get_best_node()
+        node = self.get_best_node(region=region)
         return await node.decode_tracks(*encoded)
 
     def _cleanup_node(self, node: N) -> asyncio.Task[None]:

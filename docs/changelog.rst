@@ -21,12 +21,21 @@ in specific versions.
 - Serializable extras are now forwarded to Lavalink as ``user_data`` and accessible via
   :attr:`Playable.extras` on reconstructed tracks. Non-serializable values are warned and
   accessible via ``.original.extras``.
-  
+- Added support for region-aware node selection:
+
+  - Added :class:`NodeRegion` enum representing the available Discord voice channel regions a node can serve.
+  - Added ``regions`` parameter to :meth:`Client.create_node` and :class:`Node` to associate a node with one or more
+    :class:`NodeRegion` values (or raw strings).
+  - Added ``region`` parameter to :meth:`Client.get_best_node`, :meth:`Client.search_track`, :meth:`Client.decode_track`,
+    and :meth:`Client.decode_tracks` to drive region-aware node selection.
+  - :class:`~sonolink.gateway.player._base.BasePlayer` now automatically passes its voice region to
+    :meth:`Client.get_best_node` when selecting a node on connect.
+
 **Fixed**
 ~~~~~~~~~
 
-- Fixed an issue where the client would not attempt to reconnect to a node after a disconnection, even if `auto_reconnect` was enabled.
-- Fixed an issue with using the `speed` extra, or the `curl-cffi` package where if would raise a `CurlError` and
+- Fixed an issue where the client would not attempt to reconnect to a node after a disconnection, even if ``auto_reconnect`` was enabled.
+- Fixed an issue with using the `speed` extra, or the ``curl-cffi`` package where it would raise a `CurlError` and
   the library would fail to handle it properly, causing the node to be left in a broken state.
 
 
@@ -45,7 +54,7 @@ v1.1.1 - 2026-05-15
 - :class:`sonolink.Player` not disconnecting on stale LavaLink session.
 - Missing typings for :attr:`sonolink.gateway.PlayerDisconnectEvent.extra_data` on
   :class:`sonolink.gateway.PlayerDisconnectEvent`.
-  
+
 .. _vp1p1p0:
 
 v1.1.0 - 2026-05-14
@@ -116,7 +125,7 @@ v1.1.0 - 2026-05-14
 
 - Fixed incorrect generics on the :class:`PycordPlayer <.adapters._pycord.PycordPlayer>`.
 - Fixed ``force`` parameter handling in :meth:`Player.disconnect <._base.BasePlayer.disconnect>`.
-- Fixed the library raising :class:`QueueEmpty <sonolink.QueueEmpty>` when skipping tracks for the user internally. 
+- Fixed the library raising :class:`QueueEmpty <sonolink.QueueEmpty>` when skipping tracks for the user internally.
 
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
