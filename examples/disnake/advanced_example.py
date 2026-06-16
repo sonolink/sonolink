@@ -13,7 +13,7 @@ from disnake.ext import commands
 
 import sonolink
 import sonolink.models
-from sonolink.gateway.enums import QueueMode
+from sonolink.gateway.enums import NodeRegion, QueueMode
 from sonolink.rest.enums import TrackSourceType
 
 
@@ -29,11 +29,27 @@ class Bot(commands.InteractionBot):
 
 bot = Bot()
 
-# Register the node we want to connect to. You can register multiple nodes
-# and sonolink will automatically load-balance between them via 'get_best_node'.
+# Register the nodes we want to connect to. You can omit 'regions' for normal
+# penalty-based selection, or provide regions for region-aware selection.
+# Matching node regions are preferred when the Discord voice channel exposes
+# an rtc_region; otherwise selection falls back to penalty-based load balancing
+# across all connected nodes.
 bot.sl_client.create_node(
     uri="YOUR_LAVALINK_URI",
     password="YOUR_LAVALINK_PASSWORD",
+    id="default",
+)
+bot.sl_client.create_node(
+    uri="YOUR_US_EAST_LAVALINK_URI",
+    password="YOUR_LAVALINK_PASSWORD",
+    id="us-east",
+    regions=[NodeRegion.US_EAST, NodeRegion.US_CENTRAL],
+)
+bot.sl_client.create_node(
+    uri="YOUR_EU_LAVALINK_URI",
+    password="YOUR_LAVALINK_PASSWORD",
+    id="rotterdam",
+    regions=[NodeRegion.ROTTERDAM],
 )
 
 
