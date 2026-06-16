@@ -31,7 +31,6 @@ __all__ = (
     "NodeError",
     "NodeRegion",
     "NodeStatus",
-    "NodeStrategy",
     "NodeURINotFound",
     "Player",
     "PlayerConnectionState",

@@ -32,7 +32,6 @@ __all__ = (
     "InactivityMode",
     "NodeRegion",
     "NodeStatus",
-    "NodeStrategy",
     "QueueMode",
     "SearchProvider",
     "TrackEndReason",
@@ -166,21 +165,6 @@ class TrackExceptionSeverity(StrEnum):
     COMMON = "common"
     SUSPICIOUS = "suspicious"
     FAULT = "fault"
-
-
-class NodeStrategy(Enum):
-    """Represents the strategy used to select a node for a new player.
-
-    .. versionadded:: 1.2.0
-
-    :ivar REGION: Select the node based on region preference. Nodes in preferred regions are prioritized,
-    but if no nodes are available in those regions, other nodes may be selected.
-    :ivar PENALTY: Select the node with the lowest penalty score, which is calculated based on factors like CPU load,
-    player count, and frame statistics. This strategy aims to distribute players across nodes in a way that optimizes performance.
-    """
-
-    REGION = 1
-    PENALTY = 2
 
 
 class NodeRegion(StrEnum):

@@ -46,11 +46,6 @@ Gateway
    :no-attributetable:
    :no-inherited-members:
 
-.. autoclass:: sonolink.NodeStrategy()
-   :members:
-   :no-attributetable:
-   :no-inherited-members:
-
 Rest
 ----
 

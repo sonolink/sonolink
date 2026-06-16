@@ -33,7 +33,7 @@ from typing_extensions import TypeVar
 
 from sonolink import _registry
 from sonolink._version import __version__
-from sonolink.gateway.enums import NodeRegion, NodeStrategy
+from sonolink.gateway.enums import NodeRegion
 from sonolink.gateway.player import FrameworkLiteral, PlayerFactory
 from sonolink.models.settings import CacheSettings, InactivitySettings
 from sonolink.rest.enums import TrackSourceType
@@ -81,9 +81,6 @@ class Client(Generic[N]):
         If multiple are present, the one already imported is preferred; if that
         is ambiguous, the first available is used and a warning is logged.
         Defaults to ``None``.
-    node_strategy: :class:`NodeStrategy`
-        The strategy used to select a node for new players. Defaults to :attr:`NodeStrategy.BY_PENALTY`.
-
     Raises
     ------
     RuntimeError
@@ -148,7 +145,6 @@ class Client(Generic[N]):
         *,
         node_cls: type[N] = Node,
         framework: FrameworkLiteral | None = None,
-        node_strategy: NodeStrategy = NodeStrategy.PENALTY,
     ) -> None:
         framework = framework or PlayerFactory().detect_framework()
         os.environ["SONOLINK_FRAMEWORK"] = framework
@@ -160,7 +156,6 @@ class Client(Generic[N]):
         self._session = None
         self._node_tasks = {}
         self._node_cls: type[N] = node_cls
-        self._node_strategy = node_strategy
 
         if self._client._client in _registry.clients:
             raise RuntimeError(
@@ -184,16 +179,6 @@ class Client(Generic[N]):
         (``"discord.py"``, ``"pycord"``, ``"disnake"``, or ``"nextcord"``).
         """
         return self._framework
-
-    @property
-    def node_strategy(self) -> NodeStrategy:
-        """The strategy used to select a node for new players."""
-        return self._node_strategy
-
-    @node_strategy.setter
-    def node_strategy(self, strategy: NodeStrategy) -> None:
-        """Set the strategy used to select a node for new players."""
-        self._node_strategy = strategy
 
     @overload
     def create_node(
@@ -419,8 +404,8 @@ class Client(Generic[N]):
         Parameters
         ----------
         region: :class:`str` | :data:`None`
-            An optional voice region string. When provided and ``node_strategy`` is set to
-            :attr:`NodeStrategy.REGION`, this is used to select the best matching node.
+            An optional voice region string. When provided, this is used to select
+            the best matching node.
             If ``None``, omitted, or no matching regional node is found, selection falls back to
             penalty-based scoring.
 
@@ -440,7 +425,7 @@ class Client(Generic[N]):
 
         nodes_to_consider = connected_nodes
 
-        if self.node_strategy is NodeStrategy.REGION and region is not None:
+        if region is not None:
             normalized = region.removeprefix("vip-")
             nodes_to_consider = [
                 node
@@ -472,8 +457,8 @@ class Client(Generic[N]):
             provides default source types under :class:`TrackSourceType`, but custom ones can be passed
             with a raw string.
         region: :class:`str` | :data:`None`
-            An optional voice region string. When provided and ``node_strategy`` is set to
-            :attr:`NodeStrategy.REGION`, this is used to select the best matching node.
+            An optional voice region string. When provided, this is used to select
+            the best matching node.
             If ``None``, omitted, or no matching regional node is found, selection falls back to
             penalty-based scoring.
 
@@ -503,8 +488,8 @@ class Client(Generic[N]):
         encoded: :class:`str`
             The encoded data to resolve the track from.
         region: :class:`str` | :data:`None`
-            An optional voice region string. When provided and ``node_strategy`` is set to
-            :attr:`NodeStrategy.REGION`, this is used to select the best matching node.
+            An optional voice region string. When provided, this is used to select
+            the best matching node.
             If ``None``, omitted, or no matching regional node is found, selection falls back to
             penalty-based scoring.
 
@@ -529,8 +514,8 @@ class Client(Generic[N]):
         *encoded: :class:`str`
             The encoded data for each track to be decoded.
         region: :class:`str` | :data:`None`
-            An optional voice region string. When provided and ``node_strategy`` is set to
-            :attr:`NodeStrategy.REGION`, this is used to select the best matching node.
+            An optional voice region string. When provided, this is used to select
+            the best matching node.
             If ``None``, omitted, or no matching regional node is found, selection falls back to
             penalty-based scoring.
 
