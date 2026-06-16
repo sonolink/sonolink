@@ -214,7 +214,9 @@ class Node:
 
     @regions.setter
     def regions(self, value: list[str | NodeRegion]) -> None:
-        self._regions = [r.removeprefix("vip-") if isinstance(r, str) else r for r in value]
+        self._regions = [
+            r.removeprefix("vip-") if isinstance(r, str) else r for r in value
+        ]
 
     @property
     def password(self) -> str:
