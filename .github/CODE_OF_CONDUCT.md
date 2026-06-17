@@ -43,6 +43,9 @@ It also applies whenever someone is acting as a representative of the project
 in public, for example: at an event, on social media, or via an official
 project account.
 
+Contributions involving AI tools are additionally subject to the
+[AI Contribution Policy](./AI_POLICY.md).
+
 ## Reporting & Enforcement
 
 If you witness or experience behavior that violates this Code of Conduct,

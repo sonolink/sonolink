@@ -22,6 +22,7 @@
 - [ ] My code follows Sonolink's **strict typing** standards.
 - [ ] Complex or non-obvious logic is documented where appropriate.
 - [ ] No dead code, debug prints, or leftover TODOs were introduced.
+- [ ] This PR complies with the [AI Contribution Policy](./AI_POLICY.md).
 ### Documentation & Compatibility
 - [ ] I have updated documentation and/or docstrings where applicable.
 - [ ] I have verified that my changes are compatible with the latest Lavalink version.
