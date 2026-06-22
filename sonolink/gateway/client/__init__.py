@@ -365,7 +365,7 @@ class Client(Generic[N]):
             return
 
         for node in self.nodes:
-            if node.is_connected:
+            if node.is_connected or node.is_connecting:
                 continue
 
             try:
@@ -384,7 +384,7 @@ class Client(Generic[N]):
         """
 
         for node in self.nodes:
-            if not node.is_connected:
+            if not node.is_connected and not node.is_connecting:
                 continue
 
             try:
