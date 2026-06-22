@@ -47,11 +47,14 @@ class ConnectionManager(NodeComponent):
             raise RuntimeError("Cannot connect a node that is not bound to a client.")
 
         if self.node._keep_alive is not None:
-            raise RuntimeError("This node is already connected.")
+            _log.warning(
+                "Node %r: connect() called while already connected; ignoring.",
+                self.node,
+            )
+            return
 
         await self.node._manager.setup()
         self.node._status = NodeStatus.CONNECTING
-
         await self.attempt_connect()
 
     async def close(self) -> None:
@@ -127,6 +130,7 @@ class ConnectionManager(NodeComponent):
                     attempt + 1,
                     "inf" if retries is None else retries,
                 )
+                self.node._is_reconnecting = False
                 return
 
             delay = min(base_delay * (2**attempt), max_delay)

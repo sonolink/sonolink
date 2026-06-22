@@ -200,6 +200,14 @@ class Node:
         return self._status is NodeStatus.CONNECTED
 
     @property
+    def is_connecting(self) -> bool:
+        """Whether the Node is currently establishing connection.
+
+        .. versionadded:: 1.2.0
+        """
+        return self._status is NodeStatus.CONNECTING
+
+    @property
     def inactivity_settings(self) -> InactivitySettings:
         """The inactivity configuration for all players on this node."""
         return self._inactivity_settings
