@@ -7,8 +7,10 @@ Changelog
 This page keeps a detailed human friendly rendering of what's new and changed
 in specific versions.
 
-`Unreleased`_
----------------
+.. _vp1p2p0:
+
+v1.2.0 - 2026-06-23
+-------------------
 
 **Added**
 ~~~~~~~~~
