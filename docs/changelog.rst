@@ -13,6 +13,7 @@ in specific versions.
 **Added**
 ~~~~~~~~~
 
+- Added :attr:`Node.is_connecting` property for checking whether a node is currently establishing a connection.
 - Added the missing `auto_reconnect` parameter to :meth:`Client.create_node` for controlling whether the client should
   automatically attempt to reconnect to the node on disconnection. This defaults to ``True``.
 - Added :meth:`Node.reconnect` for manually triggering a reconnection to the node.
@@ -37,7 +38,8 @@ in specific versions.
 - Fixed an issue where the client would not attempt to reconnect to a node after a disconnection, even if ``auto_reconnect`` was enabled.
 - Fixed an issue with using the `speed` extra, or the ``curl-cffi`` package where it would raise a `CurlError` and
   the library would fail to handle it properly, causing the node to be left in a broken state.
-
+- Fixed an internal race condition where :meth:`Node.connect` could be called on an already-connected node, causing a
+  :exc:`RuntimeError` to be silently raised in the background after extended uptime.
 
 .. _vp1p1p1:
 
