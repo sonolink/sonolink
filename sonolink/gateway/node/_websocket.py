@@ -122,11 +122,15 @@ class WebsocketClient(NodeComponent):
             await result
 
     async def _handle_disconnect(self) -> None:
-        if self.node.auto_reconnect and self.node._status not in (
-            NodeStatus.CONNECTING,
-            NodeStatus.DISCONNECTED,
+        if self.node._is_reconnecting:
+            _log.debug("%r already reconnecting; ignoring disconnect event.", self.node)
+            return
+
+        if (
+            self.node.auto_reconnect
+            and self.node._status is not NodeStatus.DISCONNECTED
         ):
             _log.info("%r WS closed, attempting reconnect...", self.node)
             await self.node.reconnect()
-        elif self.node.is_connected:
+        elif self.node.is_connected or self.node._status is NodeStatus.CONNECTING:
             await self.node.close()
