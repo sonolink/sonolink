@@ -11,6 +11,7 @@ class Snowflake(Protocol):
     ----------
     id: :class:`int`
         The snowflake ID as an integer.
+
     """
 
     id: int

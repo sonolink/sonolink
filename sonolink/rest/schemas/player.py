@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -45,9 +44,7 @@ __all__ = (
 
 
 class Player(msgspec.Struct, kw_only=True):
-    """
-    Represents a Lavalink Player.
-    """
+    """Represents a Lavalink Player."""
 
     guild_id: str = msgspec.field(name="guildId")
     """The Discord guild ID the player belongs to."""
@@ -104,8 +101,7 @@ class PlayerVoiceState(msgspec.Struct, kw_only=True):
 
 
 class UpdatePlayerRequest(msgspec.Struct, kw_only=True):
-    """
-    Payload to update a Lavalink Player.
+    """Payload to update a Lavalink Player.
 
     This object is sent to `/players/{guildId}` to modify player state.
     """
@@ -135,8 +131,7 @@ class UpdatePlayerRequest(msgspec.Struct, kw_only=True):
 
 
 class UpdatePlayerTrackRequest(msgspec.Struct, kw_only=True):
-    """
-    Represents a track update request for a Lavalink Player.
+    """Represents a track update request for a Lavalink Player.
 
     Used within :class:`UpdatePlayerRequest` to play or modify a track.
     """

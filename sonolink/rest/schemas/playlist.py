@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -30,8 +29,7 @@ __all__ = ("PlaylistInfo",)
 
 
 class PlaylistInfo(msgspec.Struct, kw_only=True):
-    """
-    Represents metadata for a loaded playlist.
+    """Represents metadata for a loaded playlist.
 
     This object is embedded in playlist load responses.
     """

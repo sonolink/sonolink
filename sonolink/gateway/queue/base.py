@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -70,8 +69,7 @@ class ReadableCollection:
 
     @property
     def count(self) -> int:
-        """
-        The number of tracks in this collection.
+        """The number of tracks in this collection.
 
         Returns
         -------
@@ -87,7 +85,7 @@ class ReadableCollection:
 
 
 class MutableQueueBase(ReadableCollection):
-    """A base class for collections that can be modified"""
+    """A base class for collections that can be modified."""
 
     __slots__ = ()
 
@@ -111,8 +109,7 @@ class MutableQueueBase(ReadableCollection):
         *,
         atomic: bool = True,
     ) -> int:
-        """
-        Put one or more tracks at the end of the queue.
+        """Put one or more tracks at the end of the queue.
 
         Parameters
         ----------
@@ -147,8 +144,7 @@ class MutableQueueBase(ReadableCollection):
         *,
         atomic: bool = True,
     ) -> int:
-        """
-        Put one or more tracks at ``index``.
+        """Put one or more tracks at ``index``.
 
         Parameters
         ----------
@@ -208,8 +204,7 @@ class MutableQueueBase(ReadableCollection):
         *,
         remove_all: bool = True,
     ) -> int:
-        """
-        Removes one or more tracks from this queue.
+        """Remove one or more tracks from this queue.
 
         Parameters
         ----------

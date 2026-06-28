@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -33,8 +32,7 @@ __all__ = (
 
 
 class UpdateSessionRequest(msgspec.Struct, kw_only=True):
-    """
-    Represents a request to update a Lavalink session.
+    """Represents a request to update a Lavalink session.
 
     Sent via PATCH `/v4/sessions/{sessionId}` to modify the resuming state
     or the session timeout.

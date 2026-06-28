@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -91,7 +90,7 @@ class _cached_property(Generic[T, T_co]):
 def cached_property(
     attribute: str,
 ) -> Callable[[Callable[[T], T_co]], _cached_property[T, T_co]]:
-    """Creates a cached property that stores the result under ``class.attribute``."""
+    """Create a cached property that stores the result under ``class.attribute``."""
 
     def inner(func: Callable[[T], T_co]) -> _cached_property[T, T_co]:
         return _cached_property(attribute, func)

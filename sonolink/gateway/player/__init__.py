@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -80,7 +79,7 @@ class _PlayerMeta(abc.ABCMeta):
 
         if adapter not in rewritten:
             rewritten = (
-                (rewritten[0], adapter) + rewritten[1:] if rewritten else (adapter,)
+                (rewritten[0], adapter, *rewritten[1:]) if rewritten else (adapter,)
             )
 
         return super().__new__(cls, name, rewritten, attrs, **kwargs)
@@ -97,8 +96,7 @@ class _PlayerMeta(abc.ABCMeta):
 
 
 class Player(BasePlayer, metaclass=_PlayerMeta):
-    """
-    A dynamic proxy class for SonoLink players.
+    """A dynamic proxy class for SonoLink players.
 
     Automatically resolves the appropriate :class:`~sonolink.player.BasePlayer`
     implementation for the detected or configured Discord library backend
@@ -160,6 +158,7 @@ class Player(BasePlayer, metaclass=_PlayerMeta):
     client
         The Discord client instance driving this player. The concrete type
         depends on the underlying Discord library.
+
     """
 
     if TYPE_CHECKING:

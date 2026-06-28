@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -52,19 +51,18 @@ __all__ = ("BasePlayer", "PlayerConnectionState")
 
 
 class PlayerConnectionState:
-    """
-    Represents the voice connection state for a :class:`BasePlayer`.
+    """Represents the voice connection state for a :class:`BasePlayer`.
 
     This class is intended to be subclassed if you need to store
     extra metadata during the Discord handshake.
     """
 
     __slots__ = (
-        "token",
+        "_connected_flag",
+        "channel_id",
         "endpoint",
         "session_id",
-        "channel_id",
-        "_connected_flag",
+        "token",
     )
 
     def __init__(self) -> None:
@@ -81,8 +79,7 @@ class PlayerConnectionState:
 
 
 class BasePlayer(abc.ABC):
-    """
-    Abstract base class that defines the interface for a Lavalink player.
+    """Abstract base class that defines the interface for a Lavalink player.
 
     This class is library-agnostic and is intended to be subclassed to provide
     concrete implementations compatible with ``discord.py``, `py-cord``, ``disnake``, or ``nextcord``.
@@ -200,9 +197,8 @@ class BasePlayer(abc.ABC):
 
     @abc.abstractmethod
     def __call__(self, client: Any, channel: Any) -> BasePlayer:
-        """
-        Called by libraries when a pre-configured **instance** is passed to
-        their ``connect`` methods.
+        """Bind the player when a pre-configured **instance** is passed to
+        a library's ``connect`` method.
 
         Binds the VoiceProtocol attributes, resolves the guild from the channel,
         and registers the player with its node.
@@ -222,8 +218,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def autoplay(self) -> AutoPlayMode:
-        """
-        The current :class:`~sonolink.enums.AutoPlayMode` for this player.
+        """The current :class:`~sonolink.enums.AutoPlayMode` for this player.
 
         When AutoPlay is enabled, the player will automatically fetch and enqueue
         related tracks when the queue is exhausted.
@@ -246,8 +241,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def autoplay_settings(self) -> AutoPlaySettings:
-        """
-        The current :class:`~sonolink.models.AutoPlaySettings` for this player.
+        """The current :class:`~sonolink.models.AutoPlaySettings` for this player.
 
         Can be mutated directly to update individual fields, or replaced entirely.
 
@@ -265,8 +259,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def current(self) -> Playable | None:
-        """
-        The track that is currently playing, or ``None`` if the player is idle.
+        """The track that is currently playing, or ``None`` if the player is idle.
 
         Returns
         -------
@@ -276,8 +269,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def filters(self) -> Filters:
-        """
-        The :class:`~sonolink.models.Filters` currently applied to this player.
+        """The :class:`~sonolink.models.Filters` currently applied to this player.
 
         To apply new filters, use :meth:`set_filters` rather than mutating this
         object directly, so that the updated state is dispatched to the Lavalink node.
@@ -290,8 +282,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def guild(self) -> Any:
-        """
-        The guild this player is associated with.
+        """The guild this player is associated with.
 
         The concrete return type is the guild class of the underlying Discord
         library (e.g. ``discord.Guild``, ``disnake.Guild``).
@@ -307,8 +298,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def history_settings(self) -> HistorySettings:
-        """
-        The current :class:`~sonolink.models.HistorySettings` for this player's queue.
+        """The current :class:`~sonolink.models.HistorySettings` for this player's queue.
 
         Can be mutated directly to update individual fields, or replaced entirely.
 
@@ -326,8 +316,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def node(self) -> Node:
-        """
-        The :class:`~sonolink.node.Node` this player is currently attached to.
+        """The :class:`~sonolink.node.Node` this player is currently attached to.
 
         Raises
         ------
@@ -340,8 +329,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def paused(self) -> bool:
-        """
-        Whether the player is currently paused.
+        """Whether the player is currently paused.
 
         Returns
         -------
@@ -351,8 +339,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def position(self) -> int:
-        """
-        The estimated current playback position in milliseconds.
+        """The estimated current playback position in milliseconds.
 
         When the player is paused or has not yet started, this returns the last
         known position. Otherwise, it is calculated by interpolating the time
@@ -371,8 +358,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def queue(self) -> Queue:
-        """
-        The :class:`~sonolink.queue.queue.Queue` associated with this player.
+        """The :class:`~sonolink.queue.queue.Queue` associated with this player.
 
         The queue manages both upcoming tracks and playback history. Tracks can
         be added with ``queue.put()`` / ``queue.put_wait()`` and inspected or
@@ -386,8 +372,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def queue_mode(self) -> QueueMode:
-        """
-        The current :class:`~sonolink.enums.QueueMode` for this player's queue.
+        """The current :class:`~sonolink.enums.QueueMode` for this player's queue.
 
         .. versionadded:: 1.1.0
 
@@ -403,8 +388,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def volume(self) -> int:
-        """
-        The current volume of the player as an integer in the range ``0``–``1000``.
+        """The current volume of the player as an integer in the range ``0``–``1000``.
 
         ``100`` represents the default (unmodified) volume. Values above ``100``
         amplify the audio and may introduce distortion.
@@ -423,8 +407,7 @@ class BasePlayer(abc.ABC):
         self_deaf: bool = False,
         self_mute: bool = False,
     ) -> None:
-        """
-        Connect this player to its assigned voice channel.
+        """Connect this player to its assigned voice channel.
 
         Called automatically by libraries after the player is instantiated.
         Manual invocation is not normally required.
@@ -449,8 +432,7 @@ class BasePlayer(abc.ABC):
         )
 
     async def disconnect(self, *, force: bool = False) -> None:
-        """
-        Disconnect this player, destroy it on the Lavalink node, and clean up
+        """Disconnect this player, destroy it on the Lavalink node, and clean up
         all internal state.
 
         Parameters
@@ -465,8 +447,7 @@ class BasePlayer(abc.ABC):
         )
 
     async def move_to(self, node: Node, /) -> None:
-        """
-        Migrate this player to a different Lavalink node without interrupting
+        """Migrate this player to a different Lavalink node without interrupting
         playback.
 
         Parameters
@@ -486,8 +467,7 @@ class BasePlayer(abc.ABC):
         volume: int | None = None,
         paused: bool | None = None,
     ) -> Playable:
-        """
-        Begin playback of the specified track.
+        """Begin playback of the specified track.
 
         If a track is already playing, it is stopped and the currently playing
         track is added to history (if history is enabled) before the new track
@@ -530,8 +510,7 @@ class BasePlayer(abc.ABC):
         clear_queue: bool = False,
         clear_history: bool = False,
     ) -> None:
-        """
-        Stop the currently playing track.
+        """Stop the currently playing track.
 
         This sends a stop request to the Lavalink node and resets the player's
         internal position tracking and current track reference.
@@ -555,8 +534,7 @@ class BasePlayer(abc.ABC):
         )
 
     async def pause(self) -> None:
-        """
-        Set the pause state of the player.
+        """Set the pause state of the player.
 
         Raises
         ------
@@ -566,8 +544,7 @@ class BasePlayer(abc.ABC):
         await self._playback_handler.pause()
 
     async def resume(self) -> None:
-        """
-        Resume playback if the player is currently paused.
+        """Resume playback if the player is currently paused.
 
         Raises
         ------
@@ -577,8 +554,7 @@ class BasePlayer(abc.ABC):
         await self._playback_handler.resume()
 
     async def skip(self) -> Playable | None:
-        """
-        Skip the currently playing track and advance to the next one in the queue.
+        """Skip the currently playing track and advance to the next one in the queue.
 
         If the queue is empty and AutoPlay is enabled, a related track may be
         fetched automatically. If neither a queued nor an AutoPlay track is
@@ -600,8 +576,7 @@ class BasePlayer(abc.ABC):
         return await self._playback_handler.skip()
 
     async def previous(self) -> Playable:
-        """
-        Return to the most recently played track in the history.
+        """Return to the most recently played track in the history.
 
         The current track is pushed back to the front of the queue so it can
         be reached again via :meth:`skip`. The historical track then begins
@@ -622,8 +597,7 @@ class BasePlayer(abc.ABC):
         return await self._playback_handler.previous()
 
     async def seek(self, position: int, /) -> None:
-        """
-        Seek to an arbitrary position within the current track.
+        """Seek to an arbitrary position within the current track.
 
         Parameters
         ----------
@@ -639,8 +613,7 @@ class BasePlayer(abc.ABC):
         await self._playback_handler.seek(position)
 
     async def set_volume(self, value: int, /) -> None:
-        """
-        Set the player's output volume.
+        """Set the player's output volume.
 
         Parameters
         ----------
@@ -664,8 +637,7 @@ class BasePlayer(abc.ABC):
         *,
         seek: bool = False,
     ) -> None:
-        """
-        Apply a new set of audio filters to this player.
+        """Apply a new set of audio filters to this player.
 
         Parameters
         ----------
@@ -693,8 +665,7 @@ class BasePlayer(abc.ABC):
         volume: int | None = None,
         filters: Filters | None = None,
     ) -> None:
-        """
-        Update the player's configuration in-place.
+        """Update the player's configuration in-place.
 
         .. versionadded:: 1.1.0
 
@@ -728,8 +699,7 @@ class BasePlayer(abc.ABC):
 
     @abc.abstractmethod
     async def on_voice_server_update(self, data: Any) -> None:
-        """
-        Handle a ``VOICE_SERVER_UPDATE`` payload from the Discord gateway.
+        """Handle a ``VOICE_SERVER_UPDATE`` payload from the Discord gateway.
 
         This provides the voice server token and endpoint required by the
         Lavalink node to establish or re-establish the audio stream. This
@@ -752,8 +722,7 @@ class BasePlayer(abc.ABC):
 
     @abc.abstractmethod
     async def on_voice_state_update(self, data: Any) -> None:
-        """
-        Handle a ``VOICE_STATE_UPDATE`` payload from the Discord gateway.
+        """Handle a ``VOICE_STATE_UPDATE`` payload from the Discord gateway.
 
         This provides the session ID and channel ID required for the voice
         connection handshake with the Lavalink node. This method should be
@@ -776,16 +745,14 @@ class BasePlayer(abc.ABC):
 
     @abc.abstractmethod
     def cleanup(self) -> None:
-        """
-        Cleans the internal state of the Player. This is automatically called by the library when failures
+        """Clean the internal state of the Player. This is automatically called by the library when failures
         or disconnects occur.
 
         If this is overridden, it **must** call the original ``cleanup``.
         """
 
     def get_connection_state(self) -> PlayerConnectionState:
-        """
-        Return a :class:`~sonolink.player.player.PlayerConnectionState` instance
+        """Return a :class:`~sonolink.player.player.PlayerConnectionState` instance
         for this player.
 
         Override this method to supply a custom connection state subclass with

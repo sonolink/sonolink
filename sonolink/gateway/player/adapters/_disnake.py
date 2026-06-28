@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License.
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -49,8 +48,7 @@ __all__ = ("DisnakePlayer",)
 
 
 class DisnakePlayer(BasePlayer, disnake.VoiceProtocol):
-    """
-    A disnake implementation of :class:`~sonolink.player.base_player.BasePlayer`.
+    """A disnake implementation of :class:`~sonolink.player.base_player.BasePlayer`.
 
     This class satisfies the :class:`disnake.VoiceProtocol` contract expected
     by disnake's voice connection machinery, whilst delegating all Lavalink
@@ -169,8 +167,7 @@ class DisnakePlayer(BasePlayer, disnake.VoiceProtocol):
         client: disnake.Client,
         channel: disnake.abc.Connectable,
     ) -> Self:
-        """
-        Called by disnake when a pre-configured **instance** is passed to
+        """Bind the player when a pre-configured **instance** is passed to
         :meth:`disnake.abc.Connectable.connect`.
 
         Binds the disnake ``VoiceProtocol`` attributes, resolves the guild
@@ -197,8 +194,7 @@ class DisnakePlayer(BasePlayer, disnake.VoiceProtocol):
         return self
 
     async def on_voice_server_update(self, data: VoiceServerUpdateEvent) -> None:
-        """
-        Handle a ``VOICE_SERVER_UPDATE`` payload from the Discord gateway.
+        """Handle a ``VOICE_SERVER_UPDATE`` payload from the Discord gateway.
 
         Provides the voice server token and endpoint to the Lavalink node so
         it can establish or re-establish the audio stream.
@@ -211,8 +207,7 @@ class DisnakePlayer(BasePlayer, disnake.VoiceProtocol):
         await self._events_handler.on_voice_server_update(cast(dict[str, Any], data))
 
     async def on_voice_state_update(self, data: GuildVoiceState) -> None:
-        """
-        Handle a ``VOICE_STATE_UPDATE`` payload from the Discord gateway.
+        """Handle a ``VOICE_STATE_UPDATE`` payload from the Discord gateway.
 
         Provides the session ID and channel ID required for the voice
         connection handshake with the Lavalink node.

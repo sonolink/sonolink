@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -50,5 +49,6 @@ def get_client(bot: Any) -> Client[Any] | None:
     -------
     Client[Any] | None
         The SonoLink client associated with the Discord client, if any. Otherwise, ``None``.
+
     """
     return clients.get(bot)

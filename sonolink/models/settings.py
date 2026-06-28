@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -40,8 +39,7 @@ __all__ = (
 
 
 class AutoPlaySettings(BaseSettings):
-    """
-    Configuration for the player's AutoPlay behavior.
+    """Configuration for the player's AutoPlay behavior.
 
     Attributes
     ----------
@@ -58,10 +56,10 @@ class AutoPlaySettings(BaseSettings):
     """
 
     __slots__ = (
-        "mode",
-        "max_seeds",
-        "provider",
         "discovery_count",
+        "max_seeds",
+        "mode",
+        "provider",
     )
 
     def __init__(
@@ -79,8 +77,7 @@ class AutoPlaySettings(BaseSettings):
 
 
 class InactivitySettings(BaseSettings):
-    """
-    Configuration for player inactivity and auto-disconnection.
+    """Configuration for player inactivity and auto-disconnection.
 
     Attributes
     ----------
@@ -93,8 +90,8 @@ class InactivitySettings(BaseSettings):
     """
 
     __slots__ = (
-        "timeout",
         "mode",
+        "timeout",
         "user_ids",
     )
 
@@ -111,8 +108,7 @@ class InactivitySettings(BaseSettings):
 
 
 class HistorySettings(BaseSettings):
-    """
-    Configuration for player history tracking.
+    """Configuration for player history tracking.
 
     Attributes
     ----------
@@ -138,8 +134,7 @@ class HistorySettings(BaseSettings):
 
 
 class CacheSettings(BaseSettings):
-    """
-    Configuration for node caching.
+    """Configuration for node caching.
 
     Attributes
     ----------

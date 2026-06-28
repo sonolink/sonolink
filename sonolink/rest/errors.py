@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License.
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -61,8 +60,8 @@ class HTTPException(SonoLinkException):
     """An error response received by a HTTP request."""
 
     __slots__ = (
-        "_underlying",
         "_cs_timestamp",
+        "_underlying",
     )
 
     _underlying: ErrorResponseType
@@ -73,7 +72,7 @@ class HTTPException(SonoLinkException):
 
     @cached_property("_cs_timestamp")
     def timestamp(self) -> datetime.datetime:
-        """The timestamp on which this exception was created."""
+        """Return the timestamp on which this exception was created."""
         return datetime.datetime.fromtimestamp(
             self._underlying.timestamp, tz=datetime.timezone.utc
         )

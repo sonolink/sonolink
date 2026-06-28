@@ -1,6 +1,6 @@
 """
-sonolink.http
-~~~~~~~~~~~~~
+sonolink.network
+~~~~~~~~~~~~~~~~
 """
 
 from __future__ import annotations

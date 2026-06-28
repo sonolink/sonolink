@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -44,8 +43,7 @@ __all__ = ("GitInfo", "ServerInfo", "Version")
 
 
 class Version(BaseModel[VersionPayload]):
-    """
-    Represents a Lavalink server's version metadata.
+    """Represents a Lavalink server's version metadata.
 
     Wraps the raw :class:`sonolink.rest.schemas.info.VersionObject` struct and
     provides comparison operators and convenience properties.
@@ -93,8 +91,7 @@ class Version(BaseModel[VersionPayload]):
 
 
 class GitInfo(BaseModel[GitPayload]):
-    """
-    Represents the Git metadata of a Lavalink build.
+    """Represents the Git metadata of a Lavalink build.
 
     Wraps the raw :class:`sonolink.rest.schemas.info.GitObject` struct and
     exposes ``commit_time`` as a :class:`datetime.datetime`.
@@ -117,15 +114,14 @@ class GitInfo(BaseModel[GitPayload]):
 
     @cached_property("_cs_commit_time")
     def commit_time(self) -> datetime.datetime:
-        """A :class:`datetime.datetime` representing when this commit was made."""
+        """Return a :class:`datetime.datetime` object representing when this commit was made."""
         return datetime.datetime.fromtimestamp(
             self._data.commit_time / 1000, tz=datetime.timezone.utc
         )
 
 
 class ServerInfo(BaseModel[ServerInfoPayload]):
-    """
-    Represents a Lavalink server's metadata & stats information.
+    """Represents a Lavalink server's metadata & stats information.
 
     This class wraps the raw :class:`sonolink.rest.schemas.InfoResponse` schema and provides
     a high-level interface for accessing Lavalink servers stats and metadata.
@@ -133,19 +129,19 @@ class ServerInfo(BaseModel[ServerInfoPayload]):
 
     __slots__ = (
         "_cs_build_time",
-        "_cs_version",
         "_cs_git",
+        "_cs_version",
     )
 
     @cached_property("_cs_version")
     def version(self) -> Version:
-        """A :class:`Version` object denoting the version of this node."""
+        """Return a :class:`Version` object denoting the version of this node."""
         return Version(client=self._client, data=self._data.version)
 
     @cached_property("_cs_build_time")
     def build_time(self) -> datetime.datetime:
-        """A datetime.datetime object representing the timestamp on which the Lavalink
-        jar was built.
+        """Return a :class:`datetime.datetime` object object representing the timestamp
+        on which the Lavalink jar was built.
         """
         return datetime.datetime.fromtimestamp(
             self._data.build_time / 1000, tz=datetime.timezone.utc
@@ -153,7 +149,7 @@ class ServerInfo(BaseModel[ServerInfoPayload]):
 
     @cached_property("_cs_git")
     def git(self) -> GitInfo:
-        """A :class:`GitInfo` object denoting the git version of the Lavalink server."""
+        """Return a :class:`GitInfo` object denoting the git version of the Lavalink server."""
         return GitInfo(client=self._client, data=self._data.git)
 
     @property

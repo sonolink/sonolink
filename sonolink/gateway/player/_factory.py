@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -28,7 +27,7 @@ import importlib.metadata
 import logging
 import os
 import sys
-from typing import Literal, cast
+from typing import ClassVar, Literal, cast
 
 from packaging.version import Version
 
@@ -40,15 +39,15 @@ _log = logging.getLogger(__name__)
 
 
 class PlayerFactory:
-    _FRAMEWORK_DATA: dict[str, dict[str, str]] = {
+    _FRAMEWORK_DATA: ClassVar[dict[str, dict[str, str]]] = {
         "discord.py": {"pkg": "discord.py", "import_name": "discord", "min": "2.7"},
         "pycord": {"pkg": "py-cord", "import_name": "discord", "min": "2.8"},
         "disnake": {"pkg": "disnake", "import_name": "disnake", "min": "2.12"},
         "nextcord": {"pkg": "nextcord", "import_name": "nextcord", "min": "3.1.1"},
     }
 
-    _available: dict[str, bool] = {}
-    _player_classes: dict[str, type[BasePlayer]] = {}
+    _available: ClassVar[dict[str, bool]] = {}
+    _player_classes: ClassVar[dict[str, type[BasePlayer]]] = {}
 
     def __new__(cls) -> PlayerFactory:
         instance = super().__new__(cls)
@@ -70,9 +69,7 @@ class PlayerFactory:
         self,
         framework: FrameworkLiteral,
     ) -> type[BasePlayer]:
-        """
-        Returns the appropriate VoiceProtocol based on the framework string.
-        """
+        """Return the appropriate VoiceProtocol based on the framework string."""
         if framework in self._player_classes:
             return self._player_classes[framework]
 

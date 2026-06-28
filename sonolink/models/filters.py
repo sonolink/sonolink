@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -74,8 +73,7 @@ __all__ = (
 
 
 class Equalizer(BaseFilter[filters.EqualizerFilter]):
-    """
-    Represents a single Lavalink equalizer band.
+    """Represents a single Lavalink equalizer band.
 
     Parameters
     ----------
@@ -119,8 +117,7 @@ class Equalizer(BaseFilter[filters.EqualizerFilter]):
 
 
 class Karaoke(BaseFilter[filters.KaraokeFilter]):
-    """
-    Filter that reduces vocal levels in a track, useful for karaoke.
+    """Filter that reduces vocal levels in a track, useful for karaoke.
 
     Parameters
     ----------
@@ -190,8 +187,7 @@ class Karaoke(BaseFilter[filters.KaraokeFilter]):
 
 
 class Timescale(BaseFilter[filters.TimescaleFilter]):
-    """
-    Adjusts the speed, pitch, and rate of audio playback.
+    """Adjusts the speed, pitch, and rate of audio playback.
 
     Parameters
     ----------
@@ -248,8 +244,7 @@ class Timescale(BaseFilter[filters.TimescaleFilter]):
 
 
 class Tremolo(BaseFilter[filters.TremoloFilter]):
-    """
-    Rapidly oscillates the volume of the audio.
+    """Rapidly oscillates the volume of the audio.
 
     Parameters
     ----------
@@ -293,8 +288,7 @@ class Tremolo(BaseFilter[filters.TremoloFilter]):
 
 
 class Vibrato(BaseFilter[filters.VibratoFilter]):
-    """
-    Rapidly oscillates the pitch of the audio.
+    """Rapidly oscillates the pitch of the audio.
 
     Parameters
     ----------
@@ -338,8 +332,7 @@ class Vibrato(BaseFilter[filters.VibratoFilter]):
 
 
 class Rotation(BaseFilter[filters.RotationFilter]):
-    """
-    Rotates the audio across the stereo channels (panning effect).
+    """Rotates the audio across the stereo channels (panning effect).
 
     Parameters
     ----------
@@ -368,8 +361,7 @@ class Rotation(BaseFilter[filters.RotationFilter]):
 
 
 class Distortion(BaseFilter[filters.DistortionFilter]):
-    """
-    Applies distortion effects using sine, cosine, and tangent transforms.
+    """Applies distortion effects using sine, cosine, and tangent transforms.
 
     Parameters
     ----------
@@ -491,8 +483,7 @@ class Distortion(BaseFilter[filters.DistortionFilter]):
 
 
 class ChannelMix(BaseFilter[filters.ChannelMixFilter]):
-    """
-    Mixes left and right audio channels to manipulate stereo separation.
+    """Mixes left and right audio channels to manipulate stereo separation.
 
     Parameters
     ----------
@@ -562,8 +553,7 @@ class ChannelMix(BaseFilter[filters.ChannelMixFilter]):
 
 
 class LowPass(BaseFilter[filters.LowPassFilter]):
-    """
-    Suppresses higher frequencies in the audio signal.
+    """Suppresses higher frequencies in the audio signal.
 
     Parameters
     ----------
@@ -592,8 +582,7 @@ class LowPass(BaseFilter[filters.LowPassFilter]):
 
 
 class Filters(BaseModel[filters.PlayerFilters]):
-    """
-    The main container for all active player filters.
+    """The main container for all active player filters.
 
     This class provides a Pythonic interface to the underlying Lavalink filter state.
     Active filters are sent to Lavalink via the :meth:`payload` property.
@@ -625,17 +614,17 @@ class Filters(BaseModel[filters.PlayerFilters]):
     """
 
     __slots__ = (
+        "channel_mix",
+        "distortion",
         "equalizer",
         "karaoke",
+        "low_pass",
+        "plugin_filters",
+        "rotation",
         "timescale",
         "tremolo",
         "vibrato",
-        "rotation",
-        "distortion",
-        "channel_mix",
-        "low_pass",
         "volume",
-        "plugin_filters",
     )
 
     def __init__(
@@ -684,7 +673,7 @@ class Filters(BaseModel[filters.PlayerFilters]):
             if data.plugin_filters is not msgspec.UNSET
             else None,
         )
-        
+
         instance._client = client
         instance._data = data
         return instance
@@ -729,8 +718,7 @@ class Filters(BaseModel[filters.PlayerFilters]):
         )
 
     def merge(self, other: Filters) -> Self:
-        """
-        Merge another filter set into this instance in place.
+        """Merge another filter set into this instance in place.
 
         This mutates ``self``. Use :meth:`combine` when you need a new
         merged :class:`Filters` instance without changing either input.
@@ -778,8 +766,7 @@ class Filters(BaseModel[filters.PlayerFilters]):
         return self
 
     def combine(self, other: Filters) -> Self:
-        """
-        Return a new filter set with ``other`` merged into a copy of this one.
+        """Return a new filter set with ``other`` merged into a copy of this one.
 
         This does not mutate either input. Use :meth:`merge` when you want
         in-place mutation of the current instance.

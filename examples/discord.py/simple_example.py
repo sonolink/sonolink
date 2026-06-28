@@ -129,7 +129,7 @@ async def resume(interaction: discord.Interaction) -> None:
     await interaction.response.send_message("Resumed!")
 
 
-@bot.tree.command(name="stop", description="Stops playback and disconnects the bot.")
+@bot.tree.command(name="stop", description="Stops playback and disconnect the bot.")
 async def stop(interaction: discord.Interaction) -> None:
     vc = interaction.guild.voice_client if interaction.guild else None
 

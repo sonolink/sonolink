@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -64,8 +63,7 @@ __all__ = ("Node",)
 
 
 class Node:
-    """
-    Represents a connectable Node.
+    """Represents a connectable Node.
 
     Parameters
     ----------
@@ -243,8 +241,7 @@ class Node:
 
     @property
     def session_id(self) -> str:
-        """
-        The current session ID for this node.
+        """The current session ID for this node.
 
         Raises
         ------
@@ -267,16 +264,14 @@ class Node:
         self._uri = value
 
     async def connect(self) -> None:
-        """
-        Connects this node.
+        """Connect this node.
 
         This can only be done when the node has been attached to a pool.
         """
         await self._connection.connect()
 
     async def reconnect(self) -> None:
-        """
-        Reconnects this node.
+        """Reconnects this node.
 
         This can only be done when the node has been attached to a pool.
 
@@ -285,8 +280,7 @@ class Node:
         await self._connection.reconnect()
 
     async def close(self) -> None:
-        """
-        Closes the connection to this node.
+        """Close the connection to this node.
 
         All Players connected to it will stop playing.
 
@@ -306,8 +300,7 @@ class Node:
         autoplay_settings: AutoPlaySettings | None = None,
         history_settings: HistorySettings | None = None,
     ) -> Player:
-        """
-        Creates a player with extra configuration bound to this node.
+        """Create a player with extra configuration bound to this node.
 
         Parameters
         ----------
@@ -349,8 +342,7 @@ class Node:
         *,
         source: TrackSourceType | str | None = None,
     ) -> SearchResult:
-        """
-        Searches for ``query`` in this Node.
+        """Search for ``query`` in this Node.
 
         Parameters
         ----------
@@ -369,8 +361,7 @@ class Node:
         return await self._rest.search_track(query, source=source)
 
     async def decode_track(self, encoded: str) -> Playable:
-        """
-        Decodes a track from its encoded data.
+        """Decode a track from its encoded data.
 
         When a track is fetched, the encoded data can be found under
         :attr:`sonolink.rest.schemas.Track.encoded`.
@@ -388,8 +379,7 @@ class Node:
         return await self._rest.decode_track(encoded)
 
     async def decode_tracks(self, *encoded: str) -> list[Playable]:
-        """
-        Bulk decodes encoded tracks.
+        """Bulk decodes encoded tracks.
 
         Parameters
         ----------
@@ -404,8 +394,7 @@ class Node:
         return await self._rest.decode_tracks(*encoded)
 
     async def fetch_info(self) -> ServerInfo:
-        """
-        Fetches the Lavalink server info this node is connected to.
+        """Fetch the Lavalink server info this node is connected to.
 
         Returns
         -------
@@ -415,8 +404,7 @@ class Node:
         return await self._rest.fetch_info()
 
     async def fetch_players(self) -> list[PlayerInfo]:
-        """
-        Fetches all the players that are connected to this node.
+        """Fetch all the players that are connected to this node.
 
         This performs a fresh REST request for the current player states on the node.
 
@@ -428,8 +416,7 @@ class Node:
         return await self._rest.fetch_players()
 
     async def fetch_player(self, guild_id: int) -> PlayerInfo:
-        """
-        Fetches a player from this node connected to the provided guild ID.
+        """Fetch a player from this node connected to the provided guild ID.
 
         Usually, you should use :attr:`Node.get_player` instead of this method.
 
@@ -446,8 +433,7 @@ class Node:
         return await self._rest.fetch_player(guild_id)
 
     async def disconnect_player(self, guild_id: int) -> None:
-        """
-        Force disconnects a player from this node connected to the provided guild ID.
+        """Force disconnects a player from this node connected to the provided guild ID.
 
         Parameters
         ----------
@@ -457,7 +443,7 @@ class Node:
         await self._rest.disconnect_player(guild_id)
 
     def get_player(self, guild_id: int, /) -> BasePlayer | None:
-        """Gets a player connected to this node."""
+        """Get a player connected to this node."""
         return self._player_registry.get_player(guild_id)
 
     async def send(
@@ -470,7 +456,7 @@ class Node:
         json: dict[str, Any] | None = None,
         data: Any | None = None,
     ) -> dict[str, Any] | list[Any] | str | bytes | None:
-        """Method for doing manual requests to the Lavalink node.
+        """Send a manual request to the Lavalink node.
 
         .. warning::
 
@@ -524,18 +510,12 @@ class Node:
         )
 
     async def cleanup(self) -> None:
-        """
-        A function that may be overridden in order to add custom clean-up
-        logic to a node.
-
-        This is automatically called by the library.
-        """
-        ...
+        """Override this to add custom clean-up logic to a node."""
 
     def _add_player(self, player: BasePlayer) -> None:
-        """Internal helper to register a player to this node."""
+        """Register a player to this node (internal helper)."""
         self._player_registry.add_player(player)
 
     def _remove_player(self, guild_id: int) -> None:
-        """Internal helper to unregister a player from this node."""
+        """Unregister a player from this node (internal helper)."""
         self._player_registry.remove_player(guild_id)

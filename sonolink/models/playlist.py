@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -37,8 +36,7 @@ __all__ = ("Playlist",)
 
 
 class Playlist(BaseModel[PlaylistData]):
-    """
-    Represents a Lavalink Playlist.
+    """Represents a Lavalink Playlist.
 
     This class wraps the :class:`sonolink.rest.schemas.PlaylistData` schema
     and implements the Sequence protocol to allow iteration over tracks.
@@ -65,15 +63,15 @@ class Playlist(BaseModel[PlaylistData]):
     def __getitem__(self, index: slice) -> list[Playable]: ...
 
     def __getitem__(self, index: int | slice) -> Playable | list[Playable]:
-        """Returns a track or a slice of tracks from the playlist."""
+        """Return a track or a slice of tracks from the playlist."""
         return self._tracks[index]
 
     def __iter__(self) -> Iterator[Playable]:
-        """Iterates over the tracks in the playlist."""
+        """Iterate over the tracks in the playlist."""
         return iter(self._tracks)
 
     def __contains__(self, item: object) -> bool:
-        """Checks if a :class:`sonolink.models.Playable` is in the playlist."""
+        """Check if a :class:`sonolink.models.Playable` is in the playlist."""
         return item in self._tracks
 
     @property

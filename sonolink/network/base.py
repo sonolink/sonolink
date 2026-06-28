@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -43,7 +42,7 @@ class BaseHTTPManager(ABC, Generic[SessionT]):
 
     @abstractmethod
     async def setup(self) -> None:
-        """Initialize the underlying session (ClientSession or AsyncSession)"""
+        """Initialize the underlying session (ClientSession or AsyncSession)."""
         ...
 
     @abstractmethod
@@ -57,7 +56,7 @@ class BaseHTTPManager(ABC, Generic[SessionT]):
         json: Any | None = None,
         data: Any | None = None,
     ) -> Any:
-        """Perform an async HTTP request and return the response body/JSON"""
+        """Perform an async HTTP request and return the response body/JSON."""
         ...
 
     @abstractmethod

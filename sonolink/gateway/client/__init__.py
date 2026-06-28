@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -62,8 +61,7 @@ N = TypeVar("N", bound=Node, default=Node)
 
 
 class Client(Generic[N]):
-    """
-    Represents a SonoLink client.
+    """Represents a SonoLink client.
 
     A client helps you manage all Node connections and players.
 
@@ -81,6 +79,7 @@ class Client(Generic[N]):
         If multiple are present, the one already imported is preferred; if that
         is ambiguous, the first available is used and a warning is logged.
         Defaults to ``None``.
+
     Raises
     ------
     RuntimeError
@@ -174,8 +173,7 @@ class Client(Generic[N]):
 
     @property
     def framework(self) -> FrameworkLiteral:
-        """
-        The Discord framework used by this client
+        """The Discord framework used by this client
         (``"discord.py"``, ``"pycord"``, ``"disnake"``, or ``"nextcord"``).
         """
         return self._framework
@@ -227,8 +225,7 @@ class Client(Generic[N]):
         auto_reconnect: bool = True,
         regions: list[str | NodeRegion] | None = None,
     ) -> N:
-        """
-        Creates a :class:`Node` attached to this client.
+        """Create a :class:`Node` attached to this client.
 
         Parameters
         ----------
@@ -314,8 +311,7 @@ class Client(Generic[N]):
         return node
 
     def get_node(self, id: str, /) -> N | None:
-        """
-        Retrieves a :class:`Node` by its ID.
+        """Retrieve a :class:`Node` by its ID.
 
         .. versionadded:: 1.1.0
 
@@ -332,15 +328,13 @@ class Client(Generic[N]):
         return self._nodes.get(id)
 
     def remove_node(self, identifier: str, /) -> None:
-        """
-        Removes a Node from this client.
+        """Remove a Node from this client.
 
         Parameters
         ----------
         identifier: :class:`str`
             The ID of the node to remove.
         """
-
         try:
             node = self._nodes.pop(identifier)
         except KeyError:
@@ -349,14 +343,12 @@ class Client(Generic[N]):
             self._cleanup_node(node)
 
     def clear_nodes(self) -> None:
-        """Clears all Nodes from this Client."""
-
+        """Clear all Nodes from this Client."""
         for node in self.nodes:
             self.remove_node(node.id)
 
     async def start(self) -> None:
-        """
-        Connects all registered nodes to their respective Lavalink servers.
+        """Connect all registered nodes to their respective Lavalink servers.
 
         This method should typically be called after the discord client is logged in,
         often within the ``setup_hook`` (discord.py) or ``on_connect`` (py-cord, disnake and nextcord) event.
@@ -377,12 +369,10 @@ class Client(Generic[N]):
                 continue
 
     async def close(self) -> None:
-        """
-        Gracefully closes all :class:`Node` connections and cleans up internal resources.
+        """Gracefully closes all :class:`Node` connections and cleans up internal resources.
 
         This will stop all active players and close the underlying websocket and HTTP sessions.
         """
-
         for node in self.nodes:
             if not node.is_connected and not node.is_connecting:
                 continue
@@ -398,8 +388,7 @@ class Client(Generic[N]):
         self._nodes.clear()
 
     def get_best_node(self, *, region: str | None = None) -> N:
-        """
-        Returns the best available :class:`Node` based on current load and connectivity.
+        """Return the best available :class:`Node` based on current load and connectivity.
 
         Parameters
         ----------
@@ -445,8 +434,7 @@ class Client(Generic[N]):
         source: TrackSourceType | str = TrackSourceType.YOUTUBE,
         region: str | None = None,
     ) -> SearchResult:
-        """
-        Searches for ``query`` in the best Node available, obtained with :meth:`Client.get_best_node`.
+        """Search for ``query`` in the best Node available, obtained with :meth:`Client.get_best_node`.
 
         Parameters
         ----------
@@ -476,8 +464,7 @@ class Client(Generic[N]):
         *,
         region: str | None = None,
     ) -> Playable:
-        """
-        Decodes a track from its encoded data using the best Node available, obtained with
+        """Decode a track from its encoded data using the best Node available, obtained with
         :meth:`Client.get_best_node`.
 
         When a track is fetched, the encoded data can be found under
@@ -506,8 +493,7 @@ class Client(Generic[N]):
         *encoded: str,
         region: str | None = None,
     ) -> list[Playable]:
-        """
-        Bulk decode encoded tracks using the best Node available, obtained with :meth:`Client.get_best_node`.
+        """Bulk decode encoded tracks using the best Node available, obtained with :meth:`Client.get_best_node`.
 
         Parameters
         ----------

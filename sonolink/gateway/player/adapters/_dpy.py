@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -48,8 +47,7 @@ __all__ = ("DpyPlayer",)
 
 
 class DpyPlayer(BasePlayer, discord.VoiceProtocol):
-    """
-    A discord.py implementation of :class:`~sonolink.player.base_player.BasePlayer`.
+    """A discord.py implementation of :class:`~sonolink.player.base_player.BasePlayer`.
 
     This class satisfies the :class:`discord.VoiceProtocol` contract expected
     by discord.py's voice connection machinery, whilst delegating all Lavalink
@@ -168,8 +166,7 @@ class DpyPlayer(BasePlayer, discord.VoiceProtocol):
         client: discord.Client,
         channel: discord.abc.Connectable,
     ) -> Self:
-        """
-        Called by discord.py when a pre-configured **instance** is passed to
+        """Bind the player when a pre-configured **instance** is passed to
         :meth:`discord.abc.Connectable.connect`.
 
         Binds the discord.py ``VoiceProtocol`` attributes, resolves the guild
@@ -196,8 +193,7 @@ class DpyPlayer(BasePlayer, discord.VoiceProtocol):
         return self
 
     async def on_voice_server_update(self, data: VoiceServerUpdate) -> None:
-        """
-        Handle a ``VOICE_SERVER_UPDATE`` payload from the Discord gateway.
+        """Handle a ``VOICE_SERVER_UPDATE`` payload from the Discord gateway.
 
         Provides the voice server token and endpoint to the Lavalink node so
         it can establish or re-establish the audio stream.
@@ -210,8 +206,7 @@ class DpyPlayer(BasePlayer, discord.VoiceProtocol):
         await self._events_handler.on_voice_server_update(cast(dict[str, Any], data))
 
     async def on_voice_state_update(self, data: GuildVoiceState) -> None:
-        """
-        Handle a ``VOICE_STATE_UPDATE`` payload from the Discord gateway.
+        """Handle a ``VOICE_STATE_UPDATE`` payload from the Discord gateway.
 
         Provides the session ID and channel ID required for the voice
         connection handshake with the Lavalink node.

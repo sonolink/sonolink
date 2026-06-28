@@ -61,7 +61,7 @@ bot.sl_client.create_node(
 
 # Helper function for DRY (Don't Repeat Yourself)
 def _player_check(ctx: discord.ApplicationContext) -> sonolink.Player | None:
-    """Returns the active Player for this guild, or None if not connected."""
+    """Return the active Player for this guild, or None if not connected."""
     vc = ctx.guild.voice_client if ctx.guild else None
     return vc if isinstance(vc, sonolink.Player) else None
 
@@ -104,8 +104,7 @@ async def query_autocomplete(
     autocomplete=query_autocomplete,
 )
 async def play(ctx: discord.ApplicationContext, query: str) -> None:
-    """
-    Plays a track or playlist, or adds it to the queue if something is already playing.
+    """Plays a track or playlist, or adds it to the queue if something is already playing.
 
     Supports plain search queries as well as direct URLs (YouTube, SoundCloud, etc.).
     When a playlist URL is provided, all tracks are enqueued.
@@ -173,7 +172,6 @@ async def play(ctx: discord.ApplicationContext, query: str) -> None:
 @bot.slash_command(name="pause", description="Pauses the current track.")
 async def pause(ctx: discord.ApplicationContext) -> None:
     """Pauses the current track."""
-
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Not connected to a voice channel!")
@@ -190,7 +188,6 @@ async def pause(ctx: discord.ApplicationContext) -> None:
 @bot.slash_command(name="resume", description="Resumes the player if it is paused.")
 async def resume(ctx: discord.ApplicationContext) -> None:
     """Resumes the player if it is paused."""
-
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Not connected to a voice channel!")
@@ -207,7 +204,6 @@ async def resume(ctx: discord.ApplicationContext) -> None:
 @bot.slash_command(name="skip", description="Skips the current track.")
 async def skip(ctx: discord.ApplicationContext) -> None:
     """Skips the current track and plays the next one in the queue."""
-
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Not connected to a voice channel!")
@@ -229,7 +225,6 @@ async def skip(ctx: discord.ApplicationContext) -> None:
 @bot.slash_command(name="previous", description="Goes back to the previous track.")
 async def previous(ctx: discord.ApplicationContext) -> None:
     """Goes back to the previous track in the history."""
-
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Not connected to a voice channel!")
@@ -248,12 +243,10 @@ async def previous(ctx: discord.ApplicationContext) -> None:
 @bot.slash_command(name="seek", description="Seeks to a position (seconds).")
 @discord.option("seconds", description="The position in seconds to jump to.")
 async def seek(ctx: discord.ApplicationContext, seconds: int) -> None:
-    """
-    Seeks to a position in the current track (in seconds).
+    """Seeks to a position in the current track (in seconds).
 
     Example: /seek 90  →  jumps to the 1:30 mark.
     """
-
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Not connected to a voice channel!")
@@ -269,8 +262,7 @@ async def seek(ctx: discord.ApplicationContext, seconds: int) -> None:
 
 @bot.slash_command(name="stop", description="Stops playback and disconnects.")
 async def stop(ctx: discord.ApplicationContext) -> None:
-    """Stops playback, clears the queue, and disconnects the bot."""
-
+    """Stop playback, clear the queue, and disconnect the bot."""
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Already disconnected!")
@@ -285,10 +277,9 @@ async def stop(ctx: discord.ApplicationContext) -> None:
 # --------------
 
 
-@bot.slash_command(name="queue", description="Displays the current queue.")
+@bot.slash_command(name="queue", description="Display the current queue.")
 async def queue(ctx: discord.ApplicationContext) -> None:
-    """Displays the current queue (up to 10 upcoming tracks)."""
-
+    """Display the current queue (up to 10 upcoming tracks)."""
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Not connected to a voice channel!")
@@ -329,7 +320,6 @@ async def queue(ctx: discord.ApplicationContext) -> None:
 @bot.slash_command(name="shuffle", description="Shuffles the current queue.")
 async def shuffle(ctx: discord.ApplicationContext) -> None:
     """Shuffles the current queue in place."""
-
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Not connected to a voice channel!")
@@ -343,19 +333,17 @@ async def shuffle(ctx: discord.ApplicationContext) -> None:
     await ctx.respond("Queue shuffled!")
 
 
-@bot.slash_command(name="loop", description="Sets the loop mode.")
+@bot.slash_command(name="loop", description="Set the loop mode.")
 @discord.option("mode", description="Choose from: track, all, off", type=str)
 async def loop(
     ctx: discord.ApplicationContext, mode: Literal["track", "all", "off"] = "track"
 ) -> None:
-    """
-    Sets the loop mode. Options: 'track', 'all', 'off'.
+    """Set the loop mode. Options: 'track', 'all', 'off'.
 
     - track: repeats the current track indefinitely.
     - all:   loops the entire queue once it finishes.
     - off:   disables looping.
     """
-
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Not connected to a voice channel!")
@@ -377,13 +365,12 @@ async def loop(
 # ---------------
 
 
-@bot.slash_command(name="volume", description="Sets the player volume (0–1000).")
+@bot.slash_command(name="volume", description="Set the player volume (0–1000).")
 @discord.option(
     "value", description="Volume level between 0 and 1000", min_value=0, max_value=1000
 )
 async def volume(ctx: discord.ApplicationContext, value: int) -> None:
-    """Sets the player volume (0–1000). Default is 100."""
-
+    """Set the player volume (0–1000). Default is 100."""
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Not connected to a voice channel!")
@@ -396,8 +383,7 @@ async def volume(ctx: discord.ApplicationContext, value: int) -> None:
 
 @bot.slash_command(name="nowplaying", description="Shows current track info.")
 async def nowplaying(ctx: discord.ApplicationContext) -> None:
-    """Shows information about the currently playing track."""
-
+    """Show information about the currently playing track."""
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Not connected to a voice channel!")

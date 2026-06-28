@@ -1,6 +1,6 @@
 """
 sonolink.gateway.player.handlers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Submodule containing all the handlers used in the sonolink.Player.
 

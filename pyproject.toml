@@ -83,11 +83,51 @@ exclude = ["docs/"]
 exclude = ["docs/"]
 
 [tool.ruff.lint]
-ignore = ["F405", "F403"]
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "D",
+    "RUF",
+]
+ignore = [
+    "E501",  # line length is handled by ruff format
+
+    "D100",  # module-level docstrings enforcement
+    "D101",  # class docstrings enforcement
+    "D102",  # method docstrings enforcement
+    "D103",  # function docstrings enforcement
+    "D104",  # package-level docstrings enforcement
+    "D105",  # magic/dunders docstrings enforcement
+    "D107",  # __init__ docstring enforcement; the class docstring covers it
+    "D200",  # one-line docstrings blank line enforcement
+    "D203",  # conflicts with D211 (no-blank-line-before-class)
+    "D205",  # blank line between summary and description enforcement
+    "D212",  # conflicts with D213 (multi-line-summary-second-line)
+    "D400",  # period at end of docstring enforcement
+    "D404",  # "Do not start docstring with 'This'" enforcement
+    "D415",  # punctuation at end of first line enforcement
+
+    "F403",    # star imports acceptable in __init__.py re-exports
+    "F405",    # star import usage acceptable in __init__.py re-exports
+
+    "RUF001",  # ambiguous unicode in code
+    "RUF002",  # ambiguous unicode in docstrings
+    "RUF003",  # ambiguous unicode in comments
+    "RUF029",  # async def WITH await enforcement
+]
+
+unfixable = [
+    "E501",  # line length is handled by ruff format
+]
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
 force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
 
 [tool.setuptools.dynamic]
 version = { attr = "sonolink._version.__version__" }

@@ -65,7 +65,7 @@ async def on_connect() -> None:
 def _player_check(
     inter: nextcord.Interaction[Bot],
 ) -> sonolink.Player | None:
-    """Returns the active Player for this guild, or None if not connected."""
+    """Return the active Player for this guild, or None if not connected."""
     vc = inter.guild.voice_client if inter.guild else None
     return vc if isinstance(vc, sonolink.Player) else None
 
@@ -105,8 +105,7 @@ async def play(
         autocomplete=True,
     ),
 ) -> None:
-    """
-    Plays a track or playlist, or adds it to the queue if something is already playing.
+    """Plays a track or playlist, or adds it to the queue if something is already playing.
 
     Supports plain search queries as well as direct URLs (YouTube, SoundCloud, etc.).
     When a playlist URL is provided, all tracks are enqueued.
@@ -186,7 +185,6 @@ async def play_autocomplete(inter: nextcord.Interaction[Bot], query: str) -> Non
 @bot.slash_command(name="pause", description="Pauses the current track.")
 async def pause(inter: nextcord.Interaction[Bot]) -> None:
     """Pauses the current track."""
-
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")
@@ -203,7 +201,6 @@ async def pause(inter: nextcord.Interaction[Bot]) -> None:
 @bot.slash_command(name="resume", description="Resumes the player if it is paused.")
 async def resume(inter: nextcord.Interaction[Bot]) -> None:
     """Resumes the player if it is paused."""
-
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")
@@ -220,7 +217,6 @@ async def resume(inter: nextcord.Interaction[Bot]) -> None:
 @bot.slash_command(name="skip", description="Skips the current track.")
 async def skip(inter: nextcord.Interaction[Bot]) -> None:
     """Skips the current track and plays the next one in the queue."""
-
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")
@@ -244,7 +240,6 @@ async def skip(inter: nextcord.Interaction[Bot]) -> None:
 @bot.slash_command(name="previous", description="Goes back to the previous track.")
 async def previous(inter: nextcord.Interaction[Bot]) -> None:
     """Goes back to the previous track in the history."""
-
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")
@@ -270,12 +265,10 @@ async def seek(
         required=True,
     ),
 ) -> None:
-    """
-    Seeks to a position in the current track (in seconds).
+    """Seeks to a position in the current track (in seconds).
 
     Example: /seek 90  →  jumps to the 1:30 mark.
     """
-
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")
@@ -291,8 +284,7 @@ async def seek(
 
 @bot.slash_command(name="stop", description="Stops playback and disconnects.")
 async def stop(inter: nextcord.Interaction[Bot]) -> None:
-    """Stops playback, clears the queue, and disconnects the bot."""
-
+    """Stop playback, clear the queue, and disconnect the bot."""
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Already disconnected!")
@@ -307,10 +299,9 @@ async def stop(inter: nextcord.Interaction[Bot]) -> None:
 # --------------
 
 
-@bot.slash_command(name="queue", description="Displays the current queue.")
+@bot.slash_command(name="queue", description="Display the current queue.")
 async def queue(inter: nextcord.Interaction[Bot]) -> None:
-    """Displays the current queue (up to 10 upcoming tracks)."""
-
+    """Display the current queue (up to 10 upcoming tracks)."""
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")
@@ -351,7 +342,6 @@ async def queue(inter: nextcord.Interaction[Bot]) -> None:
 @bot.slash_command(name="shuffle", description="Shuffles the current queue.")
 async def shuffle(inter: nextcord.Interaction[Bot]) -> None:
     """Shuffles the current queue in place."""
-
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")
@@ -365,7 +355,7 @@ async def shuffle(inter: nextcord.Interaction[Bot]) -> None:
     await inter.response.send_message("Queue shuffled!")
 
 
-@bot.slash_command(name="loop", description="Sets the loop mode.")
+@bot.slash_command(name="loop", description="Set the loop mode.")
 async def loop(
     inter: nextcord.Interaction[Bot],
     mode: str = nextcord.SlashOption(
@@ -374,14 +364,12 @@ async def loop(
         choices=["track", "all", "off"],
     ),
 ) -> None:
-    """
-    Sets the loop mode. Options: 'track', 'all', 'off'.
+    """Set the loop mode. Options: 'track', 'all', 'off'.
 
     - track: repeats the current track indefinitely.
     - all:   loops the entire queue once it finishes.
     - off:   disables looping.
     """
-
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")
@@ -402,7 +390,7 @@ async def loop(
 # ---------------
 
 
-@bot.slash_command(name="volume", description="Sets the player volume (0–1000).")
+@bot.slash_command(name="volume", description="Set the player volume (0–1000).")
 async def volume(
     inter: nextcord.Interaction[Bot],
     value: int = nextcord.SlashOption(
@@ -412,8 +400,7 @@ async def volume(
         max_value=1000,
     ),
 ) -> None:
-    """Sets the player volume (0–1000). Default is 100."""
-
+    """Set the player volume (0–1000). Default is 100."""
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")
@@ -425,8 +412,7 @@ async def volume(
 
 @bot.slash_command(name="nowplaying", description="Shows current track info.")
 async def nowplaying(inter: nextcord.Interaction[Bot]) -> None:
-    """Shows information about the currently playing track."""
-
+    """Show information about the currently playing track."""
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")

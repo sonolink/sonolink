@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -43,9 +42,7 @@ __all__ = (
 
 
 class Album:
-    """
-    Represents album metadata usually provided by external plugins like LavaSrc.
-    """
+    """Represents album metadata usually provided by external plugins like LavaSrc."""
 
     __slots__ = ("_data",)
 
@@ -67,9 +64,7 @@ class Album:
 
 
 class Artist:
-    """
-    Represents artist metadata usually provided by external plugins like LavaSrc.
-    """
+    """Represents artist metadata usually provided by external plugins like LavaSrc."""
 
     __slots__ = ("_data",)
 
@@ -91,14 +86,13 @@ class Artist:
 
 
 class Playable(BaseModel[Track]):
-    """
-    Represents a playable track within sonolink.
+    """Represents a playable track within sonolink.
 
     This class wraps the raw :class:`sonolink.rest.schemas.Track` schema and provides
     a high-level interface for accessing track metadata and state.
     """
 
-    __slots__ = ("_autoplay", "_playlist", "_extras")
+    __slots__ = ("_autoplay", "_extras", "_playlist")
 
     def __init__(
         self,
@@ -119,23 +113,22 @@ class Playable(BaseModel[Track]):
         return self.title
 
     def __len__(self) -> int:
-        """Returns the length of the track in milliseconds."""
+        """Return the length of the track in milliseconds."""
         return self.length
 
     def __eq__(self, other: object) -> bool:
-        """Checks if two tracks are the same based on their encoded string"""
+        """Check if two tracks are the same based on their encoded string."""
         if isinstance(other, Playable):
             return self.encoded == other.encoded
         return False
 
     def __hash__(self) -> int:
-        """Hashes the track based on its encoded string"""
+        """Hashes the track based on its encoded string."""
         return hash(self.encoded)
 
     @property
     def autoplay(self) -> bool:
-        """
-        Whether this track was added by AutoPlay rather than a user.
+        """Whether this track was added by AutoPlay rather than a user.
 
         .. versionadded:: 1.1.0
         """
