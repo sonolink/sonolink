@@ -28,6 +28,7 @@ __all__ = (
     "IPBlockType",
     "InactivityMode",
     "InvalidNodePassword",
+    "NetworkError",
     "Node",
     "NodeError",
     "NodeRegion",
