@@ -31,7 +31,7 @@ if TYPE_CHECKING:
     from .gateway.client import Client
 
 
-__all__ = ("clients",)
+__all__ = ("get_client",)
 
 clients: WeakKeyDictionary[Any, Client[Any]] = WeakKeyDictionary()
 
