@@ -1,5 +1,6 @@
-"""sonolink.gateway.client.adapters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"""
+sonolink.gateway.client.adapters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Submodule containing the adapters for sonolink.Client.
 
