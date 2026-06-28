@@ -1,2 +1,5 @@
-# Ruff format all the project
+# chore: ruff format (#35)
 8e87d2c74dc670c432187ea9ec671995c439bed3
+
+# refactor: ruff lint (#55)
+b3b659bbdbf43cb3ed4a1f90e1f5a9736537e35d
