@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 

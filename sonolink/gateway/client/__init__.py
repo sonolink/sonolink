@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -62,8 +61,7 @@ N = TypeVar("N", bound=Node, default=Node)
 
 
 class Client(Generic[N]):
-    """
-    Represents a SonoLink client.
+    """Represents a SonoLink client.
 
     A client helps you manage all Node connections and players.
 
@@ -81,12 +79,14 @@ class Client(Generic[N]):
         If multiple are present, the one already imported is preferred; if that
         is ambiguous, the first available is used and a warning is logged.
         Defaults to ``None``.
+
     Raises
     ------
     RuntimeError
         No supported Discord framework meeting the minimum version requirements
         was found, or a ``sonolink.Client`` is already attached to the given
         Discord client.
+
     """
 
     _framework: FrameworkLiteral
@@ -174,8 +174,7 @@ class Client(Generic[N]):
 
     @property
     def framework(self) -> FrameworkLiteral:
-        """
-        The Discord framework used by this client
+        """The Discord framework used by this client
         (``"discord.py"``, ``"pycord"``, ``"disnake"``, or ``"nextcord"``).
         """
         return self._framework
@@ -227,8 +226,7 @@ class Client(Generic[N]):
         auto_reconnect: bool = True,
         regions: list[str | NodeRegion] | None = None,
     ) -> N:
-        """
-        Creates a :class:`Node` attached to this client.
+        """Creates a :class:`Node` attached to this client.
 
         Parameters
         ----------
@@ -284,6 +282,7 @@ class Client(Generic[N]):
         -------
         :class:`Node`
             The node that was created.
+
         """
         if (uri is not None) and (host is not None or port is not None):
             msg = "Cannot specify both uri and host/port."
@@ -314,8 +313,7 @@ class Client(Generic[N]):
         return node
 
     def get_node(self, id: str, /) -> N | None:
-        """
-        Retrieves a :class:`Node` by its ID.
+        """Retrieves a :class:`Node` by its ID.
 
         .. versionadded:: 1.1.0
 
@@ -328,19 +326,19 @@ class Client(Generic[N]):
         -------
         :class:`Node` | :data:`None`
             The node if found, otherwise ``None``.
+
         """
         return self._nodes.get(id)
 
     def remove_node(self, identifier: str, /) -> None:
-        """
-        Removes a Node from this client.
+        """Removes a Node from this client.
 
         Parameters
         ----------
         identifier: :class:`str`
             The ID of the node to remove.
-        """
 
+        """
         try:
             node = self._nodes.pop(identifier)
         except KeyError:
@@ -350,13 +348,11 @@ class Client(Generic[N]):
 
     def clear_nodes(self) -> None:
         """Clears all Nodes from this Client."""
-
         for node in self.nodes:
             self.remove_node(node.id)
 
     async def start(self) -> None:
-        """
-        Connects all registered nodes to their respective Lavalink servers.
+        """Connects all registered nodes to their respective Lavalink servers.
 
         This method should typically be called after the discord client is logged in,
         often within the ``setup_hook`` (discord.py) or ``on_connect`` (py-cord, disnake and nextcord) event.
@@ -377,12 +373,10 @@ class Client(Generic[N]):
                 continue
 
     async def close(self) -> None:
-        """
-        Gracefully closes all :class:`Node` connections and cleans up internal resources.
+        """Gracefully closes all :class:`Node` connections and cleans up internal resources.
 
         This will stop all active players and close the underlying websocket and HTTP sessions.
         """
-
         for node in self.nodes:
             if not node.is_connected and not node.is_connecting:
                 continue
@@ -398,8 +392,7 @@ class Client(Generic[N]):
         self._nodes.clear()
 
     def get_best_node(self, *, region: str | None = None) -> N:
-        """
-        Returns the best available :class:`Node` based on current load and connectivity.
+        """Returns the best available :class:`Node` based on current load and connectivity.
 
         Parameters
         ----------
@@ -418,6 +411,7 @@ class Client(Generic[N]):
         ------
         RuntimeError
             No nodes are currently connected to handle the request.
+
         """
         connected_nodes = [node for node in self.nodes if node.is_connected]
         if not connected_nodes:
@@ -445,8 +439,7 @@ class Client(Generic[N]):
         source: TrackSourceType | str = TrackSourceType.YOUTUBE,
         region: str | None = None,
     ) -> SearchResult:
-        """
-        Searches for ``query`` in the best Node available, obtained with :meth:`Client.get_best_node`.
+        """Searches for ``query`` in the best Node available, obtained with :meth:`Client.get_best_node`.
 
         Parameters
         ----------
@@ -466,6 +459,7 @@ class Client(Generic[N]):
         -------
         :class:`SearchResult`
             The search result.
+
         """
         node = self.get_best_node(region=region)
         return await node.search_track(query, source=source)
@@ -476,8 +470,7 @@ class Client(Generic[N]):
         *,
         region: str | None = None,
     ) -> Playable:
-        """
-        Decodes a track from its encoded data using the best Node available, obtained with
+        """Decodes a track from its encoded data using the best Node available, obtained with
         :meth:`Client.get_best_node`.
 
         When a track is fetched, the encoded data can be found under
@@ -497,6 +490,7 @@ class Client(Generic[N]):
         -------
         :class:`sonolink.models.Playable`
             The decoded resolved track.
+
         """
         node = self.get_best_node(region=region)
         return await node.decode_track(encoded)
@@ -506,8 +500,7 @@ class Client(Generic[N]):
         *encoded: str,
         region: str | None = None,
     ) -> list[Playable]:
-        """
-        Bulk decode encoded tracks using the best Node available, obtained with :meth:`Client.get_best_node`.
+        """Bulk decode encoded tracks using the best Node available, obtained with :meth:`Client.get_best_node`.
 
         Parameters
         ----------
@@ -523,6 +516,7 @@ class Client(Generic[N]):
         -------
         ``list[Playable]``
             The decoded resolved tracks.
+
         """
         node = self.get_best_node(region=region)
         return await node.decode_tracks(*encoded)

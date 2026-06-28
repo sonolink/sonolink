@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -71,8 +70,7 @@ class Queue(MutableQueueBase):
 
     @property
     def current_track(self) -> Playable | None:
-        """
-        The currently loaded track.
+        """The currently loaded track.
 
         This track is typically the one being played or most recently played.
 
@@ -83,6 +81,7 @@ class Queue(MutableQueueBase):
         -------
         :class:`sonolink.models.Playable` | None
             The current track, or ``None`` if not set.
+
         """
         return self._current_track
 
@@ -94,20 +93,19 @@ class Queue(MutableQueueBase):
 
     @property
     def history(self) -> History:
-        """
-        The queue history.
+        """The queue history.
 
         Returns
         -------
         :class:`History` | None
             The queue history if history is enabled, otherwise ``None``.
+
         """
         return self._history
 
     @property
     def mode(self) -> QueueMode:
-        """
-        The current queue mode.
+        """The current queue mode.
 
         - :attr:`QueueMode.NORMAL`: Tracks are played in order and removed from the queue.
         - :attr:`QueueMode.LOOP`: :attr:`current_track` is repeated indefinitely until manually changed.
@@ -118,6 +116,7 @@ class Queue(MutableQueueBase):
         -------
         :class:`QueueMode`
             The current queue mode.
+
         """
         return self._mode
 
@@ -127,8 +126,7 @@ class Queue(MutableQueueBase):
 
     @property
     def tracks(self) -> list[Playable]:
-        """
-        The list of tracks currently in the queue.
+        """The list of tracks currently in the queue.
 
         This does not include the :attr:`current_track` or AutoPlay-discovered
         tracks. Modifying this list will not affect the actual queue; use methods
@@ -138,13 +136,13 @@ class Queue(MutableQueueBase):
         -------
         list[:class:`Playable`]
             A list of tracks in the queue.
+
         """
         return list(self._items)
 
     @property
     def autoplay_tracks(self) -> list[Playable]:
-        """
-        The list of AutoPlay-discovered tracks currently staged in the queue.
+        """The list of AutoPlay-discovered tracks currently staged in the queue.
 
         These tracks are only played once all user-added tracks are exhausted.
         Modifying this list will not affect the actual queue.
@@ -155,12 +153,12 @@ class Queue(MutableQueueBase):
             A list of AutoPlay tracks.
 
         .. versionadded:: 1.1.0
+
         """
         return list(self._autoplay_items)
 
     def get(self) -> Playable:
-        """
-        Get the next track from the queue, respecting the current queue mode.
+        """Get the next track from the queue, respecting the current queue mode.
 
         User-added tracks always take priority over AutoPlay-discovered tracks.
         If the user lane is empty, falls back to the AutoPlay lane.
@@ -176,6 +174,7 @@ class Queue(MutableQueueBase):
         ------
         :class:`QueueEmpty`
             Both the user queue and AutoPlay queue are empty.
+
         """
         if self._mode is QueueMode.LOOP and self._current_track is not None:
             return self._current_track
@@ -203,8 +202,7 @@ class Queue(MutableQueueBase):
         raise QueueEmpty("Queue is empty.")
 
     async def get_wait(self) -> Playable:
-        """
-        Asynchronously get a track from the queue, waits if necessary.
+        """Asynchronously get a track from the queue, waits if necessary.
 
         This method will wait indefinitely until a track is available in the queue.
         This method can be used to implement a system that waits for a next track to
@@ -214,6 +212,7 @@ class Queue(MutableQueueBase):
         -------
         :class:`Playable`
             The retrieved track.
+
         """
         while True:
             try:
@@ -235,8 +234,7 @@ class Queue(MutableQueueBase):
                     self._wakeup_next()
 
     def pop(self) -> Playable:
-        """
-        Remove and return the next track from the queue.
+        """Remove and return the next track from the queue.
 
         The returned track is set as the current track.
         If history is enabled, the previous current track is added to history.
@@ -250,8 +248,8 @@ class Queue(MutableQueueBase):
         ------
         :class:`QueueEmpty`
             The queue is empty.
-        """
 
+        """
         if not self:
             raise QueueEmpty("Queue is empty.")
 
@@ -263,8 +261,7 @@ class Queue(MutableQueueBase):
         return track
 
     def pop_at(self, index: int) -> Playable:
-        """
-        Remove and return a track from a specific queue index.
+        """Remove and return a track from a specific queue index.
 
         The returned track is set as the current track.
         If history is enabled, the previous current track is added to history.
@@ -285,6 +282,7 @@ class Queue(MutableQueueBase):
             The queue is empty.
         :exc:`IndexError`
             There is no item at the given index.
+
         """
         if not self:
             raise QueueEmpty("Queue is empty.")
@@ -299,8 +297,7 @@ class Queue(MutableQueueBase):
         return track
 
     def previous(self) -> Playable:
-        """
-        Pop the most recent track from history and set it as current.
+        """Pop the most recent track from history and set it as current.
 
         The current track is pushed back to the front of the queue.
 
@@ -313,6 +310,7 @@ class Queue(MutableQueueBase):
         ------
         :class:`QueueEmpty`
             The history is empty.
+
         """
         if len(self._history) == 0:
             raise HistoryEmpty("History is empty.")
@@ -342,8 +340,7 @@ class Queue(MutableQueueBase):
         *,
         atomic: bool = True,
     ) -> int:
-        """
-        Asynchronously put one or more tracks into the queue.
+        """Asynchronously put one or more tracks into the queue.
 
         This method is thread-safe and maintains insert order through a lock.
 
@@ -365,6 +362,7 @@ class Queue(MutableQueueBase):
         ------
         :exc:`TypeError`
             When ``atomic=True`` and a non-Playable item is encountered.
+
         """
         async with self._lock:
             count = self.put(tracks, atomic=atomic)
@@ -378,8 +376,7 @@ class Queue(MutableQueueBase):
         tracks: Iterable[Playable] | Playable,
         /,
     ) -> int:
-        """
-        Add AutoPlay-discovered tracks to the AutoPlay lane.
+        """Add AutoPlay-discovered tracks to the AutoPlay lane.
 
         These tracks are only played once all user-added tracks are exhausted.
         Each track is automatically tagged with :attr:`~sonolink.models.Playable.autoplay`.
@@ -395,6 +392,7 @@ class Queue(MutableQueueBase):
             The number of tracks added.
 
         .. versionadded:: 1.1.0
+
         """
         if isinstance(tracks, Playable):
             tracks = (tracks,)
@@ -418,8 +416,7 @@ class Queue(MutableQueueBase):
         *,
         remove_all: bool = True,
     ) -> int:
-        """
-        Asynchronously remove one or more tracks from the queue.
+        """Asynchronously remove one or more tracks from the queue.
 
         This method is thread-safe.
 
@@ -435,6 +432,7 @@ class Queue(MutableQueueBase):
         -------
         :class:`int`
             The number of tracks removed from the queue.
+
         """
         async with self._lock:
             count = self.remove(tracks, remove_all=remove_all)
@@ -444,13 +442,13 @@ class Queue(MutableQueueBase):
         return count
 
     def copy(self) -> Queue:
-        """
-        Create a shallow copy of the queue.
+        """Create a shallow copy of the queue.
 
         Returns
         -------
         :class:`Queue`
             A shallow copy of the queue with the same items, mode, and history.
+
         """
         new_queue = self.__class__(
             mode=self._mode,
@@ -463,16 +461,14 @@ class Queue(MutableQueueBase):
         return new_queue
 
     def shuffle(self) -> None:
-        """
-        Shuffle the queue in place.
+        """Shuffle the queue in place.
 
         This does not return anything.
         """
         self._items = deque(random.sample(self._items, k=len(self._items)))
 
     def swap(self, old: int, new: int) -> None:
-        """
-        Swap two tracks in the queue by index.
+        """Swap two tracks in the queue by index.
 
         Parameters
         ----------
@@ -485,18 +481,16 @@ class Queue(MutableQueueBase):
         ------
         :exc:`IndexError`
             One or both indices are out of range.
+
         """
         self._items[old], self._items[new] = self._items[new], self._items[old]
 
     def clear_history(self) -> None:
-        """
-        Clear the queue history if history is enabled.
-        """
+        """Clear the queue history if history is enabled."""
         self._history._clear()
 
     def reset(self) -> None:
-        """
-        Reset the queue to its default state.
+        """Reset the queue to its default state.
 
         This will:
         - Clear all items from the queue

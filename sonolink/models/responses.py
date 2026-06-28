@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -39,9 +38,7 @@ __all__ = ("SearchResult",)
 
 
 class SearchResult(BaseModel[TrackLoadingResponse]):
-    """
-    The result of a track search.
-    """
+    """The result of a track search."""
 
     __slots__ = (
         "_cs_data",
@@ -58,16 +55,14 @@ class SearchResult(BaseModel[TrackLoadingResponse]):
         return self.type is TrackLoadResult.ERROR
 
     def is_empty(self) -> bool:
-        """
-        Whether this search result is empty.
+        """Whether this search result is empty.
         An empty search result has no :attr:`SearchResult.result`.
         """
         return self.type is TrackLoadResult.EMPTY
 
     @cached_property("_cs_data")
     def result(self) -> Playlist | Playable | list[Playable] | None:
-        r"""
-        The data of the search result. Depending on :attr:`SearchResult.type`, this property
+        r"""The data of the search result. Depending on :attr:`SearchResult.type`, this property
         will return a different value.
 
         If type is :attr:`sonolink.TrackLoadResult.TRACK`, this will return a :class:`sonolink.models.Playable`.
@@ -100,8 +95,7 @@ class SearchResult(BaseModel[TrackLoadingResponse]):
 
     @cached_property("_cs_exception")
     def exception(self) -> TrackException | None:
-        """
-        The raw exception data of this search result.
+        """The raw exception data of this search result.
 
         This will be ``None`` if :meth:`SearchResult.is_error` is ``False``.
         """

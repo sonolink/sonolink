@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -40,8 +39,7 @@ __all__ = (
 
 
 class AutoPlaySettings(BaseSettings):
-    """
-    Configuration for the player's AutoPlay behavior.
+    """Configuration for the player's AutoPlay behavior.
 
     Attributes
     ----------
@@ -55,6 +53,7 @@ class AutoPlaySettings(BaseSettings):
     discovery_count: :class:`int`
         The maximum number of discovered tracks to add to the queue at once.
         Defaults to 10.
+
     """
 
     __slots__ = (
@@ -79,8 +78,7 @@ class AutoPlaySettings(BaseSettings):
 
 
 class InactivitySettings(BaseSettings):
-    """
-    Configuration for player inactivity and auto-disconnection.
+    """Configuration for player inactivity and auto-disconnection.
 
     Attributes
     ----------
@@ -90,6 +88,7 @@ class InactivitySettings(BaseSettings):
         The strategy used to determine if the channel is "inactive".
     user_ids: ``Iterable[Snowflake | int]``
         An iterable of user IDs or Discord objects that act as "Keep Alive" members.
+
     """
 
     __slots__ = (
@@ -111,8 +110,7 @@ class InactivitySettings(BaseSettings):
 
 
 class HistorySettings(BaseSettings):
-    """
-    Configuration for player history tracking.
+    """Configuration for player history tracking.
 
     Attributes
     ----------
@@ -120,6 +118,7 @@ class HistorySettings(BaseSettings):
         Whether history tracking is enabled. Defaults to True.
     max_items: :class:`int` | :data:`None`
         The maximum number of items to keep in history.
+
     """
 
     __slots__ = (
@@ -138,8 +137,7 @@ class HistorySettings(BaseSettings):
 
 
 class CacheSettings(BaseSettings):
-    """
-    Configuration for node caching.
+    """Configuration for node caching.
 
     Attributes
     ----------
@@ -148,6 +146,7 @@ class CacheSettings(BaseSettings):
     max_items: :class:`int` | :data:`None`
         The maximum number of items to store in the LFU cache.
         Defaults to 1000.
+
     """
 
     __slots__ = (

@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -107,8 +106,7 @@ class TrackLoadingResponse(msgspec.Struct, kw_only=True):
 
 
 class PlaylistData(msgspec.Struct, kw_only=True):
-    """
-    Contains the detailed results of a track load request.
+    """Contains the detailed results of a track load request.
 
     For playlists, this contains playlist metadata and a list of tracks.
     """

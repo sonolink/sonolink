@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -74,8 +73,7 @@ __all__ = (
 
 
 class Equalizer(BaseFilter[filters.EqualizerFilter]):
-    """
-    Represents a single Lavalink equalizer band.
+    """Represents a single Lavalink equalizer band.
 
     Parameters
     ----------
@@ -83,6 +81,7 @@ class Equalizer(BaseFilter[filters.EqualizerFilter]):
         The target band index (0 to 14).
     gain: :class:`float`
         The band gain multiplier (-0.25 to 1.0).
+
     """
 
     __slots__ = ()
@@ -119,8 +118,7 @@ class Equalizer(BaseFilter[filters.EqualizerFilter]):
 
 
 class Karaoke(BaseFilter[filters.KaraokeFilter]):
-    """
-    Filter that reduces vocal levels in a track, useful for karaoke.
+    """Filter that reduces vocal levels in a track, useful for karaoke.
 
     Parameters
     ----------
@@ -132,6 +130,7 @@ class Karaoke(BaseFilter[filters.KaraokeFilter]):
         Center frequency in Hz for the target region.
     filter_width: :class:`float` | :data:`None`
         Bandwidth around the filter band in Hz.
+
     """
 
     __slots__ = ()
@@ -190,8 +189,7 @@ class Karaoke(BaseFilter[filters.KaraokeFilter]):
 
 
 class Timescale(BaseFilter[filters.TimescaleFilter]):
-    """
-    Adjusts the speed, pitch, and rate of audio playback.
+    """Adjusts the speed, pitch, and rate of audio playback.
 
     Parameters
     ----------
@@ -201,6 +199,7 @@ class Timescale(BaseFilter[filters.TimescaleFilter]):
         Pitch multiplier (``0.0 <= x``).
     rate: :class:`float` | :data:`None`
         Internal rate multiplier (``0.0 <= x``).
+
     """
 
     __slots__ = ()
@@ -248,8 +247,7 @@ class Timescale(BaseFilter[filters.TimescaleFilter]):
 
 
 class Tremolo(BaseFilter[filters.TremoloFilter]):
-    """
-    Rapidly oscillates the volume of the audio.
+    """Rapidly oscillates the volume of the audio.
 
     Parameters
     ----------
@@ -257,6 +255,7 @@ class Tremolo(BaseFilter[filters.TremoloFilter]):
         Oscillation frequency in Hz (``0.0 < x``).
     depth: :class:`float` | :data:`None`
         Effect depth (``0.0 < x <= 1.0``).
+
     """
 
     __slots__ = ()
@@ -293,8 +292,7 @@ class Tremolo(BaseFilter[filters.TremoloFilter]):
 
 
 class Vibrato(BaseFilter[filters.VibratoFilter]):
-    """
-    Rapidly oscillates the pitch of the audio.
+    """Rapidly oscillates the pitch of the audio.
 
     Parameters
     ----------
@@ -302,6 +300,7 @@ class Vibrato(BaseFilter[filters.VibratoFilter]):
         Oscillation frequency in Hz (``0.0 < x <= 14.0``).
     depth: :class:`float` | :data:`None`
         Effect depth (``0.0 < x <= 1.0``).
+
     """
 
     __slots__ = ()
@@ -338,13 +337,13 @@ class Vibrato(BaseFilter[filters.VibratoFilter]):
 
 
 class Rotation(BaseFilter[filters.RotationFilter]):
-    """
-    Rotates the audio across the stereo channels (panning effect).
+    """Rotates the audio across the stereo channels (panning effect).
 
     Parameters
     ----------
     rotation_hz: :class:`float` | :data:`None`
         Rotation frequency in Hz.
+
     """
 
     __slots__ = ()
@@ -368,8 +367,7 @@ class Rotation(BaseFilter[filters.RotationFilter]):
 
 
 class Distortion(BaseFilter[filters.DistortionFilter]):
-    """
-    Applies distortion effects using sine, cosine, and tangent transforms.
+    """Applies distortion effects using sine, cosine, and tangent transforms.
 
     Parameters
     ----------
@@ -389,6 +387,7 @@ class Distortion(BaseFilter[filters.DistortionFilter]):
         The input offset component.
     scale: :class:`float` | :data:`None`
         The scaling component.
+
     """
 
     __slots__ = ()
@@ -491,8 +490,7 @@ class Distortion(BaseFilter[filters.DistortionFilter]):
 
 
 class ChannelMix(BaseFilter[filters.ChannelMixFilter]):
-    """
-    Mixes left and right audio channels to manipulate stereo separation.
+    """Mixes left and right audio channels to manipulate stereo separation.
 
     Parameters
     ----------
@@ -504,6 +502,7 @@ class ChannelMix(BaseFilter[filters.ChannelMixFilter]):
         The right to left channel mix factor (``0.0 <= x <= 1.0``).
     right_to_right: :class:`float` | :data:`None`
         The right to right channel mix factor (``0.0 <= x <= 1.0``).
+
     """
 
     __slots__ = ()
@@ -562,13 +561,13 @@ class ChannelMix(BaseFilter[filters.ChannelMixFilter]):
 
 
 class LowPass(BaseFilter[filters.LowPassFilter]):
-    """
-    Suppresses higher frequencies in the audio signal.
+    """Suppresses higher frequencies in the audio signal.
 
     Parameters
     ----------
     smoothing: :class:`float` | :data:`None`
         The smoothing factor (``x > 1.0``).
+
     """
 
     __slots__ = ()
@@ -592,8 +591,7 @@ class LowPass(BaseFilter[filters.LowPassFilter]):
 
 
 class Filters(BaseModel[filters.PlayerFilters]):
-    """
-    The main container for all active player filters.
+    """The main container for all active player filters.
 
     This class provides a Pythonic interface to the underlying Lavalink filter state.
     Active filters are sent to Lavalink via the :meth:`payload` property.
@@ -622,6 +620,7 @@ class Filters(BaseModel[filters.PlayerFilters]):
         The active low pass filter settings.
     plugin_filters: :class:`dict` | :data:`None`
         A dictionary of raw plugin-defined filter payloads.
+
     """
 
     __slots__ = (
@@ -684,7 +683,7 @@ class Filters(BaseModel[filters.PlayerFilters]):
             if data.plugin_filters is not msgspec.UNSET
             else None,
         )
-        
+
         instance._client = client
         instance._data = data
         return instance
@@ -729,8 +728,7 @@ class Filters(BaseModel[filters.PlayerFilters]):
         )
 
     def merge(self, other: Filters) -> Self:
-        """
-        Merge another filter set into this instance in place.
+        """Merge another filter set into this instance in place.
 
         This mutates ``self``. Use :meth:`combine` when you need a new
         merged :class:`Filters` instance without changing either input.
@@ -744,6 +742,7 @@ class Filters(BaseModel[filters.PlayerFilters]):
         -------
         :class:`Filters`
             This filter instance after merging.
+
         """
         if not isinstance(other, type(self)):
             raise TypeError(
@@ -778,8 +777,7 @@ class Filters(BaseModel[filters.PlayerFilters]):
         return self
 
     def combine(self, other: Filters) -> Self:
-        """
-        Return a new filter set with ``other`` merged into a copy of this one.
+        """Return a new filter set with ``other`` merged into a copy of this one.
 
         This does not mutate either input. Use :meth:`merge` when you want
         in-place mutation of the current instance.
@@ -793,6 +791,7 @@ class Filters(BaseModel[filters.PlayerFilters]):
         -------
         :class:`Filters`
             This filter instance after combining.
+
         """
         if not isinstance(other, type(self)):
             raise TypeError(

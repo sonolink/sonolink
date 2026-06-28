@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License.
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -49,16 +48,14 @@ class NodeError(SonoLinkException):
 
 
 class AutoPlaySeedMissing(SonoLinkException):
-    """
-    Exception raised when AutoPlay cannot find a valid track to use as a discovery seed.
+    """Exception raised when AutoPlay cannot find a valid track to use as a discovery seed.
 
     .. versionadded:: 1.1.0
     """
 
 
 class FrameworkClientMismatch(SonoLinkException):
-    """
-    Exception raised when trying to initialize a Sonolink Client with a
+    """Exception raised when trying to initialize a Sonolink Client with a
     client that does not match the detected framework. This likely means the
     client is from a different framework or the framework detection is incorrect.
 

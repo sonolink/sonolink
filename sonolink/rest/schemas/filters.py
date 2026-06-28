@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -43,8 +42,7 @@ __all__ = (
 
 
 class PlayerFilters(msgspec.Struct, kw_only=True):
-    """
-    Represents the full filter payload for a Lavalink player.
+    """Represents the full filter payload for a Lavalink player.
 
     This object is sent in :class:`UpdatePlayerRequest` under ``filters``.
     Only provided attributes are updated; attributes set to ``None`` are ignored,
@@ -97,8 +95,7 @@ class PlayerFilters(msgspec.Struct, kw_only=True):
 
 
 class EqualizerFilter(msgspec.Struct, kw_only=True):
-    """
-    Represents a single Lavalink equalizer band.
+    """Represents a single Lavalink equalizer band.
 
     Lavalink exposes 15 bands indexed ``0..14``. The frequencies are approximately:
     ``25, 40, 63, 100, 160, 250, 400, 630, 1000, 1600, 2500, 4000, 6300, 10000, 16000`` Hz.
@@ -112,8 +109,7 @@ class EqualizerFilter(msgspec.Struct, kw_only=True):
 
 
 class KaraokeFilter(msgspec.Struct, kw_only=True):
-    """
-    Represents karaoke filter configuration.
+    """Represents karaoke filter configuration.
 
     This filter reduces content in a target frequency region, commonly used for
     vocal reduction.
@@ -139,8 +135,7 @@ class KaraokeFilter(msgspec.Struct, kw_only=True):
 
 
 class TimescaleFilter(msgspec.Struct, kw_only=True):
-    """
-    Represents timescale filter configuration.
+    """Represents timescale filter configuration.
 
     This filter changes perceived playback speed, pitch, and rate. In Lavalink,
     omitted values are treated as ``1.0``.
@@ -157,8 +152,7 @@ class TimescaleFilter(msgspec.Struct, kw_only=True):
 
 
 class TremoloFilter(msgspec.Struct, kw_only=True):
-    """
-    Represents tremolo filter configuration.
+    """Represents tremolo filter configuration.
 
     Tremolo rapidly oscillates output volume.
     """
@@ -171,8 +165,7 @@ class TremoloFilter(msgspec.Struct, kw_only=True):
 
 
 class VibratoFilter(msgspec.Struct, kw_only=True):
-    """
-    Represents vibrato filter configuration.
+    """Represents vibrato filter configuration.
 
     Vibrato rapidly oscillates output pitch.
     """
@@ -194,8 +187,7 @@ class RotationFilter(msgspec.Struct, kw_only=True):
 
 
 class DistortionFilter(msgspec.Struct, kw_only=True):
-    """
-    Represents distortion filter configuration.
+    """Represents distortion filter configuration.
 
     Distortion combines sinusoidal and linear transforms. Small changes can
     produce large audible differences, so tune incrementally.
@@ -239,8 +231,7 @@ class DistortionFilter(msgspec.Struct, kw_only=True):
 
 
 class ChannelMixFilter(msgspec.Struct, kw_only=True):
-    """
-    Represents channel mix filter configuration.
+    """Represents channel mix filter configuration.
 
     All coefficients satisfy ``0.0 <= x <= 1.0``.
     The default matrix keeps channels independent. Setting all coefficients to
@@ -269,8 +260,7 @@ class ChannelMixFilter(msgspec.Struct, kw_only=True):
 
 
 class LowPassFilter(msgspec.Struct, kw_only=True):
-    """
-    Represents low-pass filter configuration.
+    """Represents low-pass filter configuration.
 
     Low-pass filtering suppresses higher frequencies while preserving lower ones.
     """

@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -95,7 +94,7 @@ class NodeStatus(Enum):
 
 
 class QueueMode(StrEnum):
-    """Enum representing the various modes on :class:`sonolink.Queue`
+    """Enum representing the various modes on :class:`sonolink.Queue`.
 
     :ivar NORMAL: Normal queue mode. Tracks are played in the order they were added.
     :ivar LOOP: Loop the current track indefinitely. The next track will not be played until the current track is stopped or replaced.

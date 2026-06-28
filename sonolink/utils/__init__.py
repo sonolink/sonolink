@@ -1,5 +1,4 @@
-"""
-sonolink.utils
+"""sonolink.utils
 ~~~~~~~~~~~~~~
 """
 

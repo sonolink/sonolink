@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -47,9 +46,7 @@ class CacheNode[K, V]:
 
 
 class LFUCache[K, V]:
-    """
-    LFU cache utilizing Circular Doubly Linked Lists.
-    """
+    """LFU cache utilizing Circular Doubly Linked Lists."""
 
     __slots__ = ("_settings", "_cache", "_freq_map", "_min_freq")
 

@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -44,8 +43,7 @@ __all__ = ("GitInfo", "ServerInfo", "Version")
 
 
 class Version(BaseModel[VersionPayload]):
-    """
-    Represents a Lavalink server's version metadata.
+    """Represents a Lavalink server's version metadata.
 
     Wraps the raw :class:`sonolink.rest.schemas.info.VersionObject` struct and
     provides comparison operators and convenience properties.
@@ -93,8 +91,7 @@ class Version(BaseModel[VersionPayload]):
 
 
 class GitInfo(BaseModel[GitPayload]):
-    """
-    Represents the Git metadata of a Lavalink build.
+    """Represents the Git metadata of a Lavalink build.
 
     Wraps the raw :class:`sonolink.rest.schemas.info.GitObject` struct and
     exposes ``commit_time`` as a :class:`datetime.datetime`.
@@ -124,8 +121,7 @@ class GitInfo(BaseModel[GitPayload]):
 
 
 class ServerInfo(BaseModel[ServerInfoPayload]):
-    """
-    Represents a Lavalink server's metadata & stats information.
+    """Represents a Lavalink server's metadata & stats information.
 
     This class wraps the raw :class:`sonolink.rest.schemas.InfoResponse` schema and provides
     a high-level interface for accessing Lavalink servers stats and metadata.

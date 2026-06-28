@@ -1,6 +1,5 @@
-"""
-sonolink.gateway.schemas
-~~~~~~~~~~~~~~~~~~~~~~~~
+"""sonolink.gateway.schemas
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Submodule containing all the schemas used in the gateway module.
 

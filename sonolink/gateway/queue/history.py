@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -36,8 +35,7 @@ if TYPE_CHECKING:
 
 
 class History(ReadableCollection):
-    """
-    A specialized queue for tracking playback history.
+    """A specialized queue for tracking playback history.
 
     This class is intended to be read-only for users. Mutation methods
     will raise :exc:`AttributeError`.

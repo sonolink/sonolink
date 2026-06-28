@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -40,8 +39,7 @@ __all__ = (
 
 
 class DetailsObject(msgspec.Struct, kw_only=True):
-    """
-    Represents route planner details.
+    """Represents route planner details.
 
     Provides runtime information about the active IP rotation strategy.
     Some attributes are only present for specific route planner types.
@@ -92,8 +90,7 @@ class IPBlockObject(msgspec.Struct, kw_only=True):
 
 
 class FailingAddressObject(msgspec.Struct, kw_only=True):
-    """
-    Represents an address marked as failing by the route planner.
+    """Represents an address marked as failing by the route planner.
 
     Addresses are temporarily excluded after connection failures.
     """

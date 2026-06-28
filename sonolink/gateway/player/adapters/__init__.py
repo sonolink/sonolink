@@ -1,6 +1,5 @@
-"""
-sonolink.gateway.player.adapters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"""sonolink.gateway.player.adapters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Submodule containing the adapters for sonolink.Player.
 

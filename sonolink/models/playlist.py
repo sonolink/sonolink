@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -37,8 +36,7 @@ __all__ = ("Playlist",)
 
 
 class Playlist(BaseModel[PlaylistData]):
-    """
-    Represents a Lavalink Playlist.
+    """Represents a Lavalink Playlist.
 
     This class wraps the :class:`sonolink.rest.schemas.PlaylistData` schema
     and implements the Sequence protocol to allow iteration over tracks.

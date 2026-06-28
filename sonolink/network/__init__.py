@@ -1,6 +1,5 @@
-"""
-sonolink.http
-~~~~~~~~~~~~~
+"""sonolink.http
+~~~~~~~~~~~~~~~~
 """
 
 from __future__ import annotations

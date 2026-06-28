@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -70,9 +69,7 @@ class PlayerFactory:
         self,
         framework: FrameworkLiteral,
     ) -> type[BasePlayer]:
-        """
-        Returns the appropriate VoiceProtocol based on the framework string.
-        """
+        """Returns the appropriate VoiceProtocol based on the framework string."""
         if framework in self._player_classes:
             return self._player_classes[framework]
 

@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -70,13 +69,13 @@ class ReadableCollection:
 
     @property
     def count(self) -> int:
-        """
-        The number of tracks in this collection.
+        """The number of tracks in this collection.
 
         Returns
         -------
         :class:`int`
             The total number of tracks currently held.
+
         """
         return len(self._items)
 
@@ -87,7 +86,7 @@ class ReadableCollection:
 
 
 class MutableQueueBase(ReadableCollection):
-    """A base class for collections that can be modified"""
+    """A base class for collections that can be modified."""
 
     __slots__ = ()
 
@@ -111,8 +110,7 @@ class MutableQueueBase(ReadableCollection):
         *,
         atomic: bool = True,
     ) -> int:
-        """
-        Put one or more tracks at the end of the queue.
+        """Put one or more tracks at the end of the queue.
 
         Parameters
         ----------
@@ -132,6 +130,7 @@ class MutableQueueBase(ReadableCollection):
         ------
         :exc:`TypeError`
             When ``atomic=True`` and a non-Playable item is encountered.
+
         """
         tracks = self._materialize_tracks(tracks, atomic=atomic)
         count = len(tracks)
@@ -147,8 +146,7 @@ class MutableQueueBase(ReadableCollection):
         *,
         atomic: bool = True,
     ) -> int:
-        """
-        Put one or more tracks at ``index``.
+        """Put one or more tracks at ``index``.
 
         Parameters
         ----------
@@ -170,6 +168,7 @@ class MutableQueueBase(ReadableCollection):
         ------
         :exc:`TypeError`
             When ``atomic=True`` and a non-Playable item is encountered.
+
         """
         tracks = self._materialize_tracks(tracks, atomic=atomic)
         count = len(tracks)
@@ -208,8 +207,7 @@ class MutableQueueBase(ReadableCollection):
         *,
         remove_all: bool = True,
     ) -> int:
-        """
-        Removes one or more tracks from this queue.
+        """Removes one or more tracks from this queue.
 
         Parameters
         ----------
@@ -223,6 +221,7 @@ class MutableQueueBase(ReadableCollection):
         -------
         :class:`int`
             The number of tracks removed from the queue.
+
         """
         to_remove = self._materialize_tracks(tracks, atomic=False)
 

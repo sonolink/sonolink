@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -39,8 +38,7 @@ __all__ = ("PlayerInfo",)
 
 
 class PlayerInfo(BaseModel[PlayerInfoPayload]):
-    """
-    Represents a player's info data.
+    """Represents a player's info data.
 
     This class wraps the raw :class:`sonolink.rest.schemas.Player` schema and provides
     a high-level interface for accessing player metadata and state.
@@ -74,9 +72,7 @@ class PlayerInfo(BaseModel[PlayerInfoPayload]):
 
     @property
     def state(self) -> PlayerState:
-        """
-        The current state of the player (:class:`~sonolink.rest.schemas.player.PlayerState`).
-        """
+        """The current state of the player (:class:`~sonolink.rest.schemas.player.PlayerState`)."""
         return self._data.state
 
     @property
@@ -91,8 +87,7 @@ class PlayerInfo(BaseModel[PlayerInfoPayload]):
 
     @property
     def ping(self) -> int:
-        """
-        The connection ping in milliseconds.
+        """The connection ping in milliseconds.
 
         Returns ``-1`` if the player is not connected.
         """
@@ -100,15 +95,12 @@ class PlayerInfo(BaseModel[PlayerInfoPayload]):
 
     @property
     def voice(self) -> PlayerVoiceState:
-        """
-        The voice connection state of the player (:class:`~sonolink.rest.schemas.player.PlayerVoiceState`).
-        """
+        """The voice connection state of the player (:class:`~sonolink.rest.schemas.player.PlayerVoiceState`)."""
         return self._data.voice
 
     @property
     def channel_id(self) -> int | None:
-        """
-        The Discord voice channel ID the player is connected to.
+        """The Discord voice channel ID the player is connected to.
 
         Returns ``None`` if the player is not connected to a channel.
         """

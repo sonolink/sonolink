@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -40,9 +39,7 @@ __all__ = (
 
 
 class InfoResponse(msgspec.Struct, kw_only=True):
-    """
-    Represents the Lavalink Info response payload.
-    """
+    """Represents the Lavalink Info response payload."""
 
     version: VersionObject
     """Version metadata of the Lavalink server."""
@@ -115,8 +112,7 @@ class PluginObject(msgspec.Struct, kw_only=True, frozen=True):
 
 
 class StatsResponse(msgspec.Struct, kw_only=True):
-    """
-    Represents the Lavalink Stats response payload.
+    """Represents the Lavalink Stats response payload.
 
     Returned periodically over WebSocket and via ``/v4/stats``.
     """
@@ -201,7 +197,7 @@ class FrameStatsObject(msgspec.Struct, kw_only=True):
 
     deficit: int
     """
-    Frame deficit relative to the expected rate (3000 frames/player). 
+    Frame deficit relative to the expected rate (3000 frames/player).
     Negative means excess frames, positive means insufficient frames.
     """
 

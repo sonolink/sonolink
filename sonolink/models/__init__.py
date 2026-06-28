@@ -1,6 +1,5 @@
-"""
-sonolink.models
-~~~~~~~~~~~~~~~
+"""sonolink.models
+~~~~~~~~~~~~~~~~~~
 
 Module containing all the available user-end models.
 

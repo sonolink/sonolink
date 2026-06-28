@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -64,8 +63,7 @@ __all__ = ("Node",)
 
 
 class Node:
-    """
-    Represents a connectable Node.
+    """Represents a connectable Node.
 
     Parameters
     ----------
@@ -99,6 +97,7 @@ class Node:
         the channel region. If ``None`` is passed, the node is considered to have no specific region.
 
         .. versionadded:: 1.2.0
+
     """
 
     retries: int | None
@@ -243,13 +242,13 @@ class Node:
 
     @property
     def session_id(self) -> str:
-        """
-        The current session ID for this node.
+        """The current session ID for this node.
 
         Raises
         ------
         RuntimeError
             The node is not connected or has no active session.
+
         """
         if not self._resume_session:
             raise RuntimeError(f"Node {self._id!r} is not connected (no session ID).")
@@ -267,16 +266,14 @@ class Node:
         self._uri = value
 
     async def connect(self) -> None:
-        """
-        Connects this node.
+        """Connects this node.
 
         This can only be done when the node has been attached to a pool.
         """
         await self._connection.connect()
 
     async def reconnect(self) -> None:
-        """
-        Reconnects this node.
+        """Reconnects this node.
 
         This can only be done when the node has been attached to a pool.
 
@@ -285,8 +282,7 @@ class Node:
         await self._connection.reconnect()
 
     async def close(self) -> None:
-        """
-        Closes the connection to this node.
+        """Closes the connection to this node.
 
         All Players connected to it will stop playing.
 
@@ -306,8 +302,7 @@ class Node:
         autoplay_settings: AutoPlaySettings | None = None,
         history_settings: HistorySettings | None = None,
     ) -> Player:
-        """
-        Creates a player with extra configuration bound to this node.
+        """Creates a player with extra configuration bound to this node.
 
         Parameters
         ----------
@@ -333,6 +328,7 @@ class Node:
             - :meth:`pycord:discord.VoiceChannel.connect` (py-cord)
             - :meth:`disnake:disnake.VoiceChannel.connect` (disnake)
             - :meth:`nextcord:nextcord.VoiceChannel.connect` (nextcord)
+
         """
         return self._player_registry.create_player(
             volume=volume,
@@ -349,8 +345,7 @@ class Node:
         *,
         source: TrackSourceType | str | None = None,
     ) -> SearchResult:
-        """
-        Searches for ``query`` in this Node.
+        """Searches for ``query`` in this Node.
 
         Parameters
         ----------
@@ -365,12 +360,12 @@ class Node:
         -------
         :class:`SearchResult`
             The search result.
+
         """
         return await self._rest.search_track(query, source=source)
 
     async def decode_track(self, encoded: str) -> Playable:
-        """
-        Decodes a track from its encoded data.
+        """Decodes a track from its encoded data.
 
         When a track is fetched, the encoded data can be found under
         :attr:`sonolink.rest.schemas.Track.encoded`.
@@ -384,12 +379,12 @@ class Node:
         -------
         :class:`sonolink.models.Playable`
             The decoded resolved track.
+
         """
         return await self._rest.decode_track(encoded)
 
     async def decode_tracks(self, *encoded: str) -> list[Playable]:
-        """
-        Bulk decodes encoded tracks.
+        """Bulk decodes encoded tracks.
 
         Parameters
         ----------
@@ -400,23 +395,23 @@ class Node:
         -------
         ``list[Playable]``
             The decoded resolved tracks.
+
         """
         return await self._rest.decode_tracks(*encoded)
 
     async def fetch_info(self) -> ServerInfo:
-        """
-        Fetches the Lavalink server info this node is connected to.
+        """Fetches the Lavalink server info this node is connected to.
 
         Returns
         -------
         :class:`sonolink.models.ServerInfo`
             The server info.
+
         """
         return await self._rest.fetch_info()
 
     async def fetch_players(self) -> list[PlayerInfo]:
-        """
-        Fetches all the players that are connected to this node.
+        """Fetches all the players that are connected to this node.
 
         This performs a fresh REST request for the current player states on the node.
 
@@ -424,12 +419,12 @@ class Node:
         -------
         ``list[PlayerInfo]``
             The players connected to this node.
+
         """
         return await self._rest.fetch_players()
 
     async def fetch_player(self, guild_id: int) -> PlayerInfo:
-        """
-        Fetches a player from this node connected to the provided guild ID.
+        """Fetches a player from this node connected to the provided guild ID.
 
         Usually, you should use :attr:`Node.get_player` instead of this method.
 
@@ -442,17 +437,18 @@ class Node:
         -------
         :class:`PlayerInfo`
             The player connected to the guild ID.
+
         """
         return await self._rest.fetch_player(guild_id)
 
     async def disconnect_player(self, guild_id: int) -> None:
-        """
-        Force disconnects a player from this node connected to the provided guild ID.
+        """Force disconnects a player from this node connected to the provided guild ID.
 
         Parameters
         ----------
         guild_id: :class:`int`
             The guild ID to disconnect the player from.
+
         """
         await self._rest.disconnect_player(guild_id)
 
@@ -513,6 +509,7 @@ class Node:
             The response body could not be decoded.
         :exc:`sonolink.HTTPException`
             An error occurred while making the request.
+
         """
         return await self._rest.send(
             method,
@@ -524,8 +521,7 @@ class Node:
         )
 
     async def cleanup(self) -> None:
-        """
-        A function that may be overridden in order to add custom clean-up
+        """A function that may be overridden in order to add custom clean-up
         logic to a node.
 
         This is automatically called by the library.

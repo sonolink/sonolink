@@ -111,8 +111,7 @@ async def query_autocomplete(
 @app_commands.describe(query="The song name or URL to search for.")
 @app_commands.autocomplete(query=query_autocomplete)
 async def play(interaction: discord.Interaction, query: str) -> None:
-    """
-    Plays a track or playlist, or adds it to the queue if something is already playing.
+    """Plays a track or playlist, or adds it to the queue if something is already playing.
 
     Supports plain search queries as well as direct URLs (YouTube, SoundCloud, etc.).
     When a playlist URL is provided, all tracks are enqueued.
@@ -184,7 +183,6 @@ async def play(interaction: discord.Interaction, query: str) -> None:
 @bot.tree.command(name="pause", description="Pauses the current track.")
 async def pause(interaction: discord.Interaction) -> None:
     """Pauses the current track."""
-
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")
@@ -203,7 +201,6 @@ async def pause(interaction: discord.Interaction) -> None:
 @bot.tree.command(name="resume", description="Resumes the player if it is paused.")
 async def resume(interaction: discord.Interaction) -> None:
     """Resumes the player if it is paused."""
-
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")
@@ -220,7 +217,6 @@ async def resume(interaction: discord.Interaction) -> None:
 @bot.tree.command(name="skip", description="Skips the current track.")
 async def skip(interaction: discord.Interaction) -> None:
     """Skips the current track and plays the next one in the queue."""
-
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")
@@ -246,7 +242,6 @@ async def skip(interaction: discord.Interaction) -> None:
 @bot.tree.command(name="previous", description="Goes back to the previous track.")
 async def previous(interaction: discord.Interaction) -> None:
     """Goes back to the previous track in the history."""
-
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")
@@ -267,12 +262,10 @@ async def previous(interaction: discord.Interaction) -> None:
 @bot.tree.command(name="seek", description="Seeks to a position (seconds).")
 @app_commands.describe(seconds="The position in seconds to jump to.")
 async def seek(interaction: discord.Interaction, seconds: int) -> None:
-    """
-    Seeks to a position in the current track (in seconds).
+    """Seeks to a position in the current track (in seconds).
 
     Example: /seek 90  →  jumps to the 1:30 mark.
     """
-
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")
@@ -289,7 +282,6 @@ async def seek(interaction: discord.Interaction, seconds: int) -> None:
 @bot.tree.command(name="stop", description="Stops playback and disconnects.")
 async def stop(interaction: discord.Interaction) -> None:
     """Stops playback, clears the queue, and disconnects the bot."""
-
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Already disconnected!")
@@ -307,7 +299,6 @@ async def stop(interaction: discord.Interaction) -> None:
 @bot.tree.command(name="queue", description="Displays the current queue.")
 async def queue(interaction: discord.Interaction) -> None:
     """Displays the current queue (up to 10 upcoming tracks)."""
-
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")
@@ -348,7 +339,6 @@ async def queue(interaction: discord.Interaction) -> None:
 @bot.tree.command(name="shuffle", description="Shuffles the current queue.")
 async def shuffle(interaction: discord.Interaction) -> None:
     """Shuffles the current queue in place."""
-
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")
@@ -367,14 +357,12 @@ async def shuffle(interaction: discord.Interaction) -> None:
 async def loop(
     interaction: discord.Interaction, mode: Literal["track", "all", "off"] = "track"
 ) -> None:
-    """
-    Sets the loop mode. Options: 'track', 'all', 'off'.
+    """Sets the loop mode. Options: 'track', 'all', 'off'.
 
     - track: repeats the current track indefinitely.
     - all:   loops the entire queue once it finishes.
     - off:   disables looping.
     """
-
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")
@@ -402,7 +390,6 @@ async def volume(
     interaction: discord.Interaction, value: app_commands.Range[int, 0, 1000]
 ) -> None:
     """Sets the player volume (0–1000). Default is 100."""
-
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")
@@ -416,7 +403,6 @@ async def volume(
 @bot.tree.command(name="nowplaying", description="Shows current track info.")
 async def nowplaying(interaction: discord.Interaction) -> None:
     """Shows information about the currently playing track."""
-
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")

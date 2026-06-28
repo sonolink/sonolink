@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team.
 
@@ -36,8 +35,7 @@ __all__ = (
 
 
 class ExceptionSeverity(StrEnum):
-    """
-    Exception severity type.
+    """Exception severity type.
 
     :ivar COMMON: The cause is known and expected, indicates that there is nothing wrong with the library itself.
     :ivar SUSPICIOUS: The cause might not be exactly known, but is possibly caused by outside factors.
@@ -50,8 +48,7 @@ class ExceptionSeverity(StrEnum):
 
 
 class TrackLoadResult(StrEnum):
-    """
-    Result type returned when loading tracks.
+    """Result type returned when loading tracks.
 
     Each value represents the type of result returned in
     :attr:`sonolink.rest.schemas.TrackLoadingResponse.load_type`.
@@ -71,8 +68,7 @@ class TrackLoadResult(StrEnum):
 
 
 class TrackSourceType(StrEnum):
-    """
-    A track source type. This can be used when searching using
+    """A track source type. This can be used when searching using
     :meth:`sonolink.Node.search_track` or :meth:`sonolink.Client.search_track`.
 
     This provides the default track sources by Lavalink.
@@ -86,8 +82,7 @@ class TrackSourceType(StrEnum):
 
 
 class RoutePlannerType(StrEnum):
-    """
-    IP route planner strategy used by Lavalink.
+    """IP route planner strategy used by Lavalink.
 
     Determines how IP addresses are rotated or balanced
     to handle bans, load, and IPv6 blocks.
@@ -105,8 +100,7 @@ class RoutePlannerType(StrEnum):
 
 
 class IPBlockType(StrEnum):
-    """
-    IP block family type.
+    """IP block family type.
 
     :ivar IPV4: IPv4 address block.
     :ivar IPV6: IPv6 address block.

@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -52,8 +51,7 @@ __all__ = ("PycordPlayer",)
 
 
 class PycordPlayer(BasePlayer, VoiceProtocol[discord.Client]):
-    """
-    A py-cord implementation of :class:`~sonolink.player.base_player.BasePlayer`.
+    """A py-cord implementation of :class:`~sonolink.player.base_player.BasePlayer`.
 
     This class satisfies the :class:`discord.voice.VoiceProtocol` contract expected
     by py-cord's voice connection machinery, whilst delegating all Lavalink playback
@@ -104,6 +102,7 @@ class PycordPlayer(BasePlayer, VoiceProtocol[discord.Client]):
         The voice channel this player is currently connected to.
     client : :class:`discord.Client`
         The py-cord client driving this player.
+
     """
 
     channel: discord.abc.Connectable
@@ -167,8 +166,7 @@ class PycordPlayer(BasePlayer, VoiceProtocol[discord.Client]):
         client: discord.Client,
         channel: discord.abc.Connectable,
     ) -> Self:
-        """
-        Called by py-cord when a pre-configured **instance** is passed to
+        """Called by py-cord when a pre-configured **instance** is passed to
         :meth:`discord.abc.Connectable.connect`.
 
         Binds the py-cord ``VoiceProtocol`` attributes, resolves the guild
@@ -185,6 +183,7 @@ class PycordPlayer(BasePlayer, VoiceProtocol[discord.Client]):
         -------
         :class:`Player`
             This player instance, fully initialised.
+
         """
         super(BasePlayer, self).__init__(client, channel)
 

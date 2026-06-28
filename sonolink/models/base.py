@@ -1,5 +1,4 @@
-"""
-MIT License
+"""MIT License
 
 Copyright (c) 2026-present SonoLink Development Team
 
@@ -34,8 +33,7 @@ if TYPE_CHECKING:
 
 
 class BaseModel[D: msgspec.Struct]:
-    """
-    A base class for all sonolink models.
+    """A base class for all sonolink models.
 
     This class provides the connection to the :class:`sonolink.Client`
     and holds the raw msgspec data structure.
@@ -75,8 +73,7 @@ class BaseModel[D: msgspec.Struct]:
 
 
 class BaseSettings:
-    """
-    A base class for configuration proxies in sonolink.
+    """A base class for configuration proxies in sonolink.
 
     This class provides utility methods for immutable-style updates
     and fluent attribute setting (chaining).
@@ -90,8 +87,7 @@ class BaseSettings:
         return cls()
 
     def replace(self, **kwargs: Any) -> Self:
-        """
-        Returns a new instance of the settings with updated values.
+        """Returns a new instance of the settings with updated values.
 
         This uses a shallow copy to ensure the original configuration
         instance remains immutable.
@@ -104,8 +100,7 @@ class BaseSettings:
 
 
 class BaseFilter[D: msgspec.Struct](BaseModel[D]):
-    """
-    A base class for all single Lavalink filter models.
+    """A base class for all single Lavalink filter models.
 
     Subclasses must declare ``_schema_cls`` as a class variable pointing
     to the corresponding msgspec schema type.
@@ -147,8 +142,7 @@ class BaseFilter[D: msgspec.Struct](BaseModel[D]):
         return self.merge(other)
 
     def merge(self, other: BaseFilter[D]) -> Self:
-        """
-        Merges another filter into this one, preferring the other's values.
+        """Merges another filter into this one, preferring the other's values.
 
         This method mutates the current instance and returns it for chaining.
 
@@ -163,6 +157,7 @@ class BaseFilter[D: msgspec.Struct](BaseModel[D]):
         -------
         :class:`BaseFilter`
             The current instance with merged values.
+
         """
         if not isinstance(other, self.__class__):
             raise TypeError(
@@ -179,8 +174,7 @@ class BaseFilter[D: msgspec.Struct](BaseModel[D]):
         return self
 
     def combine(self, other: BaseFilter[D]) -> Self:
-        """
-        Combines this filter with another, preferring the other's values.
+        """Combines this filter with another, preferring the other's values.
 
         This method does not mutate the current instance and returns a new one.
         See also :meth:`merge` for an in-place version that mutates the current instance.
@@ -194,6 +188,7 @@ class BaseFilter[D: msgspec.Struct](BaseModel[D]):
         -------
         :class:`BaseFilter`
             A new instance with merged values from both filters.
+
         """
         if not isinstance(other, self.__class__):
             raise TypeError(
