@@ -79,7 +79,7 @@ class _PlayerMeta(abc.ABCMeta):
 
         if adapter not in rewritten:
             rewritten = (
-                (rewritten[0], adapter) + rewritten[1:] if rewritten else (adapter,)
+                (rewritten[0], adapter, *rewritten[1:]) if rewritten else (adapter,)
             )
 
         return super().__new__(cls, name, rewritten, attrs, **kwargs)
