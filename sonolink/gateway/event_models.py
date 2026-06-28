@@ -285,7 +285,7 @@ class PlayerDisconnectEvent(EventModel["events.PlayerDisconnectEvent"]):
 class WebSocketClosedEvent(EventModel["receive.WebSocketClosedEvent"]):
     """Represents a ws_close event."""
 
-    __repr_attr__ = (
+    __repr_attrs__ = (
         "code",
         "reason",
         "by_remote",
