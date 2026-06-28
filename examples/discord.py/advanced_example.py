@@ -281,7 +281,7 @@ async def seek(interaction: discord.Interaction, seconds: int) -> None:
 
 @bot.tree.command(name="stop", description="Stops playback and disconnects.")
 async def stop(interaction: discord.Interaction) -> None:
-    """Stop playback, clear the queue, and disconnects the bot."""
+    """Stop playback, clear the queue, and disconnect the bot."""
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Already disconnected!")

@@ -130,7 +130,7 @@ async def resume(inter: nextcord.Interaction[Bot]) -> None:
     await inter.response.send_message("Resumed!")
 
 
-@bot.slash_command(name="stop", description="Stops playback and disconnects the bot.")
+@bot.slash_command(name="stop", description="Stops playback and disconnect the bot.")
 async def stop(inter: nextcord.Interaction[Bot]) -> None:
     vc = inter.guild.voice_client if inter.guild else None
 

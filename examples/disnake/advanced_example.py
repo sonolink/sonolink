@@ -277,7 +277,7 @@ async def seek(
 
 @bot.slash_command(name="stop", description="Stops playback and disconnects.")
 async def stop(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
-    """Stop playback, clear the queue, and disconnects the bot."""
+    """Stop playback, clear the queue, and disconnect the bot."""
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Already disconnected!")

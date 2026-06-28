@@ -118,7 +118,7 @@ async def resume(ctx: discord.ApplicationContext) -> None:
     await ctx.respond("Resumed!")
 
 
-@bot.slash_command(name="stop", description="Stops playback and disconnects the bot.")
+@bot.slash_command(name="stop", description="Stops playback and disconnect the bot.")
 async def stop(ctx: discord.ApplicationContext) -> None:
     vc = ctx.voice_client if ctx.voice_client else None
 

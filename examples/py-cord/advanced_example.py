@@ -262,7 +262,7 @@ async def seek(ctx: discord.ApplicationContext, seconds: int) -> None:
 
 @bot.slash_command(name="stop", description="Stops playback and disconnects.")
 async def stop(ctx: discord.ApplicationContext) -> None:
-    """Stop playback, clear the queue, and disconnects the bot."""
+    """Stop playback, clear the queue, and disconnect the bot."""
     vc = _player_check(ctx)
     if not vc:
         await ctx.respond("Already disconnected!")
