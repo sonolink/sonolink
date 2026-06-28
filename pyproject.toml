@@ -109,7 +109,12 @@ ignore = [
     "D404",  # "Do not start docstring with 'This'" enforcement
     "D415",  # punctuation at end of first line enforcement
 
-    "RUF001",  # ambiguous unicode characters enforcement
+    "F403",    # star imports acceptable in __init__.py re-exports
+    "F405",    # star import usage acceptable in __init__.py re-exports
+
+    "RUF001",  # ambiguous unicode in code
+    "RUF002",  # ambiguous unicode in docstrings
+    "RUF003",  # ambiguous unicode in comments
     "RUF029",  # async def WITH await enforcement
 ]
 
