@@ -29,7 +29,7 @@ import itertools
 import logging
 
 from sonolink.gateway.enums import NodeStatus
-from sonolink.gateway.errors import InvalidNodePassword, NodeURINotFound
+from sonolink.gateway.errors import InvalidNodePassword, NodeError, NodeURINotFound
 from sonolink.network.errors import WebSocketError
 
 from ._base import NodeComponent
@@ -55,7 +55,12 @@ class ConnectionManager(NodeComponent):
 
         await self.node._manager.setup()
         self.node._status = NodeStatus.CONNECTING
-        await self.attempt_connect()
+
+        try:
+            await self.attempt_connect()
+        except NodeError:
+            self.node._status = NodeStatus.DISCONNECTED
+            raise
 
     async def close(self) -> None:
         if self.node._client is None:
@@ -98,7 +103,13 @@ class ConnectionManager(NodeComponent):
         self.node._status = NodeStatus.CONNECTING
         self.node._ready_event.clear()
         self.node._is_reconnecting = True
-        await self.attempt_connect()
+
+        try:
+            await self.attempt_connect()
+        except NodeError:
+            self.node._status = NodeStatus.DISCONNECTED
+            self.node._is_reconnecting = False
+            raise
 
     async def attempt_connect(self) -> None:
         if self.node._client is None:
