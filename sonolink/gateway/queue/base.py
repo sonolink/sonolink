@@ -207,7 +207,7 @@ class MutableQueueBase(ReadableCollection):
         *,
         remove_all: bool = True,
     ) -> int:
-        """Removes one or more tracks from this queue.
+        """Remove one or more tracks from this queue.
 
         Parameters
         ----------

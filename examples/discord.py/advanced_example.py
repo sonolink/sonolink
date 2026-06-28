@@ -70,7 +70,7 @@ bot.sl_client.create_node(
 
 # Helper function for DRY (Don't Repeat Yourself)
 def _player_check(interaction: discord.Interaction) -> sonolink.Player | None:
-    """Returns the active Player for this guild, or None if not connected."""
+    """Return the active Player for this guild, or None if not connected."""
     vc = interaction.guild.voice_client if interaction.guild else None
     return vc if isinstance(vc, sonolink.Player) else None
 
@@ -281,7 +281,7 @@ async def seek(interaction: discord.Interaction, seconds: int) -> None:
 
 @bot.tree.command(name="stop", description="Stops playback and disconnects.")
 async def stop(interaction: discord.Interaction) -> None:
-    """Stops playback, clears the queue, and disconnects the bot."""
+    """Stop playback, clear the queue, and disconnects the bot."""
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Already disconnected!")
@@ -296,9 +296,9 @@ async def stop(interaction: discord.Interaction) -> None:
 # --------------
 
 
-@bot.tree.command(name="queue", description="Displays the current queue.")
+@bot.tree.command(name="queue", description="Display the current queue.")
 async def queue(interaction: discord.Interaction) -> None:
-    """Displays the current queue (up to 10 upcoming tracks)."""
+    """Display the current queue (up to 10 upcoming tracks)."""
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")
@@ -352,12 +352,12 @@ async def shuffle(interaction: discord.Interaction) -> None:
     await interaction.response.send_message("Queue shuffled!")
 
 
-@bot.tree.command(name="loop", description="Sets the loop mode.")
+@bot.tree.command(name="loop", description="Set the loop mode.")
 @app_commands.describe(mode="Choose from: track, all, off")
 async def loop(
     interaction: discord.Interaction, mode: Literal["track", "all", "off"] = "track"
 ) -> None:
-    """Sets the loop mode. Options: 'track', 'all', 'off'.
+    """Set the loop mode. Options: 'track', 'all', 'off'.
 
     - track: repeats the current track indefinitely.
     - all:   loops the entire queue once it finishes.
@@ -384,12 +384,12 @@ async def loop(
 # ---------------
 
 
-@bot.tree.command(name="volume", description="Sets the player volume (0–1000).")
+@bot.tree.command(name="volume", description="Set the player volume (0–1000).")
 @app_commands.describe(value="Volume level between 0 and 1000.")
 async def volume(
     interaction: discord.Interaction, value: app_commands.Range[int, 0, 1000]
 ) -> None:
-    """Sets the player volume (0–1000). Default is 100."""
+    """Set the player volume (0–1000). Default is 100."""
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")
@@ -402,7 +402,7 @@ async def volume(
 
 @bot.tree.command(name="nowplaying", description="Shows current track info.")
 async def nowplaying(interaction: discord.Interaction) -> None:
-    """Shows information about the currently playing track."""
+    """Show information about the currently playing track."""
     vc = _player_check(interaction)
     if not vc:
         await interaction.response.send_message("Not connected to a voice channel!")

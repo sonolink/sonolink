@@ -167,7 +167,7 @@ class DpyPlayer(BasePlayer, discord.VoiceProtocol):
         client: discord.Client,
         channel: discord.abc.Connectable,
     ) -> Self:
-        """Called by discord.py when a pre-configured **instance** is passed to
+        """Bind the player when a pre-configured **instance** is passed to
         :meth:`discord.abc.Connectable.connect`.
 
         Binds the discord.py ``VoiceProtocol`` attributes, resolves the guild

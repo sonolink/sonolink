@@ -166,7 +166,7 @@ class PycordPlayer(BasePlayer, VoiceProtocol[discord.Client]):
         client: discord.Client,
         channel: discord.abc.Connectable,
     ) -> Self:
-        """Called by py-cord when a pre-configured **instance** is passed to
+        """Bind the player when a pre-configured **instance** is passed to
         :meth:`discord.abc.Connectable.connect`.
 
         Binds the py-cord ``VoiceProtocol`` attributes, resolves the guild

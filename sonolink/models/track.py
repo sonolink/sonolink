@@ -113,11 +113,11 @@ class Playable(BaseModel[Track]):
         return self.title
 
     def __len__(self) -> int:
-        """Returns the length of the track in milliseconds."""
+        """Return the length of the track in milliseconds."""
         return self.length
 
     def __eq__(self, other: object) -> bool:
-        """Checks if two tracks are the same based on their encoded string."""
+        """Check if two tracks are the same based on their encoded string."""
         if isinstance(other, Playable):
             return self.encoded == other.encoded
         return False

@@ -62,7 +62,7 @@ class SearchResult(BaseModel[TrackLoadingResponse]):
 
     @cached_property("_cs_data")
     def result(self) -> Playlist | Playable | list[Playable] | None:
-        r"""The data of the search result. Depending on :attr:`SearchResult.type`, this property
+        r"""Return the data of the search result. Depending on :attr:`SearchResult.type`, this property
         will return a different value.
 
         If type is :attr:`sonolink.TrackLoadResult.TRACK`, this will return a :class:`sonolink.models.Playable`.
@@ -95,7 +95,7 @@ class SearchResult(BaseModel[TrackLoadingResponse]):
 
     @cached_property("_cs_exception")
     def exception(self) -> TrackException | None:
-        """The raw exception data of this search result.
+        """Return the raw exception data of this search result.
 
         This will be ``None`` if :meth:`SearchResult.is_error` is ``False``.
         """

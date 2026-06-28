@@ -161,7 +161,7 @@ class TrackStartEvent(EventModel["events.TrackStartEvent"]):
 
     @cached_property("_cs_track")
     def track(self) -> Playable:
-        """The track that started playing."""
+        """Return the track that started playing."""
         assert self.node.client
         return Playable(
             client=self.node.client, data=self._underlying.track, playlist=None
@@ -204,7 +204,7 @@ class TrackEndEvent(EventModel["events.TrackEndEvent"]):
 
     @cached_property("_cs_track")
     def track(self) -> Playable:
-        """The track that ended playing."""
+        """Return the track that ended playing."""
         assert self.node.client
         return Playable(
             client=self.node.client, data=self._underlying.track, playlist=None
@@ -235,7 +235,7 @@ class TrackExceptionEvent(EventModel["events.TrackExceptionEvent"]):
 
     @cached_property("_cs_track")
     def track(self) -> Playable:
-        """The track that thew the exception."""
+        """Return the track that threw the exception."""
         assert self.node.client
         return Playable(
             client=self.node.client, data=self._underlying.track, playlist=None
@@ -255,7 +255,7 @@ class TrackStuckEvent(EventModel["events.TrackStuckEvent"]):
 
     @cached_property("_cs_track")
     def track(self) -> Playable:
-        """The track that got stuck."""
+        """Return the track that got stuck."""
         assert self.node.client
         return Playable(
             client=self.node.client, data=self._underlying.track, playlist=None

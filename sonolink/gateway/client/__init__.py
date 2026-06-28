@@ -226,7 +226,7 @@ class Client(Generic[N]):
         auto_reconnect: bool = True,
         regions: list[str | NodeRegion] | None = None,
     ) -> N:
-        """Creates a :class:`Node` attached to this client.
+        """Create a :class:`Node` attached to this client.
 
         Parameters
         ----------
@@ -313,7 +313,7 @@ class Client(Generic[N]):
         return node
 
     def get_node(self, id: str, /) -> N | None:
-        """Retrieves a :class:`Node` by its ID.
+        """Retrieve a :class:`Node` by its ID.
 
         .. versionadded:: 1.1.0
 
@@ -331,7 +331,7 @@ class Client(Generic[N]):
         return self._nodes.get(id)
 
     def remove_node(self, identifier: str, /) -> None:
-        """Removes a Node from this client.
+        """Remove a Node from this client.
 
         Parameters
         ----------
@@ -347,12 +347,12 @@ class Client(Generic[N]):
             self._cleanup_node(node)
 
     def clear_nodes(self) -> None:
-        """Clears all Nodes from this Client."""
+        """Clear all Nodes from this Client."""
         for node in self.nodes:
             self.remove_node(node.id)
 
     async def start(self) -> None:
-        """Connects all registered nodes to their respective Lavalink servers.
+        """Connect all registered nodes to their respective Lavalink servers.
 
         This method should typically be called after the discord client is logged in,
         often within the ``setup_hook`` (discord.py) or ``on_connect`` (py-cord, disnake and nextcord) event.
@@ -392,7 +392,7 @@ class Client(Generic[N]):
         self._nodes.clear()
 
     def get_best_node(self, *, region: str | None = None) -> N:
-        """Returns the best available :class:`Node` based on current load and connectivity.
+        """Return the best available :class:`Node` based on current load and connectivity.
 
         Parameters
         ----------
@@ -439,7 +439,7 @@ class Client(Generic[N]):
         source: TrackSourceType | str = TrackSourceType.YOUTUBE,
         region: str | None = None,
     ) -> SearchResult:
-        """Searches for ``query`` in the best Node available, obtained with :meth:`Client.get_best_node`.
+        """Search for ``query`` in the best Node available, obtained with :meth:`Client.get_best_node`.
 
         Parameters
         ----------
@@ -470,7 +470,7 @@ class Client(Generic[N]):
         *,
         region: str | None = None,
     ) -> Playable:
-        """Decodes a track from its encoded data using the best Node available, obtained with
+        """Decode a track from its encoded data using the best Node available, obtained with
         :meth:`Client.get_best_node`.
 
         When a track is fetched, the encoded data can be found under

@@ -167,7 +167,7 @@ class NextcordPlayer(BasePlayer, nextcord.VoiceProtocol):
         client: nextcord.Client,
         channel: nextcord.abc.Connectable,
     ) -> Self:
-        """Called by nextcord when a pre-configured **instance** is passed to
+        """Bind the player when a pre-configured **instance** is passed to
         :meth:`nextcord.abc.Connectable.connect`.
 
         Binds the nextcord ``VoiceProtocol`` attributes, resolves the guild

@@ -168,7 +168,7 @@ class DisnakePlayer(BasePlayer, disnake.VoiceProtocol):
         client: disnake.Client,
         channel: disnake.abc.Connectable,
     ) -> Self:
-        """Called by disnake when a pre-configured **instance** is passed to
+        """Bind the player when a pre-configured **instance** is passed to
         :meth:`disnake.abc.Connectable.connect`.
 
         Binds the disnake ``VoiceProtocol`` attributes, resolves the guild

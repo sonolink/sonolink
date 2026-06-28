@@ -65,7 +65,7 @@ async def on_connect() -> None:
 def _player_check(
     inter: disnake.ApplicationCommandInteraction[Bot],
 ) -> sonolink.Player | None:
-    """Returns the active Player for this guild, or None if not connected."""
+    """Return the active Player for this guild, or None if not connected."""
     vc = inter.guild.voice_client if inter.guild else None
     return vc if isinstance(vc, sonolink.Player) else None
 
@@ -277,7 +277,7 @@ async def seek(
 
 @bot.slash_command(name="stop", description="Stops playback and disconnects.")
 async def stop(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
-    """Stops playback, clears the queue, and disconnects the bot."""
+    """Stop playback, clear the queue, and disconnects the bot."""
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Already disconnected!")
@@ -292,9 +292,9 @@ async def stop(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
 # --------------
 
 
-@bot.slash_command(name="queue", description="Displays the current queue.")
+@bot.slash_command(name="queue", description="Display the current queue.")
 async def queue(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
-    """Displays the current queue (up to 10 upcoming tracks)."""
+    """Display the current queue (up to 10 upcoming tracks)."""
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")
@@ -348,7 +348,7 @@ async def shuffle(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
     await inter.response.send_message("Queue shuffled!")
 
 
-@bot.slash_command(name="loop", description="Sets the loop mode.")
+@bot.slash_command(name="loop", description="Set the loop mode.")
 async def loop(
     inter: disnake.ApplicationCommandInteraction[Bot],
     mode: str = commands.Param(  # pyright: ignore[reportUnknownMemberType]
@@ -357,7 +357,7 @@ async def loop(
         choices=["track", "all", "off"],
     ),
 ) -> None:
-    """Sets the loop mode. Options: 'track', 'all', 'off'.
+    """Set the loop mode. Options: 'track', 'all', 'off'.
 
     - track: repeats the current track indefinitely.
     - all:   loops the entire queue once it finishes.
@@ -383,7 +383,7 @@ async def loop(
 # ---------------
 
 
-@bot.slash_command(name="volume", description="Sets the player volume (0–1000).")
+@bot.slash_command(name="volume", description="Set the player volume (0–1000).")
 async def volume(
     inter: disnake.ApplicationCommandInteraction[Bot],
     value: int = commands.Param(  # pyright: ignore[reportUnknownMemberType]
@@ -392,7 +392,7 @@ async def volume(
         le=1000,
     ),
 ) -> None:
-    """Sets the player volume (0–1000). Default is 100."""
+    """Set the player volume (0–1000). Default is 100."""
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")
@@ -405,7 +405,7 @@ async def volume(
 
 @bot.slash_command(name="nowplaying", description="Shows current track info.")
 async def nowplaying(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
-    """Shows information about the currently playing track."""
+    """Show information about the currently playing track."""
     vc = _player_check(inter)
     if not vc:
         await inter.response.send_message("Not connected to a voice channel!")

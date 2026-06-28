@@ -83,11 +83,11 @@ class BaseSettings:
 
     @classmethod
     def default(cls) -> Self:
-        """Returns a fresh instance of this settings class with defaults."""
+        """Return a fresh instance of this settings class with defaults."""
         return cls()
 
     def replace(self, **kwargs: Any) -> Self:
-        """Returns a new instance of the settings with updated values.
+        """Return a new instance of the settings with updated values.
 
         This uses a shallow copy to ensure the original configuration
         instance remains immutable.
@@ -142,7 +142,7 @@ class BaseFilter[D: msgspec.Struct](BaseModel[D]):
         return self.merge(other)
 
     def merge(self, other: BaseFilter[D]) -> Self:
-        """Merges another filter into this one, preferring the other's values.
+        """Merge another filter into this one, preferring the other's values.
 
         This method mutates the current instance and returns it for chaining.
 
@@ -174,7 +174,7 @@ class BaseFilter[D: msgspec.Struct](BaseModel[D]):
         return self
 
     def combine(self, other: BaseFilter[D]) -> Self:
-        """Combines this filter with another, preferring the other's values.
+        """Combine this filter with another, preferring the other's values.
 
         This method does not mutate the current instance and returns a new one.
         See also :meth:`merge` for an in-place version that mutates the current instance.

@@ -53,7 +53,7 @@ class PlayerInfo(BaseModel[PlayerInfoPayload]):
 
     @cached_property("_cs_track")
     def track(self) -> Playable | None:
-        """Current playing track, or ``None`` if no track is playing."""
+        """Return the current playing track, or ``None`` if no track is playing."""
         track = self._data.track
         if not track:
             return None

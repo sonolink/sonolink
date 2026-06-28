@@ -198,8 +198,8 @@ class BasePlayer(abc.ABC):
 
     @abc.abstractmethod
     def __call__(self, client: Any, channel: Any) -> BasePlayer:
-        """Called by libraries when a pre-configured **instance** is passed to
-        their ``connect`` methods.
+        """Bind the player when a pre-configured **instance** is passed to
+        a library's ``connect`` method.
 
         Binds the VoiceProtocol attributes, resolves the guild from the channel,
         and registers the player with its node.
@@ -774,7 +774,7 @@ class BasePlayer(abc.ABC):
 
     @abc.abstractmethod
     def cleanup(self) -> None:
-        """Cleans the internal state of the Player. This is automatically called by the library when failures
+        """Clean the internal state of the Player. This is automatically called by the library when failures
         or disconnects occur.
 
         If this is overridden, it **must** call the original ``cleanup``.

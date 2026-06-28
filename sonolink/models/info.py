@@ -114,7 +114,7 @@ class GitInfo(BaseModel[GitPayload]):
 
     @cached_property("_cs_commit_time")
     def commit_time(self) -> datetime.datetime:
-        """A :class:`datetime.datetime` representing when this commit was made."""
+        """Return a :class:`datetime.datetime` object representing when this commit was made."""
         return datetime.datetime.fromtimestamp(
             self._data.commit_time / 1000, tz=datetime.timezone.utc
         )
@@ -135,13 +135,13 @@ class ServerInfo(BaseModel[ServerInfoPayload]):
 
     @cached_property("_cs_version")
     def version(self) -> Version:
-        """A :class:`Version` object denoting the version of this node."""
+        """Return a :class:`Version` object denoting the version of this node."""
         return Version(client=self._client, data=self._data.version)
 
     @cached_property("_cs_build_time")
     def build_time(self) -> datetime.datetime:
-        """A datetime.datetime object representing the timestamp on which the Lavalink
-        jar was built.
+        """Return a :class:`datetime.datetime` object object representing the timestamp
+        on which the Lavalink jar was built.
         """
         return datetime.datetime.fromtimestamp(
             self._data.build_time / 1000, tz=datetime.timezone.utc
@@ -149,7 +149,7 @@ class ServerInfo(BaseModel[ServerInfoPayload]):
 
     @cached_property("_cs_git")
     def git(self) -> GitInfo:
-        """A :class:`GitInfo` object denoting the git version of the Lavalink server."""
+        """Return a :class:`GitInfo` object denoting the git version of the Lavalink server."""
         return GitInfo(client=self._client, data=self._data.git)
 
     @property

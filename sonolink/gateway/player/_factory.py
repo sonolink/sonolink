@@ -69,7 +69,7 @@ class PlayerFactory:
         self,
         framework: FrameworkLiteral,
     ) -> type[BasePlayer]:
-        """Returns the appropriate VoiceProtocol based on the framework string."""
+        """Return the appropriate VoiceProtocol based on the framework string."""
         if framework in self._player_classes:
             return self._player_classes[framework]
 
