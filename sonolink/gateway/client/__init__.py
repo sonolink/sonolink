@@ -86,7 +86,6 @@ class Client(Generic[N]):
         No supported Discord framework meeting the minimum version requirements
         was found, or a ``sonolink.Client`` is already attached to the given
         Discord client.
-
     """
 
     _framework: FrameworkLiteral
@@ -282,7 +281,6 @@ class Client(Generic[N]):
         -------
         :class:`Node`
             The node that was created.
-
         """
         if (uri is not None) and (host is not None or port is not None):
             msg = "Cannot specify both uri and host/port."
@@ -326,7 +324,6 @@ class Client(Generic[N]):
         -------
         :class:`Node` | :data:`None`
             The node if found, otherwise ``None``.
-
         """
         return self._nodes.get(id)
 
@@ -337,7 +334,6 @@ class Client(Generic[N]):
         ----------
         identifier: :class:`str`
             The ID of the node to remove.
-
         """
         try:
             node = self._nodes.pop(identifier)
@@ -411,7 +407,6 @@ class Client(Generic[N]):
         ------
         RuntimeError
             No nodes are currently connected to handle the request.
-
         """
         connected_nodes = [node for node in self.nodes if node.is_connected]
         if not connected_nodes:
@@ -459,7 +454,6 @@ class Client(Generic[N]):
         -------
         :class:`SearchResult`
             The search result.
-
         """
         node = self.get_best_node(region=region)
         return await node.search_track(query, source=source)
@@ -490,7 +484,6 @@ class Client(Generic[N]):
         -------
         :class:`sonolink.models.Playable`
             The decoded resolved track.
-
         """
         node = self.get_best_node(region=region)
         return await node.decode_track(encoded)
@@ -516,7 +509,6 @@ class Client(Generic[N]):
         -------
         ``list[Playable]``
             The decoded resolved tracks.
-
         """
         node = self.get_best_node(region=region)
         return await node.decode_tracks(*encoded)

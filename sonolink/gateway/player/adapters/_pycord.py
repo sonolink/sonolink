@@ -102,7 +102,6 @@ class PycordPlayer(BasePlayer, VoiceProtocol[discord.Client]):
         The voice channel this player is currently connected to.
     client : :class:`discord.Client`
         The py-cord client driving this player.
-
     """
 
     channel: discord.abc.Connectable
@@ -183,7 +182,6 @@ class PycordPlayer(BasePlayer, VoiceProtocol[discord.Client]):
         -------
         :class:`Player`
             This player instance, fully initialised.
-
         """
         super(BasePlayer, self).__init__(client, channel)
 

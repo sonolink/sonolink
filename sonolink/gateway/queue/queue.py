@@ -81,7 +81,6 @@ class Queue(MutableQueueBase):
         -------
         :class:`sonolink.models.Playable` | None
             The current track, or ``None`` if not set.
-
         """
         return self._current_track
 
@@ -99,7 +98,6 @@ class Queue(MutableQueueBase):
         -------
         :class:`History` | None
             The queue history if history is enabled, otherwise ``None``.
-
         """
         return self._history
 
@@ -116,7 +114,6 @@ class Queue(MutableQueueBase):
         -------
         :class:`QueueMode`
             The current queue mode.
-
         """
         return self._mode
 
@@ -136,7 +133,6 @@ class Queue(MutableQueueBase):
         -------
         list[:class:`Playable`]
             A list of tracks in the queue.
-
         """
         return list(self._items)
 
@@ -153,7 +149,6 @@ class Queue(MutableQueueBase):
             A list of AutoPlay tracks.
 
         .. versionadded:: 1.1.0
-
         """
         return list(self._autoplay_items)
 
@@ -174,7 +169,6 @@ class Queue(MutableQueueBase):
         ------
         :class:`QueueEmpty`
             Both the user queue and AutoPlay queue are empty.
-
         """
         if self._mode is QueueMode.LOOP and self._current_track is not None:
             return self._current_track
@@ -212,7 +206,6 @@ class Queue(MutableQueueBase):
         -------
         :class:`Playable`
             The retrieved track.
-
         """
         while True:
             try:
@@ -248,7 +241,6 @@ class Queue(MutableQueueBase):
         ------
         :class:`QueueEmpty`
             The queue is empty.
-
         """
         if not self:
             raise QueueEmpty("Queue is empty.")
@@ -282,7 +274,6 @@ class Queue(MutableQueueBase):
             The queue is empty.
         :exc:`IndexError`
             There is no item at the given index.
-
         """
         if not self:
             raise QueueEmpty("Queue is empty.")
@@ -310,7 +301,6 @@ class Queue(MutableQueueBase):
         ------
         :class:`QueueEmpty`
             The history is empty.
-
         """
         if len(self._history) == 0:
             raise HistoryEmpty("History is empty.")
@@ -362,7 +352,6 @@ class Queue(MutableQueueBase):
         ------
         :exc:`TypeError`
             When ``atomic=True`` and a non-Playable item is encountered.
-
         """
         async with self._lock:
             count = self.put(tracks, atomic=atomic)
@@ -392,7 +381,6 @@ class Queue(MutableQueueBase):
             The number of tracks added.
 
         .. versionadded:: 1.1.0
-
         """
         if isinstance(tracks, Playable):
             tracks = (tracks,)
@@ -432,7 +420,6 @@ class Queue(MutableQueueBase):
         -------
         :class:`int`
             The number of tracks removed from the queue.
-
         """
         async with self._lock:
             count = self.remove(tracks, remove_all=remove_all)
@@ -448,7 +435,6 @@ class Queue(MutableQueueBase):
         -------
         :class:`Queue`
             A shallow copy of the queue with the same items, mode, and history.
-
         """
         new_queue = self.__class__(
             mode=self._mode,
@@ -481,7 +467,6 @@ class Queue(MutableQueueBase):
         ------
         :exc:`IndexError`
             One or both indices are out of range.
-
         """
         self._items[old], self._items[new] = self._items[new], self._items[old]
 

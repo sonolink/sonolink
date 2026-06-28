@@ -99,7 +99,6 @@ class DisnakePlayer(BasePlayer, disnake.VoiceProtocol):
         The voice channel this player is currently connected to.
     client: :class:`disnake.Client`
         The disnake client driving this player.
-
     """
 
     channel: disnake.abc.Connectable
@@ -185,7 +184,6 @@ class DisnakePlayer(BasePlayer, disnake.VoiceProtocol):
         -------
         :class:`DisnakePlayer`
             This player instance, fully initialised.
-
         """
         disnake.VoiceProtocol.__init__(self, client=client, channel=channel)
 
@@ -205,7 +203,6 @@ class DisnakePlayer(BasePlayer, disnake.VoiceProtocol):
         ----------
         data: :class:`disnake.types.voice.VoiceServerUpdate`
             The raw payload received from the Discord gateway.
-
         """
         await self._events_handler.on_voice_server_update(cast(dict[str, Any], data))
 
@@ -219,7 +216,6 @@ class DisnakePlayer(BasePlayer, disnake.VoiceProtocol):
         ----------
         data: :class:`disnake.types.voice.GuildVoiceState`
             The raw payload received from the Discord gateway.
-
         """
         await self._events_handler.on_voice_state_update(cast(dict[str, Any], data))
 

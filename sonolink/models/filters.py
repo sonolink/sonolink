@@ -81,7 +81,6 @@ class Equalizer(BaseFilter[filters.EqualizerFilter]):
         The target band index (0 to 14).
     gain: :class:`float`
         The band gain multiplier (-0.25 to 1.0).
-
     """
 
     __slots__ = ()
@@ -130,7 +129,6 @@ class Karaoke(BaseFilter[filters.KaraokeFilter]):
         Center frequency in Hz for the target region.
     filter_width: :class:`float` | :data:`None`
         Bandwidth around the filter band in Hz.
-
     """
 
     __slots__ = ()
@@ -199,7 +197,6 @@ class Timescale(BaseFilter[filters.TimescaleFilter]):
         Pitch multiplier (``0.0 <= x``).
     rate: :class:`float` | :data:`None`
         Internal rate multiplier (``0.0 <= x``).
-
     """
 
     __slots__ = ()
@@ -255,7 +252,6 @@ class Tremolo(BaseFilter[filters.TremoloFilter]):
         Oscillation frequency in Hz (``0.0 < x``).
     depth: :class:`float` | :data:`None`
         Effect depth (``0.0 < x <= 1.0``).
-
     """
 
     __slots__ = ()
@@ -300,7 +296,6 @@ class Vibrato(BaseFilter[filters.VibratoFilter]):
         Oscillation frequency in Hz (``0.0 < x <= 14.0``).
     depth: :class:`float` | :data:`None`
         Effect depth (``0.0 < x <= 1.0``).
-
     """
 
     __slots__ = ()
@@ -343,7 +338,6 @@ class Rotation(BaseFilter[filters.RotationFilter]):
     ----------
     rotation_hz: :class:`float` | :data:`None`
         Rotation frequency in Hz.
-
     """
 
     __slots__ = ()
@@ -387,7 +381,6 @@ class Distortion(BaseFilter[filters.DistortionFilter]):
         The input offset component.
     scale: :class:`float` | :data:`None`
         The scaling component.
-
     """
 
     __slots__ = ()
@@ -502,7 +495,6 @@ class ChannelMix(BaseFilter[filters.ChannelMixFilter]):
         The right to left channel mix factor (``0.0 <= x <= 1.0``).
     right_to_right: :class:`float` | :data:`None`
         The right to right channel mix factor (``0.0 <= x <= 1.0``).
-
     """
 
     __slots__ = ()
@@ -567,7 +559,6 @@ class LowPass(BaseFilter[filters.LowPassFilter]):
     ----------
     smoothing: :class:`float` | :data:`None`
         The smoothing factor (``x > 1.0``).
-
     """
 
     __slots__ = ()
@@ -620,7 +611,6 @@ class Filters(BaseModel[filters.PlayerFilters]):
         The active low pass filter settings.
     plugin_filters: :class:`dict` | :data:`None`
         A dictionary of raw plugin-defined filter payloads.
-
     """
 
     __slots__ = (
@@ -742,7 +732,6 @@ class Filters(BaseModel[filters.PlayerFilters]):
         -------
         :class:`Filters`
             This filter instance after merging.
-
         """
         if not isinstance(other, type(self)):
             raise TypeError(
@@ -791,7 +780,6 @@ class Filters(BaseModel[filters.PlayerFilters]):
         -------
         :class:`Filters`
             This filter instance after combining.
-
         """
         if not isinstance(other, type(self)):
             raise TypeError(

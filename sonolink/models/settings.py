@@ -53,7 +53,6 @@ class AutoPlaySettings(BaseSettings):
     discovery_count: :class:`int`
         The maximum number of discovered tracks to add to the queue at once.
         Defaults to 10.
-
     """
 
     __slots__ = (
@@ -88,7 +87,6 @@ class InactivitySettings(BaseSettings):
         The strategy used to determine if the channel is "inactive".
     user_ids: ``Iterable[Snowflake | int]``
         An iterable of user IDs or Discord objects that act as "Keep Alive" members.
-
     """
 
     __slots__ = (
@@ -118,7 +116,6 @@ class HistorySettings(BaseSettings):
         Whether history tracking is enabled. Defaults to True.
     max_items: :class:`int` | :data:`None`
         The maximum number of items to keep in history.
-
     """
 
     __slots__ = (
@@ -146,7 +143,6 @@ class CacheSettings(BaseSettings):
     max_items: :class:`int` | :data:`None`
         The maximum number of items to store in the LFU cache.
         Defaults to 1000.
-
     """
 
     __slots__ = (

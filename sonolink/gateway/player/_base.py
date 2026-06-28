@@ -127,7 +127,6 @@ class BasePlayer(abc.ABC):
     client
         The Discord client instance driving this player. The concrete type
         depends on the underlying Discord library.
-
     """
 
     __slots__ = (
@@ -215,7 +214,6 @@ class BasePlayer(abc.ABC):
         -------
         :class:`BasePlayer`
             The player instance, fully initialised.
-
         """
 
     @property
@@ -230,7 +228,6 @@ class BasePlayer(abc.ABC):
         RuntimeError
             When setting, if the player's history is disabled (history is required
             for AutoPlay to function).
-
         """
         return self._autoplay_handler._settings.mode
 
@@ -253,7 +250,6 @@ class BasePlayer(abc.ABC):
         Returns
         -------
         :class:`~sonolink.models.AutoPlaySettings`
-
         """
         return self._autoplay_handler._settings
 
@@ -268,7 +264,6 @@ class BasePlayer(abc.ABC):
         Returns
         -------
         :class:`~sonolink.models.Playable` | None
-
         """
         return self._queue.current_track
 
@@ -282,7 +277,6 @@ class BasePlayer(abc.ABC):
         Returns
         -------
         :class:`~sonolink.models.Filters`
-
         """
         return self._filters
 
@@ -297,7 +291,6 @@ class BasePlayer(abc.ABC):
         ------
         RuntimeError
             If the player has not yet been attached to a guild.
-
         """
         if self._guild is None:
             raise RuntimeError("Player is not yet attached to a guild.")
@@ -314,7 +307,6 @@ class BasePlayer(abc.ABC):
         Returns
         -------
         :class:`~sonolink.models.HistorySettings`
-
         """
         return self._queue._history._settings
 
@@ -330,7 +322,6 @@ class BasePlayer(abc.ABC):
         ------
         RuntimeError
             If the player is not currently attached to a node.
-
         """
         if self._node is None:
             raise RuntimeError(f"Player {self.guild.id} is not attached to a node.")
@@ -343,7 +334,6 @@ class BasePlayer(abc.ABC):
         Returns
         -------
         :class:`bool`
-
         """
         return self._paused
 
@@ -359,7 +349,6 @@ class BasePlayer(abc.ABC):
         -------
         :class:`int`
             Position in milliseconds.
-
         """
         if self._paused or self._last_update == 0:
             return self._last_position
@@ -378,7 +367,6 @@ class BasePlayer(abc.ABC):
         Returns
         -------
         :class:`~sonolink.queue.queue.Queue`
-
         """
         return self._queue
 
@@ -391,7 +379,6 @@ class BasePlayer(abc.ABC):
         Returns
         -------
         :class:`~sonolink.enums.QueueMode`
-
         """
         return self._queue.mode
 
@@ -409,7 +396,6 @@ class BasePlayer(abc.ABC):
         Returns
         -------
         :class:`int`
-
         """
         return self._volume
 
@@ -437,7 +423,6 @@ class BasePlayer(abc.ABC):
             Whether to join the channel self-deafened. Defaults to ``False``.
         self_mute : :class:`bool`
             Whether to join the channel self-muted. Defaults to ``False``.
-
         """
         await self._lifecycle_handler.connect(
             timeout=timeout,
@@ -455,7 +440,6 @@ class BasePlayer(abc.ABC):
         force : :class:`bool`
             If ``True``, proceeds even if the player is not currently connected.
             Defaults to ``False``.
-
         """
         await self._lifecycle_handler.disconnect(
             force=force,
@@ -470,7 +454,6 @@ class BasePlayer(abc.ABC):
         ----------
         node: :class:`~sonolink.node.Node`
             The destination node.
-
         """
         await self._lifecycle_handler.move_to(node)
 
@@ -511,7 +494,6 @@ class BasePlayer(abc.ABC):
         -------
         :class:`~sonolink.models.Playable`
             The track that was dispatched to the Lavalink node for playback.
-
         """
         return await self._playback_handler.play(
             track,
@@ -545,7 +527,6 @@ class BasePlayer(abc.ABC):
         ------
         RuntimeError
             If the player is not connected to a node or an active session.
-
         """
         await self._playback_handler.stop(
             clear_queue=clear_queue,
@@ -559,7 +540,6 @@ class BasePlayer(abc.ABC):
         ------
         RuntimeError
             If the player is not connected to a node or an active session.
-
         """
         await self._playback_handler.pause()
 
@@ -570,7 +550,6 @@ class BasePlayer(abc.ABC):
         ------
         RuntimeError
             If the player is not connected to a node or an active session.
-
         """
         await self._playback_handler.resume()
 
@@ -593,7 +572,6 @@ class BasePlayer(abc.ABC):
             If the player is not connected to a node or an active session.
         QueueEmpty
             If the queue is empty and AutoPlay is disabled or yields no results.
-
         """
         return await self._playback_handler.skip()
 
@@ -615,7 +593,6 @@ class BasePlayer(abc.ABC):
             If the player is not connected to a node or an active session.
         HistoryEmpty
             If there is no previous track in the history.
-
         """
         return await self._playback_handler.previous()
 
@@ -632,7 +609,6 @@ class BasePlayer(abc.ABC):
         ------
         RuntimeError
             If the player is not connected to a node or an active session.
-
         """
         await self._playback_handler.seek(position)
 
@@ -651,7 +627,6 @@ class BasePlayer(abc.ABC):
             If ``value`` is outside the range ``0``–``1000``.
         RuntimeError
             If the player is not connected to a node or an active session.
-
         """
         await self._playback_handler.set_volume(value)
 
@@ -678,7 +653,6 @@ class BasePlayer(abc.ABC):
         ------
         RuntimeError
             If the player is not connected to a node or an active session.
-
         """
         await self._playback_handler.set_filters(filters.payload, seek=seek)
 
@@ -707,7 +681,6 @@ class BasePlayer(abc.ABC):
             New volume in the range ``0``–``1000``. If ``None``, the current volume is preserved.
         filters : :class:`~sonolink.models.Filters` | None
             New audio filters. If ``None``, the current filters are preserved.
-
         """
         if queue_mode is not None:
             self.queue_mode = queue_mode
@@ -744,7 +717,6 @@ class BasePlayer(abc.ABC):
         data : Any
             The raw ``VOICE_SERVER_UPDATE`` payload received from the Discord
             gateway.
-
         """
         ...
 
@@ -768,7 +740,6 @@ class BasePlayer(abc.ABC):
         data : Any
             The raw ``VOICE_STATE_UPDATE`` payload received from the Discord
             gateway.
-
         """
         ...
 
@@ -790,7 +761,6 @@ class BasePlayer(abc.ABC):
         Returns
         -------
         :class:`~sonolink.player.player.PlayerConnectionState`
-
         """
         return PlayerConnectionState()
 

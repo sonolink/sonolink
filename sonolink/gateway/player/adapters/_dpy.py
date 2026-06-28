@@ -98,7 +98,6 @@ class DpyPlayer(BasePlayer, discord.VoiceProtocol):
         The voice channel this player is currently connected to.
     client : :class:`discord.Client`
         The discord.py client driving this player.
-
     """
 
     channel: discord.abc.Connectable
@@ -184,7 +183,6 @@ class DpyPlayer(BasePlayer, discord.VoiceProtocol):
         -------
         :class:`DpyPlayer`
             This player instance, fully initialised.
-
         """
         discord.VoiceProtocol.__init__(self, client=client, channel=channel)
 
@@ -204,7 +202,6 @@ class DpyPlayer(BasePlayer, discord.VoiceProtocol):
         ----------
         data : :class:`discord.types.voice.VoiceServerUpdate`
             The raw payload received from the Discord gateway.
-
         """
         await self._events_handler.on_voice_server_update(cast(dict[str, Any], data))
 
@@ -218,7 +215,6 @@ class DpyPlayer(BasePlayer, discord.VoiceProtocol):
         ----------
         data : :class:`discord.types.voice.GuildVoiceState`
             The raw payload received from the Discord gateway.
-
         """
         await self._events_handler.on_voice_state_update(cast(dict[str, Any], data))
 

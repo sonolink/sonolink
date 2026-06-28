@@ -98,7 +98,6 @@ class NextcordPlayer(BasePlayer, nextcord.VoiceProtocol):
         The voice channel this player is currently connected to.
     client: :class:`nextcord.Client`
         The nextcord client driving this player.
-
     """
 
     channel: nextcord.abc.Connectable
@@ -184,7 +183,6 @@ class NextcordPlayer(BasePlayer, nextcord.VoiceProtocol):
         -------
         :class:`nextcordPlayer`
             This player instance, fully initialised.
-
         """
         nextcord.VoiceProtocol.__init__(self, client=client, channel=channel)
 
@@ -204,7 +202,6 @@ class NextcordPlayer(BasePlayer, nextcord.VoiceProtocol):
         ----------
         data: :class:`nextcord.types.voice.VoiceServerUpdate`
             The raw payload received from the Discord gateway.
-
         """
         await self._events_handler.on_voice_server_update(cast(dict[str, Any], data))
 
@@ -218,7 +215,6 @@ class NextcordPlayer(BasePlayer, nextcord.VoiceProtocol):
         ----------
         data: :class:`nextcord.types.voice.GuildVoiceState`
             The raw payload received from the Discord gateway.
-
         """
         await self._events_handler.on_voice_state_update(cast(dict[str, Any], data))
 

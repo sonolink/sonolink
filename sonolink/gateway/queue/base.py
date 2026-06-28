@@ -75,7 +75,6 @@ class ReadableCollection:
         -------
         :class:`int`
             The total number of tracks currently held.
-
         """
         return len(self._items)
 
@@ -130,7 +129,6 @@ class MutableQueueBase(ReadableCollection):
         ------
         :exc:`TypeError`
             When ``atomic=True`` and a non-Playable item is encountered.
-
         """
         tracks = self._materialize_tracks(tracks, atomic=atomic)
         count = len(tracks)
@@ -168,7 +166,6 @@ class MutableQueueBase(ReadableCollection):
         ------
         :exc:`TypeError`
             When ``atomic=True`` and a non-Playable item is encountered.
-
         """
         tracks = self._materialize_tracks(tracks, atomic=atomic)
         count = len(tracks)
@@ -221,7 +218,6 @@ class MutableQueueBase(ReadableCollection):
         -------
         :class:`int`
             The number of tracks removed from the queue.
-
         """
         to_remove = self._materialize_tracks(tracks, atomic=False)
 

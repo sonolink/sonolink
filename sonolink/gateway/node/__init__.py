@@ -97,7 +97,6 @@ class Node:
         the channel region. If ``None`` is passed, the node is considered to have no specific region.
 
         .. versionadded:: 1.2.0
-
     """
 
     retries: int | None
@@ -248,7 +247,6 @@ class Node:
         ------
         RuntimeError
             The node is not connected or has no active session.
-
         """
         if not self._resume_session:
             raise RuntimeError(f"Node {self._id!r} is not connected (no session ID).")
@@ -328,7 +326,6 @@ class Node:
             - :meth:`pycord:discord.VoiceChannel.connect` (py-cord)
             - :meth:`disnake:disnake.VoiceChannel.connect` (disnake)
             - :meth:`nextcord:nextcord.VoiceChannel.connect` (nextcord)
-
         """
         return self._player_registry.create_player(
             volume=volume,
@@ -360,7 +357,6 @@ class Node:
         -------
         :class:`SearchResult`
             The search result.
-
         """
         return await self._rest.search_track(query, source=source)
 
@@ -379,7 +375,6 @@ class Node:
         -------
         :class:`sonolink.models.Playable`
             The decoded resolved track.
-
         """
         return await self._rest.decode_track(encoded)
 
@@ -395,7 +390,6 @@ class Node:
         -------
         ``list[Playable]``
             The decoded resolved tracks.
-
         """
         return await self._rest.decode_tracks(*encoded)
 
@@ -406,7 +400,6 @@ class Node:
         -------
         :class:`sonolink.models.ServerInfo`
             The server info.
-
         """
         return await self._rest.fetch_info()
 
@@ -419,7 +412,6 @@ class Node:
         -------
         ``list[PlayerInfo]``
             The players connected to this node.
-
         """
         return await self._rest.fetch_players()
 
@@ -437,7 +429,6 @@ class Node:
         -------
         :class:`PlayerInfo`
             The player connected to the guild ID.
-
         """
         return await self._rest.fetch_player(guild_id)
 
@@ -448,7 +439,6 @@ class Node:
         ----------
         guild_id: :class:`int`
             The guild ID to disconnect the player from.
-
         """
         await self._rest.disconnect_player(guild_id)
 
@@ -509,7 +499,6 @@ class Node:
             The response body could not be decoded.
         :exc:`sonolink.HTTPException`
             An error occurred while making the request.
-
         """
         return await self._rest.send(
             method,
