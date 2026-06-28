@@ -58,11 +58,11 @@ class PlayerConnectionState:
     """
 
     __slots__ = (
-        "token",
+        "_connected_flag",
+        "channel_id",
         "endpoint",
         "session_id",
-        "channel_id",
-        "_connected_flag",
+        "token",
     )
 
     def __init__(self) -> None:

@@ -129,8 +129,8 @@ class ServerInfo(BaseModel[ServerInfoPayload]):
 
     __slots__ = (
         "_cs_build_time",
-        "_cs_version",
         "_cs_git",
+        "_cs_version",
     )
 
     @cached_property("_cs_version")

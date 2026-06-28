@@ -34,7 +34,7 @@ UNSET: Final = msgspec.UNSET
 
 
 class CacheNode[K, V]:
-    __slots__ = ("key", "value", "freq", "prev", "next")
+    __slots__ = ("freq", "key", "next", "prev", "value")
 
     def __init__(self, key: K, value: V, freq: int = 1) -> None:
         self.key: K = key
@@ -48,7 +48,7 @@ class CacheNode[K, V]:
 class LFUCache[K, V]:
     """LFU cache utilizing Circular Doubly Linked Lists."""
 
-    __slots__ = ("_settings", "_cache", "_freq_map", "_min_freq")
+    __slots__ = ("_cache", "_freq_map", "_min_freq", "_settings")
 
     def __init__(self, settings: CacheSettings | None = None) -> None:
         self._settings = settings or CacheSettings.default()

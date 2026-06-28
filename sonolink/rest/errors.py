@@ -60,8 +60,8 @@ class HTTPException(SonoLinkException):
     """An error response received by a HTTP request."""
 
     __slots__ = (
-        "_underlying",
         "_cs_timestamp",
+        "_underlying",
     )
 
     _underlying: ErrorResponseType

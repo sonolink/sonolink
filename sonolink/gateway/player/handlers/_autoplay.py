@@ -42,8 +42,8 @@ class AutoPlayHandler(HandlerBase):
     """Internal handler responsible for audio discovery and autonomous playback."""
 
     __slots__ = (
-        "_seeds",
         "_lock",
+        "_seeds",
         "_settings",
     )
 

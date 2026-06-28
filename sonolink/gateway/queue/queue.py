@@ -44,12 +44,12 @@ class Queue(MutableQueueBase):
     """A queue implementation for managing playable tracks."""
 
     __slots__ = (
-        "_mode",
-        "_lock",
-        "_waiters",
-        "_history",
-        "_current_track",
         "_autoplay_items",
+        "_current_track",
+        "_history",
+        "_lock",
+        "_mode",
+        "_waiters",
     )
 
     def __init__(

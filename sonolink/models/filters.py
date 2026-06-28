@@ -624,17 +624,17 @@ class Filters(BaseModel[filters.PlayerFilters]):
     """
 
     __slots__ = (
+        "channel_mix",
+        "distortion",
         "equalizer",
         "karaoke",
+        "low_pass",
+        "plugin_filters",
+        "rotation",
         "timescale",
         "tremolo",
         "vibrato",
-        "rotation",
-        "distortion",
-        "channel_mix",
-        "low_pass",
         "volume",
-        "plugin_filters",
     )
 
     def __init__(

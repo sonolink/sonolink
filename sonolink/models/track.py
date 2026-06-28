@@ -92,7 +92,7 @@ class Playable(BaseModel[Track]):
     a high-level interface for accessing track metadata and state.
     """
 
-    __slots__ = ("_autoplay", "_playlist", "_extras")
+    __slots__ = ("_autoplay", "_extras", "_playlist")
 
     def __init__(
         self,

@@ -57,10 +57,10 @@ class AutoPlaySettings(BaseSettings):
     """
 
     __slots__ = (
-        "mode",
-        "max_seeds",
-        "provider",
         "discovery_count",
+        "max_seeds",
+        "mode",
+        "provider",
     )
 
     def __init__(
@@ -92,8 +92,8 @@ class InactivitySettings(BaseSettings):
     """
 
     __slots__ = (
-        "timeout",
         "mode",
+        "timeout",
         "user_ids",
     )
 
