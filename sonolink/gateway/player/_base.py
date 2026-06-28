@@ -48,10 +48,7 @@ if TYPE_CHECKING:
     from ..node import Node
 
 
-__all__ = (
-    "BasePlayer",
-    "PlayerState",
-)
+__all__ = ("BasePlayer", "PlayerConnectionState")
 
 
 class PlayerConnectionState:
