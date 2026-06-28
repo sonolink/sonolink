@@ -684,7 +684,9 @@ class Filters(BaseModel[filters.PlayerFilters]):
             if data.plugin_filters is not msgspec.UNSET
             else None,
         )
+        
         instance._client = client
+        instance._data = data
         return instance
 
     @classmethod
