@@ -1,4 +1,5 @@
-"""sonolink.rest.http
+"""
+sonolink.rest.http
 ~~~~~~~~~~~~~~~~~~
 """
 

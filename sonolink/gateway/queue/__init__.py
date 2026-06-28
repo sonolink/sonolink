@@ -1,5 +1,6 @@
-"""sonolink.gateway.queue
-~~~~~~~~~~~~~~~~~~~~~~~~~
+"""
+sonolink.gateway.queue
+~~~~~~~~~~~~~~~~~~~~~~
 
 Submodule to handle queues for a player.
 

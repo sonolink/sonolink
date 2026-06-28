@@ -1,4 +1,5 @@
-"""sonolink
+"""
+sonolink
 ~~~~~~~~
 
 A high-performance Lavalink v4 wrapper for Python, inspired by WaveLink.
