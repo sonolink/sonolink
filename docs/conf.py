@@ -41,7 +41,7 @@ intersphinx_mapping = {
     "nextcord": ("https://docs.nextcord.dev/en/stable/", None),
     "aiohttp": ("https://docs.aiohttp.org/en/stable/", None),
     "curl_cffi": ("https://curl-cffi.readthedocs.io/en/stable/", None),
-    "msgspec": ("https://jcristharif.com/msgspec/", None),
+    "msgspec": ("https://msgspec.dev/", None),
 }
 
 exclude_patterns = [
