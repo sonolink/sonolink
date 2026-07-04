@@ -7,6 +7,18 @@ Changelog
 This page keeps a detailed human friendly rendering of what's new and changed
 in specific versions.
 
+.. _unreleased:
+
+Unreleased
+----------
+
+**Fixed**
+~~~~~~~~~
+
+- Fixed a race condition in the node reconnection flow that caused an
+  intermittent "Timed out waiting for node READY payload" error after
+  prolonged uptime.
+
 .. _vp1p2p0:
 
 v1.2.0 - 2026-06-23
