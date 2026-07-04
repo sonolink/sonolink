@@ -83,9 +83,9 @@ class ConnectionManager(NodeComponent):
 
         self.node._ws = None
         self.node._keep_alive = None
-        self.node._resume_session = None
         self.node._status = NodeStatus.DISCONNECTED
         self.node._ready_event.clear()
+        self.node._resume_session = None
 
         await self.node.cleanup()
         self.node._client._dispatch("node_close", self.node)
@@ -97,10 +97,7 @@ class ConnectionManager(NodeComponent):
         if self.node._is_reconnecting:
             raise RuntimeError("This node is already reconnecting.")
 
-        self.node._resume_session = None
-        self.node._ws = None
         self.node._status = NodeStatus.CONNECTING
-        self.node._ready_event.clear()
         self.node._is_reconnecting = True
 
         try:

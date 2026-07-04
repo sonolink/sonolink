@@ -236,7 +236,18 @@ class EventsHandler(HandlerBase):
 
         if self._player._node._resume_session is None:
             _log.debug("No session ID found, waiting...")
-            await self._player._node._wait_session()
+            try:
+                await self._player._node._wait_session()
+            except RuntimeError:
+                _log.warning(
+                    "Player %s: Session wait timed out; reconnecting node...",
+                    self._player.guild.id,
+                )
+                try:
+                    await self._player._node.reconnect()
+                except RuntimeError:
+                    pass
+                await self._player._node._wait_session()
             assert self._player._node._resume_session is not None
 
         voice_state = PlayerVoiceState(
@@ -271,7 +282,7 @@ class EventsHandler(HandlerBase):
                     "node session is stale. Forcing disconnect.",
                     self._player.guild.id,
                 )
-                self._player._node._resume_session = None
+                await self._player._node.reconnect()
                 await self._player._lifecycle_handler.disconnect(
                     force=True,
                     trigger=DisconnectTriggerType.ERROR,
