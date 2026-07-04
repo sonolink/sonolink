@@ -12,9 +12,19 @@ in specific versions.
 Unreleased
 ----------
 
+**Added**
+~~~~~~~~~
+
+- Added the missing ``NetworkError`` export to the public API.
+
 **Fixed**
 ~~~~~~~~~
 
+- Fixed a typo in ``__repr_attrs__`` of :class:`WebSocketClosedEvent`.
+- Fixed an incorrect datetime timestamp in :attr:`PlayerState.time` caused by differing time units.
+- Fixed an issue where the node status would remain stuck on :attr:`NodeStatus.CONNECTING` after
+  an ``attempt_connect`` failure.
+- Fixed :class:`Filters` not populating data on the instance.
 - Fixed a race condition in the node reconnection flow that caused an
   intermittent "Timed out waiting for node READY payload" error after
   prolonged uptime.
