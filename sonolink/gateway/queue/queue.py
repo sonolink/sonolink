@@ -456,26 +456,20 @@ class Queue(MutableQueueBase):
     def sort(
         self,
         *,
-        key: Callable[[Playable], Any] | None = None,
+        key: Callable[[Playable], Any],
         reverse: bool = False,
     ) -> None:
         """Sort the queue in place.
 
         Parameters
         ----------
-        key: Callable[[:class:`~sonolink.models.Playable`], Any] | None
-            A function that takes a track and returns a value to sort by.
-            If ``None``, tracks are sorted by their default comparison order.
+        key: Callable[[:class:`~sonolink.models.Playable`], Any]
+            A function that takes a track and returns a value to sort by,
+            e.g. ``key=lambda track: track.title``.
         reverse: :class:`bool`
             Whether to sort in descending order. Defaults to ``False``.
         """
-        self._items = deque(
-            sorted(
-                self._items,
-                key=key or (lambda track: track),
-                reverse=reverse,
-            )
-        )
+        self._items = deque[Playable](sorted(self._items, key=key, reverse=reverse))
 
     def dedupe(self, *, key: Callable[[Playable], Any] = lambda t: t.identifier) -> int:
         """Remove duplicate tracks in place, keeping the first occurrence of each.
