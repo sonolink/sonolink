@@ -26,7 +26,7 @@ from __future__ import annotations
 import asyncio
 import random
 from collections import deque
-from typing import TYPE_CHECKING, Iterable
+from typing import TYPE_CHECKING, Any, Callable, Iterable
 
 from sonolink.models.settings import HistorySettings
 from sonolink.models.track import Playable
@@ -445,6 +445,37 @@ class Queue(MutableQueueBase):
         new_queue._history = self._history._copy()
         new_queue._autoplay_items = deque(self._autoplay_items)
         return new_queue
+
+    def reverse(self) -> None:
+        """Reverse the queue in place.
+
+        This does not return anything.
+        """
+        self._items = deque[Playable](reversed(self._items))
+
+    def sort(
+        self,
+        *,
+        key: Callable[[Playable], Any] | None = None,
+        reverse: bool = False,
+    ) -> None:
+        """Sort the queue in place.
+
+        Parameters
+        ----------
+        key: Callable[[:class:`~sonolink.models.Playable`], Any] | None
+            A function that takes a track and returns a value to sort by.
+            If ``None``, tracks are sorted by their default comparison order.
+        reverse: :class:`bool`
+            Whether to sort in descending order. Defaults to ``False``.
+        """
+        self._items = deque(
+            sorted(
+                self._items,
+                key=key or (lambda track: track),
+                reverse=reverse,
+            )
+        )
 
     def shuffle(self) -> None:
         """Shuffle the queue in place.
