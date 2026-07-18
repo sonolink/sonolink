@@ -477,6 +477,29 @@ class Queue(MutableQueueBase):
             )
         )
 
+    def dedupe(self, *, key: Callable[[Playable], Any] = lambda t: t.identifier) -> int:
+        """Remove duplicate tracks in place, keeping the first occurrence of each.
+
+        Parameters
+        ----------
+        key: Callable[[:class:`~sonolink.models.Playable`], Any]
+            A function that returns the value used to determine duplicates.
+            Defaults to comparing by :attr:`~sonolink.models.Playable.identifier`.
+
+        Returns
+        -------
+        :class:`int`
+            The number of tracks removed.
+        """
+        seen: set[Any] = set()
+        before = len(self._items)
+        self._items = deque[Playable](
+            track
+            for track in self._items
+            if not (key(track) in seen or seen.add(key(track)))
+        )
+        return before - len(self._items)
+
     def shuffle(self) -> None:
         """Shuffle the queue in place.
 
