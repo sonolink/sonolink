@@ -496,7 +496,7 @@ class Queue(MutableQueueBase):
         self._items = deque[Playable](
             track
             for track in self._items
-            if not (key(track) in seen or seen.add(key(track)))
+            if (k := key(track)) not in seen and not seen.add(k)
         )
         return before - len(self._items)
 
