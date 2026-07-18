@@ -288,7 +288,7 @@ SonoLink works the same way, using the ``sonolink_`` prefix instead:
    * - ``on_wavelink_inactive_player(player)``
      - *Handled internally; configure via* :class:`~sonolink.models.InactivitySettings`
    * - *(no equivalent)*
-     - :func:`on_sonolink_player_disconnect(player, payload) <on_sonolink_player_update>`
+     - :func:`on_sonolink_player_disconnect(player, payload) <on_sonolink_player_disconnect>`
 
 Autoplay
 --------
