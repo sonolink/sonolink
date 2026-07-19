@@ -17,10 +17,18 @@ in specific versions.
 - Added various helper methods to :class:`Queue`:
 
   - :meth:`Queue.sort` to sort the queue by a given key function. Similar to Python's built-in :meth:`list.sort` method.
-    
+
     - Example: ``queue.sort(key=lambda track: track.title)`` to sort by track title.
   - :meth:`Queue.reverse` to reverse the order of the queue.
   - :meth:`Queue.dedupe` to remove duplicate tracks from the queue.
+
+- Added :class:`ShuffleMode` and :attr:`Queue.shuffle_mode` for persistent shuffle support.
+
+  - Independent of :class:`QueueMode`.
+  - While :attr:`ShuffleMode.PERSISTENT` is active, :meth:`Queue.get` pops a random track instead of
+    the next one in order, without reordering the underlying queue. Switching back to
+    :attr:`ShuffleMode.DEFAULT` resumes playback in the original order.
+  - :meth:`Queue.shuffle` is unaffected and still performs its usual one-time in-place reorder.
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.2.1..HEAD
 
@@ -198,7 +206,3 @@ v1.0.0 - 2026-04-11
 -------------------
 
 Initial release. For more information on what this added, consider referring to the API Reference or the examples.
-
-
-
-
