@@ -403,6 +403,7 @@ class Queue(MutableQueueBase):
         /,
         *,
         remove_all: bool = True,
+        key: Callable[[Playable], Any] | None = None,
     ) -> int:
         """Asynchronously remove one or more tracks from the queue.
 
@@ -415,6 +416,12 @@ class Queue(MutableQueueBase):
         remove_all: :class:`bool`
             Whether to remove all occurrences of a track from this queue. When set to ``False``, only the first occurrence of each
             track is removed. Defaults to ``True``.
+        key: Callable[[:class:`Playable`], Any] | None
+            If provided, tracks are matched by comparing ``key(track)`` against
+            each value in ``tracks`` instead of using equality directly. Defaults
+            to ``None``.
+
+            .. versionadded:: 1.3.0
 
         Returns
         -------
@@ -422,7 +429,7 @@ class Queue(MutableQueueBase):
             The number of tracks removed from the queue.
         """
         async with self._lock:
-            count = self.remove(tracks, remove_all=remove_all)
+            count = self.remove(tracks, remove_all=remove_all, key=key)
 
         if count != 0:
             await asyncio.sleep(0)
