@@ -7,6 +7,22 @@ Changelog
 This page keeps a detailed human friendly rendering of what's new and changed
 in specific versions.
 
+
+`Unreleased`_
+--------------
+
+**Added**
+~~~~~~~~~
+
+- Added various helper methods to :class:`Queue`:
+
+  - :meth:`Queue.sort` to sort the queue by a given key function. Similar to Python's built-in :meth:`list.sort` method.
+    - Example: ``queue.sort(key=lambda track: track.title)`` to sort by track title.
+  - :meth:`Queue.reverse` to reverse the order of the queue.
+  - :meth:`Queue.dedupe` to remove duplicate tracks from the queue.
+
+.. _unreleased: https://github.com/sonolink/sonolink/compare/v1.2.1..HEAD
+
 .. _vp1p2p1:
 
 v1.2.1 - 2026-07-04
@@ -184,4 +200,4 @@ Initial release. For more information on what this added, consider referring to 
 
 
 
-.. _unreleased: https://github.com/sonolink/sonolink/compare/v1.0.1..HEAD
+
