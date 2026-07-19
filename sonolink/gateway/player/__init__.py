@@ -98,7 +98,7 @@ class _PlayerMeta(abc.ABCMeta):
 class Player(BasePlayer, metaclass=_PlayerMeta):
     """A dynamic proxy class for SonoLink players.
 
-    Automatically resolves the appropriate :class:`~sonolink.player.BasePlayer`
+    Automatically resolves the appropriate :class:`~sonolink.gateway.player._base.BasePlayer`
     implementation for the detected or configured Discord library backend
     (``discord.py``, ``py-cord``, ``disnake``, or ``nextcord``) at instantiation time.
 
@@ -117,18 +117,18 @@ class Player(BasePlayer, metaclass=_PlayerMeta):
 
     2. **Instance-pass** — construct a pre-configured instance and pass it
        instead. The library will call ``player(client, channel)`` which hits
-       the concrete adapter's :meth:`__call__`::
+       the concrete adapter's ``__call__``::
 
            player = Player(node=some_node, volume=80)
            await voice_channel.connect(cls=player)
 
     Parameters
     ----------
-    node : :class:`~sonolink.node.Node` | None
+    node : :class:`~sonolink.Node` | None
         The Lavalink node to associate with this player. If ``None``, an
         available node is resolved from the client's node pool at connection
         time.
-    queue_mode : :class:`~sonolink.enums.QueueMode`
+    queue_mode : :class:`~sonolink.QueueMode`
         The initial queue looping mode. Defaults to ``QueueMode.NORMAL``.
     autoplay_settings : :class:`~sonolink.models.AutoPlaySettings` | None
         AutoPlay configuration. ``None`` uses the default configuration.

@@ -260,7 +260,7 @@ class Client(Generic[N]):
         inactivity_settings: :class:`InactivitySettings` | :data:`None`
             The inactivity configuration for all players connected to this node.
             If ``None`` is passed, it uses ``InactivitySettings.default()``.
-        session: ``aiohttp.ClientSession`` | ``curl_cffi.AsyncSession`` | :data:`None`
+        session: :class:`aiohttp.ClientSession` | :class:`curl_cffi.AsyncSession` | :data:`None`
             The session this node should use. If ``None`` is provided, creates one. Defaults to ``None``.
         auto_reconnect: :class:`bool`
             Whether the node should attempt to reconnect automatically after an unexpected

@@ -143,12 +143,12 @@ class Queue(MutableQueueBase):
         These tracks are only played once all user-added tracks are exhausted.
         Modifying this list will not affect the actual queue.
 
+        .. versionadded:: 1.1.0
+
         Returns
         -------
         list[:class:`Playable`]
             A list of AutoPlay tracks.
-
-        .. versionadded:: 1.1.0
         """
         return list(self._autoplay_items)
 
@@ -526,6 +526,7 @@ class Queue(MutableQueueBase):
         """Reset the queue to its default state.
 
         This will:
+
         - Clear all items from the queue
         - Clear AutoPlay-discovered tracks
         - Clear history
