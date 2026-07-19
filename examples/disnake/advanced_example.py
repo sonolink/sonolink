@@ -292,8 +292,16 @@ async def stop(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
 # --------------
 
 
-@bot.slash_command(name="queue", description="Display the current queue.")
-async def queue(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
+# All queue management commands live under a single '/queue' group,
+# e.g. '/queue show', '/queue shuffle', '/queue sort'.
+@bot.slash_command(name="queue", description="Queue management commands.")
+async def queue_group(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
+    # This parent command is never invoked directly; only its sub-commands are.
+    pass
+
+
+@queue_group.sub_command(name="show", description="Display the current queue.")
+async def queue_show(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
     """Display the current queue (up to 10 upcoming tracks)."""
     vc = _player_check(inter)
     if not vc:
@@ -332,8 +340,8 @@ async def queue(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
     await inter.response.send_message("\n".join(lines))
 
 
-@bot.slash_command(name="shuffle", description="Shuffles the current queue.")
-async def shuffle(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
+@queue_group.sub_command(name="shuffle", description="Shuffles the current queue.")
+async def queue_shuffle(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
     """Shuffles the current queue in place."""
     vc = _player_check(inter)
     if not vc:
@@ -348,8 +356,82 @@ async def shuffle(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
     await inter.response.send_message("Queue shuffled!")
 
 
-@bot.slash_command(name="loop", description="Set the loop mode.")
-async def loop(
+@queue_group.sub_command(name="reverse", description="Reverses the current queue.")
+async def queue_reverse(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
+    """Reverses the current queue in place."""
+    vc = _player_check(inter)
+    if not vc:
+        await inter.response.send_message("Not connected to a voice channel!")
+        return
+
+    if not vc.queue.tracks:
+        await inter.response.send_message("The queue is empty!")
+        return
+
+    vc.queue.reverse()
+    await inter.response.send_message("Queue reversed!")
+
+
+@queue_group.sub_command(name="sort", description="Sorts the queue.")
+async def queue_sort(
+    inter: disnake.ApplicationCommandInteraction[Bot],
+    by: str = commands.Param(  # pyright: ignore[reportUnknownMemberType]
+        description="What to sort the queue by.",
+        default="title",
+        choices=["title", "author", "length"],
+    ),
+    descending: bool = commands.Param(  # pyright: ignore[reportUnknownMemberType]
+        description="Whether to sort in descending order.",
+        default=False,
+    ),
+) -> None:
+    """Sorts the queue in place by title, author, or track length."""
+    vc = _player_check(inter)
+    if not vc:
+        await inter.response.send_message("Not connected to a voice channel!")
+        return
+
+    if not vc.queue.tracks:
+        await inter.response.send_message("The queue is empty!")
+        return
+
+    # 'sort' requires a key function that returns the value to sort by.
+    keys = {
+        "title": lambda t: t.title.lower(),
+        "author": lambda t: t.author.lower(),
+        "length": lambda t: t.length,
+    }
+    vc.queue.sort(key=keys[by], reverse=descending)
+    await inter.response.send_message(f"Queue sorted by `{by}`!")
+
+
+@queue_group.sub_command(
+    name="dedupe", description="Removes duplicate tracks from the queue."
+)
+async def queue_dedupe(inter: disnake.ApplicationCommandInteraction[Bot]) -> None:
+    """Remove duplicate tracks from the queue, keeping the first occurrence."""
+    vc = _player_check(inter)
+    if not vc:
+        await inter.response.send_message("Not connected to a voice channel!")
+        return
+
+    if not vc.queue.tracks:
+        await inter.response.send_message("The queue is empty!")
+        return
+
+    # By default duplicates are detected by track identifier; pass your own
+    # 'key' (e.g. key=lambda t: t.title) to change that.
+    removed = vc.queue.dedupe()
+    if removed:
+        await inter.response.send_message(
+            f"Removed {removed} duplicate track(s) from the queue!"
+        )
+    else:
+        await inter.response.send_message("No duplicates found!")
+
+
+@queue_group.sub_command(name="loop", description="Set the loop mode.")
+async def queue_loop(
     inter: disnake.ApplicationCommandInteraction[Bot],
     mode: str = commands.Param(  # pyright: ignore[reportUnknownMemberType]
         description="Choose from: track, all, off",
