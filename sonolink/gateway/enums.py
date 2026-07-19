@@ -116,14 +116,16 @@ class ShuffleMode(StrEnum):
 
     .. versionadded:: 1.3.0
 
-    :ivar ENABLED: A random track is popped from the queue each time one is needed,
-        without reordering the underlying queue. Toggling back to ``DISABLED`` resumes
+    :ivar DEFAULT: The default state. Tracks are played in queue order; calling
+        :meth:`Queue.shuffle` with no arguments still performs its usual one-time
+        in-place reorder.
+    :ivar PERSISTENT: A random track is popped from the queue each time one is needed,
+        without reordering the underlying queue. Toggling back to ``DEFAULT`` resumes
         in-order playback with the original order intact.
-    :ivar DISABLED: Shuffle is disabled. Tracks are played in queue order.
     """
 
-    ENABLED = "enabled"
-    DISABLED = "disabled"
+    DEFAULT = "default"
+    PERSISTENT = "persistent"
 
 
 class SearchProvider(StrEnum):
