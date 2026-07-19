@@ -44,7 +44,7 @@ in public, for example: at an event, on social media, or via an official
 project account.
 
 Contributions involving AI tools are additionally subject to the
-[AI Contribution Policy](./AI_POLICY.md).
+[AI Contribution Policy](https://github.com/sonolink/sonolink/blob/main/AI_POLICY.md).
 
 ## Reporting & Enforcement
 
@@ -57,5 +57,5 @@ in good faith are held to the same standard.
 
 ## Attribution
 
-*This Code of Conduct is inspired by the
-[Contributor Covenant](https://www.contributor-covenant.org), version 3.0.*
+_This Code of Conduct is inspired by the
+[Contributor Covenant](https://www.contributor-covenant.org), version 3.0._
