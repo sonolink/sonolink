@@ -277,8 +277,13 @@ async def stop(ctx: discord.ApplicationContext) -> None:
 # --------------
 
 
-@bot.slash_command(name="queue", description="Display the current queue.")
-async def queue(ctx: discord.ApplicationContext) -> None:
+# All queue management commands live under a single '/queue' group,
+# e.g. '/queue show', '/queue shuffle', '/queue sort'.
+queue_group = bot.create_group("queue", "Queue management commands.")
+
+
+@queue_group.command(name="show", description="Display the current queue.")
+async def queue_show(ctx: discord.ApplicationContext) -> None:
     """Display the current queue (up to 10 upcoming tracks)."""
     vc = _player_check(ctx)
     if not vc:
@@ -317,8 +322,8 @@ async def queue(ctx: discord.ApplicationContext) -> None:
     await ctx.respond("\n".join(lines))
 
 
-@bot.slash_command(name="shuffle", description="Shuffles the current queue.")
-async def shuffle(ctx: discord.ApplicationContext) -> None:
+@queue_group.command(name="shuffle", description="Shuffles the current queue.")
+async def queue_shuffle(ctx: discord.ApplicationContext) -> None:
     """Shuffles the current queue in place."""
     vc = _player_check(ctx)
     if not vc:
@@ -333,9 +338,78 @@ async def shuffle(ctx: discord.ApplicationContext) -> None:
     await ctx.respond("Queue shuffled!")
 
 
-@bot.slash_command(name="loop", description="Set the loop mode.")
+@queue_group.command(name="reverse", description="Reverses the current queue.")
+async def queue_reverse(ctx: discord.ApplicationContext) -> None:
+    """Reverses the current queue in place."""
+    vc = _player_check(ctx)
+    if not vc:
+        await ctx.respond("Not connected to a voice channel!")
+        return
+
+    if not vc.queue.tracks:
+        await ctx.respond("The queue is empty!")
+        return
+
+    vc.queue.reverse()
+    await ctx.respond("Queue reversed!")
+
+
+@queue_group.command(name="sort", description="Sorts the queue.")
+@discord.option("by", description="What to sort the queue by.", type=str)
+@discord.option(
+    "descending", description="Whether to sort in descending order.", type=bool
+)
+async def queue_sort(
+    ctx: discord.ApplicationContext,
+    by: Literal["title", "author", "length"] = "title",
+    descending: bool = False,
+) -> None:
+    """Sorts the queue in place by title, author, or track length."""
+    vc = _player_check(ctx)
+    if not vc:
+        await ctx.respond("Not connected to a voice channel!")
+        return
+
+    if not vc.queue.tracks:
+        await ctx.respond("The queue is empty!")
+        return
+
+    # 'sort' requires a key function that returns the value to sort by.
+    keys = {
+        "title": lambda t: t.title.lower(),
+        "author": lambda t: t.author.lower(),
+        "length": lambda t: t.length,
+    }
+    vc.queue.sort(key=keys[by], reverse=descending)
+    await ctx.respond(f"Queue sorted by `{by}`!")
+
+
+@queue_group.command(
+    name="dedupe", description="Removes duplicate tracks from the queue."
+)
+async def queue_dedupe(ctx: discord.ApplicationContext) -> None:
+    """Remove duplicate tracks from the queue, keeping the first occurrence."""
+    vc = _player_check(ctx)
+    if not vc:
+        await ctx.respond("Not connected to a voice channel!")
+        return
+
+    if not vc.queue.tracks:
+        await ctx.respond("The queue is empty!")
+        return
+
+    # By default duplicates are detected by track identifier; pass your own
+    # 'key' (e.g. key=lambda t: t.title) to change that.
+    removed = vc.queue.dedupe()
+    if removed:
+        await ctx.respond(f"Removed {removed} duplicate track(s) from the queue!")
+    else:
+        await ctx.respond("No duplicates found!")
+
+
+@queue_group.command(name="loop", description="Set the loop mode.")
 @discord.option("mode", description="Choose from: track, all, off", type=str)
-async def loop(
+async def queue_loop(
     ctx: discord.ApplicationContext, mode: Literal["track", "all", "off"] = "track"
 ) -> None:
     """Set the loop mode. Options: 'track', 'all', 'off'.

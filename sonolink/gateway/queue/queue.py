@@ -26,7 +26,7 @@ from __future__ import annotations
 import asyncio
 import random
 from collections import deque
-from typing import TYPE_CHECKING, Iterable
+from typing import TYPE_CHECKING, Any, Callable, Iterable
 
 from sonolink.models.settings import HistorySettings
 from sonolink.models.track import Playable
@@ -445,6 +445,54 @@ class Queue(MutableQueueBase):
         new_queue._history = self._history._copy()
         new_queue._autoplay_items = deque(self._autoplay_items)
         return new_queue
+
+    def reverse(self) -> None:
+        """Reverse the queue in place.
+
+        This does not return anything.
+        """
+        self._items = deque[Playable](reversed(self._items))
+
+    def sort(
+        self,
+        *,
+        key: Callable[[Playable], Any],
+        reverse: bool = False,
+    ) -> None:
+        """Sort the queue in place.
+
+        Parameters
+        ----------
+        key: Callable[[:class:`~sonolink.models.Playable`], Any]
+            A function that takes a track and returns a value to sort by,
+            e.g. ``key=lambda track: track.title``.
+        reverse: :class:`bool`
+            Whether to sort in descending order. Defaults to ``False``.
+        """
+        self._items = deque[Playable](sorted(self._items, key=key, reverse=reverse))
+
+    def dedupe(self, *, key: Callable[[Playable], Any] = lambda t: t.identifier) -> int:
+        """Remove duplicate tracks in place, keeping the first occurrence of each.
+
+        Parameters
+        ----------
+        key: Callable[[:class:`~sonolink.models.Playable`], Any]
+            A function that returns the value used to determine duplicates.
+            Defaults to comparing by :attr:`~sonolink.models.Playable.identifier`.
+
+        Returns
+        -------
+        :class:`int`
+            The number of tracks removed.
+        """
+        seen: set[Any] = set()
+        before = len(self._items)
+        self._items = deque[Playable](
+            track
+            for track in self._items
+            if (k := key(track)) not in seen and not seen.add(k)
+        )
+        return before - len(self._items)
 
     def shuffle(self) -> None:
         """Shuffle the queue in place.

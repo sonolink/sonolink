@@ -295,9 +295,14 @@ async def stop(interaction: discord.Interaction) -> None:
 # Queue commands
 # --------------
 
+# All queue management commands live under a single '/queue' group,
+# e.g. '/queue show', '/queue shuffle', '/queue sort'.
+queue_group = app_commands.Group(name="queue", description="Queue management commands.")
+bot.tree.add_command(queue_group)
 
-@bot.tree.command(name="queue", description="Display the current queue.")
-async def queue(interaction: discord.Interaction) -> None:
+
+@queue_group.command(name="show", description="Display the current queue.")
+async def queue_show(interaction: discord.Interaction) -> None:
     """Display the current queue (up to 10 upcoming tracks)."""
     vc = _player_check(interaction)
     if not vc:
@@ -336,8 +341,8 @@ async def queue(interaction: discord.Interaction) -> None:
     await interaction.response.send_message("\n".join(lines))
 
 
-@bot.tree.command(name="shuffle", description="Shuffles the current queue.")
-async def shuffle(interaction: discord.Interaction) -> None:
+@queue_group.command(name="shuffle", description="Shuffles the current queue.")
+async def queue_shuffle(interaction: discord.Interaction) -> None:
     """Shuffles the current queue in place."""
     vc = _player_check(interaction)
     if not vc:
@@ -352,9 +357,80 @@ async def shuffle(interaction: discord.Interaction) -> None:
     await interaction.response.send_message("Queue shuffled!")
 
 
-@bot.tree.command(name="loop", description="Set the loop mode.")
+@queue_group.command(name="reverse", description="Reverses the current queue.")
+async def queue_reverse(interaction: discord.Interaction) -> None:
+    """Reverses the current queue in place."""
+    vc = _player_check(interaction)
+    if not vc:
+        await interaction.response.send_message("Not connected to a voice channel!")
+        return
+
+    if not vc.queue.tracks:
+        await interaction.response.send_message("The queue is empty!")
+        return
+
+    vc.queue.reverse()
+    await interaction.response.send_message("Queue reversed!")
+
+
+@queue_group.command(name="sort", description="Sorts the queue.")
+@app_commands.describe(
+    by="What to sort the queue by.",
+    descending="Whether to sort in descending order.",
+)
+async def queue_sort(
+    interaction: discord.Interaction,
+    by: Literal["title", "author", "length"] = "title",
+    descending: bool = False,
+) -> None:
+    """Sorts the queue in place by title, author, or track length."""
+    vc = _player_check(interaction)
+    if not vc:
+        await interaction.response.send_message("Not connected to a voice channel!")
+        return
+
+    if not vc.queue.tracks:
+        await interaction.response.send_message("The queue is empty!")
+        return
+
+    # 'sort' requires a key function that returns the value to sort by.
+    keys = {
+        "title": lambda t: t.title.lower(),
+        "author": lambda t: t.author.lower(),
+        "length": lambda t: t.length,
+    }
+    vc.queue.sort(key=keys[by], reverse=descending)
+    await interaction.response.send_message(f"Queue sorted by `{by}`!")
+
+
+@queue_group.command(
+    name="dedupe", description="Removes duplicate tracks from the queue."
+)
+async def queue_dedupe(interaction: discord.Interaction) -> None:
+    """Remove duplicate tracks from the queue, keeping the first occurrence."""
+    vc = _player_check(interaction)
+    if not vc:
+        await interaction.response.send_message("Not connected to a voice channel!")
+        return
+
+    if not vc.queue.tracks:
+        await interaction.response.send_message("The queue is empty!")
+        return
+
+    # By default duplicates are detected by track identifier; pass your own
+    # 'key' (e.g. key=lambda t: t.title) to change that.
+    removed = vc.queue.dedupe()
+    if removed:
+        await interaction.response.send_message(
+            f"Removed {removed} duplicate track(s) from the queue!"
+        )
+    else:
+        await interaction.response.send_message("No duplicates found!")
+
+
+@queue_group.command(name="loop", description="Set the loop mode.")
 @app_commands.describe(mode="Choose from: track, all, off")
-async def loop(
+async def queue_loop(
     interaction: discord.Interaction, mode: Literal["track", "all", "off"] = "track"
 ) -> None:
     """Set the loop mode. Options: 'track', 'all', 'off'.
