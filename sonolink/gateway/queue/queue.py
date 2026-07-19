@@ -130,7 +130,7 @@ class Queue(MutableQueueBase):
         When :attr:`ShuffleMode.PERSISTENT`, :meth:`get` pops a random track
         from the user lane (:attr:`tracks`) instead of always popping the
         head. This is independent of :meth:`shuffle`, and never touches
-        :attr:`tracks` itself -- setting this back to :attr:`ShuffleMode.DEFAULT`
+        :attr:`tracks` itself — setting this back to :attr:`ShuffleMode.DEFAULT`
         does not need to restore anything, since the underlying order was
         never changed while persistent shuffle was on.
 

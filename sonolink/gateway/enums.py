@@ -117,8 +117,7 @@ class ShuffleMode(StrEnum):
     .. versionadded:: 1.3.0
 
     :ivar DEFAULT: The default state. Tracks are played in queue order; calling
-        :meth:`Queue.shuffle` with no arguments still performs its usual one-time
-        in-place reorder.
+        :meth:`Queue.shuffle` still performs its usual one-time in-place reorder.
     :ivar PERSISTENT: A random track is popped from the queue each time one is needed,
         without reordering the underlying queue. Toggling back to ``DEFAULT`` resumes
         in-order playback with the original order intact.
