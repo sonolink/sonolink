@@ -45,6 +45,14 @@ in specific versions.
     :attr:`ShuffleMode.DEFAULT` resumes playback in the original order.
   - :meth:`Queue.shuffle` is unaffected and still performs its usual one-time in-place reorder.
 
+- Added a ``key`` parameter to :meth:`Queue.get` and :meth:`Queue.get_wait` to avoid picking a
+  track that collides with the current track on an arbitrary derived value, e.g. to avoid
+  repeats.
+
+  - Example: ``queue.get(key=lambda track: track.author)`` to avoid picking a track by the
+    currently playing artist.
+  - If every remaining candidate collides, the collision is allowed rather than raising.
+
 **Fixed**
 ~~~~~~~~~
 
