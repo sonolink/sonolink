@@ -26,7 +26,7 @@ from __future__ import annotations
 import abc
 import asyncio
 import time
-from typing import TYPE_CHECKING, Annotated, Any
+from typing import TYPE_CHECKING, Annotated, Any, Callable
 
 from sonolink import _registry
 from sonolink.gateway.player.handlers._autoplay import AutoPlayHandler
@@ -554,12 +554,20 @@ class BasePlayer(abc.ABC):
         """
         await self._playback_handler.resume()
 
-    async def skip(self) -> Playable | None:
+    async def skip(self, *, key: Callable[[Playable], Any] | None = None) -> Playable | None:
         """Skip the currently playing track and advance to the next one in the queue.
 
         If the queue is empty and AutoPlay is enabled, a related track may be
         fetched automatically. If neither a queued nor an AutoPlay track is
         available, playback stops and ``None`` is returned.
+
+        Parameters
+        ----------
+        key: Callable[[:class:`~sonolink.models.Playable`], Any] | :data:`None`
+            Forwarded to :meth:`Queue.get`. See :meth:`Queue.get` for
+            details. Defaults to ``None``.
+
+            .. versionadded:: 1.3.0
 
         Returns
         -------
@@ -574,7 +582,7 @@ class BasePlayer(abc.ABC):
         QueueEmpty
             If the queue is empty and AutoPlay is disabled or yields no results.
         """
-        return await self._playback_handler.skip()
+        return await self._playback_handler.skip(key=key)
 
     async def skip_to(self, index: int, /) -> Playable:
         """Skip directly to a track at the given queue index.

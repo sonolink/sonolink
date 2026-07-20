@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import time
 import types
-from typing import Any
+from typing import Any, Callable
 
 import msgspec
 
@@ -157,9 +157,9 @@ class PlaybackHandler(HandlerBase):
         await self.play(track)
         return track
 
-    async def skip(self) -> Playable | None:
+    async def skip(self, *, key: Callable[[Playable], Any] | None = None) -> Playable | None:
         try:
-            next_track = self._player.queue.get()
+            next_track = self._player.queue.get(key=key)
             await self.play(next_track)
             return next_track
         except QueueEmpty:
