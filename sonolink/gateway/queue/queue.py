@@ -70,6 +70,20 @@ class Queue(MutableQueueBase):
         self._current_track: Playable | None = None
         self._autoplay_items: deque[Playable] = deque()
 
+    def __reversed__(self) -> Iterator[Playable]:
+        """Return a reverse iterator over the queue tracks.
+
+        This allows the built-in :func:`reversed` to be used on the queue.
+
+        Returns
+        -------
+        Iterator[:class:`~sonolink.models.Playable`]
+            A reverse iterator over the queue tracks.
+
+        .. versionadded:: 1.3.0
+        """
+        return reversed(self._items)
+
     @property
     def current_track(self) -> Playable | None:
         """The currently loaded track.
@@ -495,20 +509,6 @@ class Queue(MutableQueueBase):
         This does not return anything.
         """
         self._items = deque[Playable](reversed(self._items))
-
-    def __reversed__(self) -> Iterator[Playable]:
-        """Return a reverse iterator over the queue tracks.
-
-        This allows the built-in :func:`reversed` to be used on the queue.
-
-        Returns
-        -------
-        Iterator[:class:`~sonolink.models.Playable`]
-            A reverse iterator over the queue tracks.
-
-        .. versionadded:: 1.3.0
-        """
-        return reversed(self._items)
 
     def sort(
         self,
