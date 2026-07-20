@@ -26,7 +26,7 @@ from __future__ import annotations
 import asyncio
 import random
 from collections import deque
-from typing import TYPE_CHECKING, Any, Callable, Iterable
+from typing import TYPE_CHECKING, Any, Callable, Iterable, Iterator
 
 from sonolink.models.settings import HistorySettings
 from sonolink.models.track import Playable
@@ -495,6 +495,20 @@ class Queue(MutableQueueBase):
         This does not return anything.
         """
         self._items = deque[Playable](reversed(self._items))
+
+    def __reversed__(self) -> Iterator[Playable]:
+        """Return a reverse iterator over the queue tracks.
+
+        This allows the built-in :func:`reversed` to be used on the queue.
+
+        Returns
+        -------
+        Iterator[:class:`~sonolink.models.Playable`]
+            A reverse iterator over the queue tracks.
+
+        .. versionadded:: 1.3.0
+        """
+        return reversed(self._items)
 
     def sort(
         self,
