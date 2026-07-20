@@ -1,22 +1,33 @@
-name: PR Follows Template
-
+name: Pull Request Governance
 on:
+    workflow_dispatch:
     pull_request_target:
-        types: [opened, edited, synchronize, reopened]
-
+        types: [opened, synchronize, reopened, edited]
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
 permissions:
     pull-requests: write
     issues: write
     contents: read
-
 jobs:
+    semtitle:
+        name: Check Semantic Title
+        runs-on: ubuntu-latest
+        if: github.actor != 'renovate[bot]'
+        steps:
+            - name: Check Semantic Title
+              uses: amannn/action-semantic-pull-request@ac7e3fc035c47465748bbcb1a822c1583cf79bbc
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     template-check:
+        name: Check PR Template
         runs-on: ubuntu-latest
         if: github.actor != 'renovate[bot]'
         steps:
             - name: Checkout base branch
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-
             - name: Enforce Template
               uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
               with:
@@ -27,16 +38,16 @@ jobs:
                       await script({ github, context, core });
 
     auto-apply-tags:
+        name: Auto-apply Tags
         runs-on: ubuntu-latest
-        if: |
-          always() && 
-          github.actor != 'renovate[bot]' && 
-          (needs.template-check.result == 'success' || needs.template-check.result == 'skipped')
         needs: [template-check]
+        if: |
+            always() &&
+            github.actor != 'renovate[bot]' &&
+            (needs.template-check.result == 'success' || needs.template-check.result == 'skipped')
         steps:
             - name: Checkout base branch
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-
             - name: Auto-apply tag
               uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
               with:
