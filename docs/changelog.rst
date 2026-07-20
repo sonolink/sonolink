@@ -53,6 +53,12 @@ in specific versions.
     currently playing artist.
   - If every remaining candidate collides, the collision is allowed rather than raising.
 
+- Added a ``key`` parameter to :meth:`Player.skip`, forwarded straight through to
+  :meth:`Queue.get`, so the same repeat-avoidance behaves consistently whether tracks are
+  pulled from the queue directly or via the player.
+
+  - Example: ``await player.skip(key=lambda track: track.author)``.
+
 **Fixed**
 ~~~~~~~~~
 
