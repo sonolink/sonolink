@@ -75,12 +75,12 @@ class Queue(MutableQueueBase):
 
         This allows the built-in :func:`reversed` to be used on the queue.
 
+        .. versionadded:: 1.3.0
+        
         Returns
         -------
         Iterator[:class:`~sonolink.models.Playable`]
             A reverse iterator over the queue tracks.
-
-        .. versionadded:: 1.3.0
         """
         return reversed(self._items)
 
@@ -152,12 +152,12 @@ class Queue(MutableQueueBase):
         :class:`QueueMode`. It only affects the user lane; the AutoPlay lane
         is unaffected.
 
+        .. versionadded:: 1.3.0
+
         Returns
         -------
         :class:`ShuffleMode`
             The queue's current shuffle state.
-
-        .. versionadded:: 1.3.0
         """
         return self._shuffle_mode
 
@@ -574,6 +574,8 @@ class Queue(MutableQueueBase):
         new: :class:`int`
             The target index for the track.
 
+        .. versionadded:: 1.3.0
+
         Returns
         -------
         :class:`Playable`
@@ -585,8 +587,6 @@ class Queue(MutableQueueBase):
             The queue is empty.
         :exc:`IndexError`
             One or both indices are out of range.
-
-        .. versionadded:: 1.3.0
         """
         if not self:
             raise QueueEmpty("Queue is empty.")
@@ -619,10 +619,13 @@ class Queue(MutableQueueBase):
         Unlike :meth:`pop_at`, this method does **not** set the removed track
         as the current track or push the previous current track to history.
 
+        .. versionadded:: 1.3.0
+
         Parameters
         ----------
         index: :class:`int`
             The index of the track to remove.
+            
 
         Returns
         -------
@@ -635,8 +638,6 @@ class Queue(MutableQueueBase):
             The queue is empty.
         :exc:`IndexError`
             There is no item at the given index.
-
-        .. versionadded:: 1.3.0
         """
         if not self:
             raise QueueEmpty("Queue is empty.")

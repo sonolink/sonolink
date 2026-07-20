@@ -52,12 +52,12 @@ class History(ReadableCollection):
     def enabled(self) -> bool:
         """Whether history recording is enabled.
 
+        .. versionadded:: 1.3.0
+        
         Returns
         -------
         :class:`bool`
             ``True`` if history is enabled, ``False`` otherwise.
-
-        .. versionadded:: 1.3.0
         """
         return self._settings.enabled
 

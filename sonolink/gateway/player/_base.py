@@ -582,6 +582,8 @@ class BasePlayer(abc.ABC):
         playing immediately. This does **not** fall back to AutoPlay; if the
         index is out of range, an :exc:`IndexError` is raised.
 
+        .. versionadded:: 1.3.0
+        
         Parameters
         ----------
         index: :class:`int`
@@ -600,8 +602,6 @@ class BasePlayer(abc.ABC):
             The index is out of range.
         QueueEmpty
             The queue is empty.
-
-        .. versionadded:: 1.3.0
         """
         return await self._playback_handler.skip_to(index)
 
