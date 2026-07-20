@@ -522,6 +522,8 @@ class Queue(MutableQueueBase):
             The queue is empty.
         :exc:`IndexError`
             One or both indices are out of range.
+
+        .. versionadded:: 1.3.0
         """
         if not self:
             raise QueueEmpty("Queue is empty.")
@@ -570,6 +572,8 @@ class Queue(MutableQueueBase):
             The queue is empty.
         :exc:`IndexError`
             There is no item at the given index.
+
+        .. versionadded:: 1.3.0
         """
         if not self:
             raise QueueEmpty("Queue is empty.")
