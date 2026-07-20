@@ -104,6 +104,8 @@ class EventsHandler(HandlerBase):
                     self._player._last_position = 0
                     self._player._last_update = 0.0
 
+                original = self._player._original_track
+
                 if payload.reason.can_start_next:
                     try:
                         await self._player.skip()
@@ -116,7 +118,7 @@ class EventsHandler(HandlerBase):
                     TrackEndEvent(
                         payload,
                         self._player._node,
-                        original=self._player._original_track,
+                        original=original,
                     ),
                 )
                 self._player._original_track = None

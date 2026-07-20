@@ -154,6 +154,7 @@ class PlaybackHandler(HandlerBase):
 
     async def previous(self) -> Playable:
         track = self._player._queue.previous()
+        self._player._queue._current_track = None
         await self.play(track)
         return track
 
