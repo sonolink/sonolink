@@ -8,7 +8,7 @@ for users building custom transports, extending the queue system, or integrating
 more complex infrastructure.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    gateway
    rest

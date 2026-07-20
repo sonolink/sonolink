@@ -13,7 +13,7 @@ from nextcord.ext import commands
 
 import sonolink
 import sonolink.models
-from sonolink.gateway.enums import NodeRegion, QueueMode
+from sonolink.gateway.enums import NodeRegion, QueueMode, ShuffleMode
 from sonolink.rest.enums import TrackSourceType
 
 
@@ -361,6 +361,32 @@ async def queue_shuffle(inter: nextcord.Interaction[Bot]) -> None:
 
     vc.queue.shuffle()
     await inter.response.send_message("Queue shuffled!")
+
+
+@queue_group.subcommand(
+    name="shuffle-mode", description="Toggle persistent shuffle mode."
+)
+async def queue_shuffle_mode(
+    inter: nextcord.Interaction[Bot],
+    mode: str = nextcord.SlashOption(
+        description="Choose from: on, off",
+        required=True,
+        choices=["on", "off"],
+    ),
+) -> None:
+    """Toggle persistent shuffle mode."""
+    vc = _player_check(inter)
+    if not vc:
+        await inter.response.send_message("Not connected to a voice channel!")
+        return
+
+    mapping = {
+        "on": ShuffleMode.PERSISTENT,
+        "off": ShuffleMode.DEFAULT,
+    }
+
+    vc.queue.shuffle_mode = mapping[mode]
+    await inter.response.send_message(f"Persistent shuffle mode turned `{mode}`!")
 
 
 @queue_group.subcommand(name="reverse", description="Reverses the current queue.")

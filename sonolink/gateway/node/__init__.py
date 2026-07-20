@@ -86,7 +86,7 @@ class Node:
         cache settings are used.
     inactivity_settings: :class:`sonolink.models.InactivitySettings`
         Default inactivity behavior applied to players managed by this node.
-    session: ``aiohttp.ClientSession`` | ``curl_cffi.AsyncSession`` | :data:`None`
+    session: :class:`aiohttp.ClientSession` | :class:`curl_cffi.AsyncSession` | :data:`None`
         Optional pre-existing HTTP session to reuse for this node's REST and websocket
         transport. If ``None`` is passed, the library creates one.
     auto_reconnect: :class:`bool`

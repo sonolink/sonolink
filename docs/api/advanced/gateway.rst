@@ -105,7 +105,7 @@ the ``SONOLINK_FRAMEWORK`` environment variable. They are documented here for
 completeness and for users who need to type-annotate their voice channel references
 precisely.
 
-All three classes inherit the full public API of :class:`~sonolink.player.BasePlayer`
+All three classes inherit the full public API of :class:`~sonolink.gateway.player._base.BasePlayer`
 (playback, queue, filters, volume, etc.) in addition to the members listed below.
 
 .. autoclass:: sonolink.gateway.player._base.BasePlayer
