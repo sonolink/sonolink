@@ -90,6 +90,8 @@ class PlaybackHandler(HandlerBase):
         self._player._paused = paused
         self._player._last_position = start
         self._player._last_update = time.monotonic()
+        if self._player._queue._current_track is not None:
+            self._player._queue._history._push(self._player._queue._current_track)
         self._player._queue.current_track = track
 
         self._player._stop_inactivity_timer()
