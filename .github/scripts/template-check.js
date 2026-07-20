@@ -9,6 +9,19 @@ module.exports = async ({ github, context, core }) => {
         );
         return;
     }
+    if (pr.draft) {
+        core.info(
+            `The PR #${prNumber} is a draft, skipping template enforcement.`,
+        );
+        return;
+    }
+
+    if (pr.locked) {
+        core.info(
+            `The PR #${prNumber} is locked, skipping template enforcement.`,
+        );
+        return;
+    }
 
     for (const label of pr.labels) {
         if (label.name === invalid) {
@@ -52,7 +65,13 @@ module.exports = async ({ github, context, core }) => {
                     issue_number: prNumber,
                     name: invalid,
                 })
-                .catch(() => {});
+                .catch((err) => {
+                    if (err.status !== 404) {
+                        core.warning(
+                            `Failed to remove ${invalid}: ${err.message}`,
+                        );
+                    }
+                });
         }
         return;
     }
