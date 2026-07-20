@@ -123,6 +123,7 @@ class PlaybackHandler(HandlerBase):
 
         if clear_queue:
             self._player._queue.clear()
+            self._player._queue._autoplay_items.clear()
             self._player._queue.mode = QueueMode.NORMAL
 
         if clear_history:
