@@ -8,8 +8,10 @@ This page keeps a detailed human friendly rendering of what's new and changed
 in specific versions.
 
 
-`Unreleased`_
---------------
+.. _vp1p3p0:
+
+v1.3.0 - 2026-07-20
+-------------------
 
 **Added**
 ~~~~~~~~~
@@ -111,8 +113,6 @@ in specific versions.
   raw ``:class:`` references with proper cross-references throughout.
 - Exposed missing exception classes (``SonoLinkException``, ``NodeError``,
   ``NetworkError``) and ``Version``/``GitInfo`` models in the API docs.
-
-.. _unreleased: https://github.com/sonolink/sonolink/compare/v1.2.1..HEAD
 
 .. _vp1p2p1:
 
