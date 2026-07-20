@@ -2,6 +2,11 @@ module.exports = async ({ github, context, core }) => {
     const invalid = "status: invalid";
     const pr = context.payload.pull_request;
     const prNumber = pr.number;
+    const target = {
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: prNumber,
+    };
 
     if (pr.locked) {
         core.info(
@@ -9,16 +14,10 @@ module.exports = async ({ github, context, core }) => {
         );
         return;
     }
+
     if (pr.draft) {
         core.info(
             `The PR #${prNumber} is a draft, skipping template enforcement.`,
-        );
-        return;
-    }
-
-    if (pr.locked) {
-        core.info(
-            `The PR #${prNumber} is locked, skipping template enforcement.`,
         );
         return;
     }
@@ -49,22 +48,26 @@ module.exports = async ({ github, context, core }) => {
     ];
 
     for (const heading of requiredHeadings) {
-        if (!prContent.includes(heading)) {
+        const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp(`^${escaped}\\s*$`, "m");
+        if (!regex.test(prContent)) {
             problems.push(`Missing required section "${heading}".`);
         }
     }
 
+    const typeSection = prContent.match(
+        /^## Type of change([\s\S]*?)(?=^## )/im,
+    );
+
+    if (typeSection && !/^-\s*\[[xX]\]/m.test(typeSection[1])) {
+        problems.push('No checkbox selected under "## Type of change".');
+    }
+
     if (problems.length === 0) {
         core.info(`PR #${prNumber} follows the template.`);
-
         if (pr.labels.find((l) => l.name === invalid)) {
             await github.rest.issues
-                .removeLabel({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    issue_number: prNumber,
-                    name: invalid,
-                })
+                .removeLabel({ ...target, name: invalid })
                 .catch((err) => {
                     if (err.status !== 404) {
                         core.warning(
@@ -76,18 +79,10 @@ module.exports = async ({ github, context, core }) => {
         return;
     }
 
-    await github.rest.issues.addLabels({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        issue_number: prNumber,
-        labels: [invalid],
-    });
-
+    await github.rest.issues.addLabels({ ...target, labels: [invalid] });
     const fmt = problems.join("\n");
     await github.rest.issues.createComment({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        issue_number: prNumber,
+        ...target,
         body: [
             "This PR does not follow the template provided by the repository.",
             "",
