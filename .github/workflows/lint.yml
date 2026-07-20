@@ -1,13 +1,16 @@
 name: Autoformat with Ruff
 
 on:
+    workflow_dispatch:
     pull_request:
         types: [opened, synchronize]
-    workflow_dispatch:
-
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
 jobs:
     format:
         runs-on: ubuntu-latest
+        timeout-minutes: 15
         if: |
             github.event.pull_request.head.repo.full_name == github.repository &&
             github.actor != 'renovate[bot]'
@@ -25,9 +28,10 @@ jobs:
               uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
               with:
                   python-version: "3.13"
+                  cache: "pip"
 
             - name: Install ruff
-              run: pip install -U ruff==0.15.12
+              run: pip install -U ruff==0.15.22
 
             - name: Run ruff format
               run: ruff format . --exclude docs/
@@ -50,7 +54,10 @@ jobs:
                   fi
 
     lint-check:
+        permissions:
+            contents: read
         runs-on: ubuntu-latest
+        timeout-minutes: 15
         if: |
             github.event.pull_request.head.repo.full_name != github.repository &&
             github.actor != 'renovate[bot]'
@@ -58,14 +65,17 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+              with:
+                  persist-credentials: false
 
             - name: Set up Python
               uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
               with:
                   python-version: "3.13"
+                  cache: "pip"
 
             - name: Install ruff
-              run: pip install ruff
+              run: pip install ruff==0.15.22
 
             - name: Check ruff formatting
               run: ruff format --check . --exclude docs/

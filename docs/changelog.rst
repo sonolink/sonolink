@@ -66,6 +66,21 @@ in specific versions.
 - Fixed :meth:`Queue.remove` with a ``key`` parameter ignoring duplicate lookup
   values and crashing on unhashable types; both the ``remove_all=True`` and
   ``remove_all=False`` paths now consistently respect user-provided values.
+  
+
+**Miscellaneous**
+~~~~~~~~~~~~~~~~~
+
+- Consolidated the separate ``pr-checks`` and ``pr-template`` workflows into a
+  single ``pr-governance`` workflow.
+- Scoped all CI job permissions to read-only and disabled credential persistence
+  on checkout for improved security.
+- Added a 15-minute timeout to every CI job.
+- Enabled ``pip`` caching across CI workflows.
+- Added concurrency control to the lint workflow to cancel redundant runs.
+- Added ``twine check`` and build provenance attestation to the release workflow.
+- Hardened the template-check validation and excluded draft PRs from template
+  enforcement, triggering checks only on ``ready_for_review``.
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.2.1..HEAD
 

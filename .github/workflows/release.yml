@@ -6,22 +6,31 @@ on:
 
 jobs:
     build:
+        permissions:
+            contents: read
         name: Build
         runs-on: ubuntu-latest
+        timeout-minutes: 15
         steps:
             - name: Checkout
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+              with:
+                  persist-credentials: false
 
             - name: Setup Python
               uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
               with:
                   python-version: "3.13"
+                  cache: "pip"
 
             - name: Install build frontend
-              run: python3 -m pip install build --user
+              run: python3 -m pip install build twine --user
 
             - name: Build sdist & wheel
               run: python3 -m build
+
+            - name: Check distributions
+              run: python3 -m twine check --strict dist/*
 
             - name: Upload build artifacts
               uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -35,6 +44,7 @@ jobs:
         name: Publish to PyPI
         needs: [build]
         runs-on: ubuntu-latest
+        timeout-minutes: 15
 
         environment:
             name: pypi
@@ -42,6 +52,8 @@ jobs:
 
         permissions:
             id-token: write
+            attestations: write
+            contents: read
 
         steps:
             - name: Download build artifacts
@@ -49,6 +61,11 @@ jobs:
               with:
                   name: dist
                   path: dist/
+
+            - name: Generate artifact attestation
+              uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+              with:
+                  subject-path: "dist/*"
 
             - name: Push to PyPI
               uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247 # release/v1
