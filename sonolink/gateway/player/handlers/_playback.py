@@ -157,7 +157,9 @@ class PlaybackHandler(HandlerBase):
         await self.play(track)
         return track
 
-    async def skip(self, *, key: Callable[[Playable], Any] | None = None) -> Playable | None:
+    async def skip(
+        self, *, key: Callable[[Playable], Any] | None = None
+    ) -> Playable | None:
         try:
             next_track = self._player.queue.get(key=key)
             await self.play(next_track)

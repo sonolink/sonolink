@@ -554,7 +554,9 @@ class BasePlayer(abc.ABC):
         """
         await self._playback_handler.resume()
 
-    async def skip(self, *, key: Callable[[Playable], Any] | None = None) -> Playable | None:
+    async def skip(
+        self, *, key: Callable[[Playable], Any] | None = None
+    ) -> Playable | None:
         """Skip the currently playing track and advance to the next one in the queue.
 
         If the queue is empty and AutoPlay is enabled, a related track may be

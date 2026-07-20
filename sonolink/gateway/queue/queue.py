@@ -248,17 +248,29 @@ class Queue(MutableQueueBase):
                 current_value = key(self._current_track)
 
                 if self._shuffle_mode is ShuffleMode.PERSISTENT:
-                    candidates = [i for i, track in enumerate(self._items) if key(track) != current_value]
+                    candidates = [
+                        i
+                        for i, track in enumerate(self._items)
+                        if key(track) != current_value
+                    ]
                     if candidates:
                         index = random.choice(candidates)
                 else:
                     index = next(
-                        (i for i, track in enumerate(self._items) if key(track) != current_value),
+                        (
+                            i
+                            for i, track in enumerate(self._items)
+                            if key(track) != current_value
+                        ),
                         None,
                     )
 
             if index is None:
-                index = random.randrange(len(self._items)) if self._shuffle_mode is ShuffleMode.PERSISTENT else 0
+                index = (
+                    random.randrange(len(self._items))
+                    if self._shuffle_mode is ShuffleMode.PERSISTENT
+                    else 0
+                )
 
             return self.pop_at(index)
 
@@ -272,7 +284,9 @@ class Queue(MutableQueueBase):
 
         raise QueueEmpty("Queue is empty.")
 
-    async def get_wait(self, *, key: Callable[[Playable], Any] | None = None) -> Playable:
+    async def get_wait(
+        self, *, key: Callable[[Playable], Any] | None = None
+    ) -> Playable:
         """Asynchronously get a track from the queue, waits if necessary.
 
         This method will wait indefinitely until a track is available in the queue.
