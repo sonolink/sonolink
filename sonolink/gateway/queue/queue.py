@@ -26,12 +26,12 @@ from __future__ import annotations
 import asyncio
 import random
 from collections import deque
-from typing import TYPE_CHECKING, Any, Callable, Iterable
+from typing import TYPE_CHECKING, Any, Callable, Iterable, Iterator
 
 from sonolink.models.settings import HistorySettings
 from sonolink.models.track import Playable
 
-from ..enums import QueueMode
+from ..enums import QueueMode, ShuffleMode
 from ..errors import HistoryEmpty, QueueEmpty
 from .base import MutableQueueBase
 from .history import History
@@ -49,6 +49,7 @@ class Queue(MutableQueueBase):
         "_history",
         "_lock",
         "_mode",
+        "_shuffle_mode",
         "_waiters",
     )
 
@@ -61,6 +62,7 @@ class Queue(MutableQueueBase):
         super().__init__()
 
         self._mode: QueueMode = mode
+        self._shuffle_mode: ShuffleMode = ShuffleMode.DEFAULT
         self._lock: asyncio.Lock = asyncio.Lock()
         self._waiters: deque[asyncio.Future[None]] = deque()
 
@@ -122,6 +124,34 @@ class Queue(MutableQueueBase):
         self._mode = value
 
     @property
+    def shuffle_mode(self) -> ShuffleMode:
+        """The queue's current shuffle state.
+
+        When :attr:`ShuffleMode.PERSISTENT`, :meth:`get` pops a random track
+        from the user lane (:attr:`tracks`) instead of always popping the
+        head. This is independent of :meth:`shuffle`, and never touches
+        :attr:`tracks` itself — setting this back to :attr:`ShuffleMode.DEFAULT`
+        does not need to restore anything, since the underlying order was
+        never changed while persistent shuffle was on.
+
+        This is independent of :attr:`mode` and composes with any
+        :class:`QueueMode`. It only affects the user lane; the AutoPlay lane
+        is unaffected.
+
+        Returns
+        -------
+        :class:`ShuffleMode`
+            The queue's current shuffle state.
+
+        .. versionadded:: 1.3.0
+        """
+        return self._shuffle_mode
+
+    @shuffle_mode.setter
+    def shuffle_mode(self, value: ShuffleMode) -> None:
+        self._shuffle_mode = value
+
+    @property
     def tracks(self) -> list[Playable]:
         """The list of tracks currently in the queue.
 
@@ -143,12 +173,12 @@ class Queue(MutableQueueBase):
         These tracks are only played once all user-added tracks are exhausted.
         Modifying this list will not affect the actual queue.
 
+        .. versionadded:: 1.1.0
+
         Returns
         -------
         list[:class:`Playable`]
             A list of AutoPlay tracks.
-
-        .. versionadded:: 1.1.0
         """
         return list(self._autoplay_items)
 
@@ -159,6 +189,8 @@ class Queue(MutableQueueBase):
         If the user lane is empty, falls back to the AutoPlay lane.
         If the queue is in ``LOOP`` mode, returns the current track.
         If the queue is in ``LOOP_ALL`` mode and empty, restores tracks from history.
+        If :attr:`shuffle_mode` is :attr:`ShuffleMode.PERSISTENT`, a random
+        track is popped from the user lane instead of the head.
 
         Returns
         -------
@@ -183,6 +215,8 @@ class Queue(MutableQueueBase):
                 self._current_track = None
 
         if self._items:
+            if self._shuffle_mode is ShuffleMode.PERSISTENT:
+                return self.pop_at(random.randrange(len(self._items)))
             return self.pop()
 
         if self._autoplay_items:
@@ -403,6 +437,7 @@ class Queue(MutableQueueBase):
         /,
         *,
         remove_all: bool = True,
+        key: Callable[[Playable], Any] | None = None,
     ) -> int:
         """Asynchronously remove one or more tracks from the queue.
 
@@ -415,6 +450,12 @@ class Queue(MutableQueueBase):
         remove_all: :class:`bool`
             Whether to remove all occurrences of a track from this queue. When set to ``False``, only the first occurrence of each
             track is removed. Defaults to ``True``.
+        key: Callable[[:class:`Playable`], Any] | None
+            If provided, tracks are matched by comparing ``key(track)`` against
+            each value in ``tracks`` instead of using equality directly. Defaults
+            to ``None``.
+
+            .. versionadded:: 1.3.0
 
         Returns
         -------
@@ -422,7 +463,7 @@ class Queue(MutableQueueBase):
             The number of tracks removed from the queue.
         """
         async with self._lock:
-            count = self.remove(tracks, remove_all=remove_all)
+            count = self.remove(tracks, remove_all=remove_all, key=key)
 
         if count != 0:
             await asyncio.sleep(0)
@@ -434,7 +475,8 @@ class Queue(MutableQueueBase):
         Returns
         -------
         :class:`Queue`
-            A shallow copy of the queue with the same items, mode, and history.
+            A shallow copy of the queue with the same items, mode, shuffle
+            state, and history.
         """
         new_queue = self.__class__(
             mode=self._mode,
@@ -444,6 +486,7 @@ class Queue(MutableQueueBase):
         new_queue._current_track = self._current_track
         new_queue._history = self._history._copy()
         new_queue._autoplay_items = deque(self._autoplay_items)
+        new_queue._shuffle_mode = self._shuffle_mode
         return new_queue
 
     def reverse(self) -> None:
@@ -452,6 +495,20 @@ class Queue(MutableQueueBase):
         This does not return anything.
         """
         self._items = deque[Playable](reversed(self._items))
+
+    def __reversed__(self) -> Iterator[Playable]:
+        """Return a reverse iterator over the queue tracks.
+
+        This allows the built-in :func:`reversed` to be used on the queue.
+
+        Returns
+        -------
+        Iterator[:class:`~sonolink.models.Playable`]
+            A reverse iterator over the queue tracks.
+
+        .. versionadded:: 1.3.0
+        """
+        return reversed(self._items)
 
     def sort(
         self,
@@ -495,11 +552,106 @@ class Queue(MutableQueueBase):
         return before - len(self._items)
 
     def shuffle(self) -> None:
-        """Shuffle the queue in place.
+        """Shuffle the queue in place, once.
+
+        This permanently reorders :attr:`tracks`; there is no way to undo it
+        or recover the previous order afterwards. This is unrelated to, and
+        does not change, :attr:`shuffle_mode` -- for a toggleable shuffle
+        that can be turned back off without losing the original order, set
+        :attr:`shuffle_mode` to :attr:`ShuffleMode.PERSISTENT` instead.
 
         This does not return anything.
         """
         self._items = deque(random.sample(self._items, k=len(self._items)))
+
+    def move(self, old: int, new: int) -> Playable:
+        """Move a track from one index to another, shifting other tracks.
+
+        Parameters
+        ----------
+        old: :class:`int`
+            The index of the track to move.
+        new: :class:`int`
+            The target index for the track.
+
+        Returns
+        -------
+        :class:`Playable`
+            The moved track.
+
+        Raises
+        ------
+        :exc:`QueueEmpty`
+            The queue is empty.
+        :exc:`IndexError`
+            One or both indices are out of range.
+
+        .. versionadded:: 1.3.0
+        """
+        if not self:
+            raise QueueEmpty("Queue is empty.")
+
+        length = len(self._items)
+
+        if old < 0:
+            old += length
+        if new < 0:
+            new += length
+
+        if not 0 <= old < length:
+            raise IndexError(f"Queue index {old} out of range [0, {length})")
+        if not 0 <= new < length:
+            raise IndexError(f"Queue index {new} out of range [0, {length})")
+
+        if old == new:
+            return self._items[old]
+
+        track = self._items[old]
+        del self._items[old]
+
+        insert_at = new if new < old else new - 1
+        self._items.insert(insert_at, track)
+        return track
+
+    def remove_at(self, index: int) -> Playable:
+        """Remove and return a track at the given index without side effects.
+
+        Unlike :meth:`pop_at`, this method does **not** set the removed track
+        as the current track or push the previous current track to history.
+
+        Parameters
+        ----------
+        index: :class:`int`
+            The index of the track to remove.
+
+        Returns
+        -------
+        :class:`Playable`
+            The removed track.
+
+        Raises
+        ------
+        :exc:`QueueEmpty`
+            The queue is empty.
+        :exc:`IndexError`
+            There is no item at the given index.
+
+        .. versionadded:: 1.3.0
+        """
+        if not self:
+            raise QueueEmpty("Queue is empty.")
+
+        if index < 0:
+            index += len(self._items)
+
+        if not 0 <= index < len(self._items):
+            raise IndexError(
+                f"Queue index {index} out of range [0, {len(self._items)})"
+            )
+
+        track = self._items[index]
+        del self._items[index]
+        return track
 
     def swap(self, old: int, new: int) -> None:
         """Swap two tracks in the queue by index.
@@ -526,10 +678,12 @@ class Queue(MutableQueueBase):
         """Reset the queue to its default state.
 
         This will:
+
         - Clear all items from the queue
         - Clear AutoPlay-discovered tracks
         - Clear history
         - Reset the mode to :class:`QueueMode.NORMAL`
+        - Reset :attr:`shuffle_mode` to :attr:`ShuffleMode.DEFAULT`
         - Clear the current track
         - Cancel all waiting futures
         """
@@ -538,6 +692,7 @@ class Queue(MutableQueueBase):
 
         self._current_track = None
         self._mode = QueueMode.NORMAL
+        self._shuffle_mode = ShuffleMode.DEFAULT
         self._autoplay_items.clear()
 
         while self._waiters:

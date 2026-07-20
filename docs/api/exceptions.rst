@@ -3,8 +3,14 @@
 Exceptions
 ==========
 
+.. autoexception:: sonolink.SonoLinkException
+   :members:
+
 Gateway
 -------
+
+.. autoexception:: sonolink.NodeError
+   :members:
 
 .. autoexception:: sonolink.AutoPlaySeedMissing
    :members:
@@ -39,6 +45,9 @@ Rest
 
 Network
 -------
+
+.. autoexception:: sonolink.NetworkError
+   :members:
 
 .. autoexception:: sonolink.WebSocketError
    :members:

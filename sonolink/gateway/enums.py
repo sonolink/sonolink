@@ -33,6 +33,7 @@ __all__ = (
     "NodeStatus",
     "QueueMode",
     "SearchProvider",
+    "ShuffleMode",
     "TrackEndReason",
     "TrackExceptionSeverity",
 )
@@ -106,6 +107,24 @@ class QueueMode(StrEnum):
     NORMAL = "normal"
     LOOP = "loop"
     LOOP_ALL = "loop_all"
+
+
+class ShuffleMode(StrEnum):
+    """Enum representing the shuffle state of a :class:`sonolink.Queue`.
+
+    Independent of :class:`QueueMode`; composes with any of its values.
+
+    .. versionadded:: 1.3.0
+
+    :ivar DEFAULT: The default state. Tracks are played in queue order; calling
+        :meth:`Queue.shuffle` still performs its usual one-time in-place reorder.
+    :ivar PERSISTENT: A random track is popped from the queue each time one is needed,
+        without reordering the underlying queue. Toggling back to ``DEFAULT`` resumes
+        in-order playback with the original order intact.
+    """
+
+    DEFAULT = "default"
+    PERSISTENT = "persistent"
 
 
 class SearchProvider(StrEnum):

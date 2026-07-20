@@ -14,7 +14,7 @@ from discord.ext import commands
 
 import sonolink
 import sonolink.models
-from sonolink.gateway.enums import NodeRegion, QueueMode
+from sonolink.gateway.enums import NodeRegion, QueueMode, ShuffleMode
 from sonolink.rest.enums import TrackSourceType
 
 
@@ -355,6 +355,27 @@ async def queue_shuffle(interaction: discord.Interaction) -> None:
 
     vc.queue.shuffle()
     await interaction.response.send_message("Queue shuffled!")
+
+
+@queue_group.command(name="shuffle-mode", description="Toggle persistent shuffle mode.")
+@app_commands.describe(mode="Choose from: on, off")
+async def queue_shuffle_mode(
+    interaction: discord.Interaction, mode: Literal["on", "off"] = "on"
+) -> None:
+    """Toggle persistent shuffle mode."""
+    vc = _player_check(interaction)
+    if not vc:
+        await interaction.response.send_message("Not connected to a voice channel!")
+        return
+
+    mapping = {
+        "on": ShuffleMode.PERSISTENT,
+        "off": ShuffleMode.DEFAULT,
+    }
+
+    # Literal type ensures 'mode' is one of the valid strings
+    vc.queue.shuffle_mode = mapping[mode]
+    await interaction.response.send_message(f"Persistent shuffle mode turned `{mode}`!")
 
 
 @queue_group.command(name="reverse", description="Reverses the current queue.")
