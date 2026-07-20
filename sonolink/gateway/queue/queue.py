@@ -196,7 +196,7 @@ class Queue(MutableQueueBase):
         """
         return list(self._autoplay_items)
 
-    def get(self) -> Playable:
+    def get(self, *, key: Callable[[Playable], Any] | None = None) -> Playable:
         """Get the next track from the queue, respecting the current queue mode.
 
         User-added tracks always take priority over AutoPlay-discovered tracks.
@@ -205,6 +205,19 @@ class Queue(MutableQueueBase):
         If the queue is in ``LOOP_ALL`` mode and empty, restores tracks from history.
         If :attr:`shuffle_mode` is :attr:`ShuffleMode.PERSISTENT`, a random
         track is popped from the user lane instead of the head.
+
+        Parameters
+        ----------
+        key: Callable[[:class:`~sonolink.models.Playable`], Any] | :data:`None`
+            If provided and :attr:`current_track` is set, the picked track is
+            skipped in favour of the next candidate whose ``key(track)``
+            differs from ``key(current_track)``. Useful to avoid repeats,
+            e.g. ``key=lambda track: track.author`` to avoid
+            picking a track by the currently playing artist. If every
+            remaining candidate matches, the match is allowed rather than
+            raising. Only applies to the user lane. Defaults to ``None``.
+
+            .. versionadded:: 1.3.0
 
         Returns
         -------
@@ -229,9 +242,22 @@ class Queue(MutableQueueBase):
                 self._current_track = None
 
         if self._items:
-            if self._shuffle_mode is ShuffleMode.PERSISTENT:
-                return self.pop_at(random.randrange(len(self._items)))
-            return self.pop()
+            candidates = list(range(len(self._items)))
+
+            if key is not None and self._current_track is not None:
+                current_value = key(self._current_track)
+                filtered = [
+                    i for i in candidates if key(self._items[i]) != current_value
+                ]
+                if filtered:
+                    candidates = filtered
+
+            index = (
+                random.choice(candidates)
+                if self._shuffle_mode is ShuffleMode.PERSISTENT
+                else candidates[0]
+            )
+            return self.pop_at(index)
 
         if self._autoplay_items:
             if self._current_track is not None:
@@ -243,12 +269,21 @@ class Queue(MutableQueueBase):
 
         raise QueueEmpty("Queue is empty.")
 
-    async def get_wait(self) -> Playable:
+    async def get_wait(
+        self, *, key: Callable[[Playable], Any] | None = None
+    ) -> Playable:
         """Asynchronously get a track from the queue, waits if necessary.
 
         This method will wait indefinitely until a track is available in the queue.
         This method can be used to implement a system that waits for a next track to
         play after the current track finishes, for example.
+
+        Parameters
+        ----------
+        key: Callable[[:class:`~sonolink.models.Playable`], Any] | :data:`None`
+            See :meth:`get` for details on how this parameter is used.
+
+            .. versionadded:: 1.3.0
 
         Returns
         -------
@@ -260,7 +295,7 @@ class Queue(MutableQueueBase):
             self._waiters.append(waiter)
 
             try:
-                result = self.get()
+                result = self.get(key=key)
             except QueueEmpty:
                 pass
             else:
