@@ -176,6 +176,32 @@ class PlaybackHandler(HandlerBase):
         await self.stop()
         raise QueueEmpty
 
+    async def skip_to(self, index: int, /) -> Playable:
+        """Skip directly to a track at the given queue index.
+
+        The current track is moved to history and the target track is played.
+
+        Parameters
+        ----------
+        index : :class:`int`
+            The queue index of the track to play.
+
+        Returns
+        -------
+        :class:`Playable`
+            The track that is now playing.
+
+        Raises
+        ------
+        :exc:`IndexError`
+            The index is out of range.
+        :exc:`QueueEmpty`
+            The queue is empty.
+        """
+        track = self._player._queue.pop_at(index)
+        await self.play(track)
+        return track
+
     async def seek(self, position: int, /) -> None:
         node = self._player.node
         assert node._resume_session is not None

@@ -21,6 +21,8 @@ in specific versions.
     - Example: ``queue.sort(key=lambda track: track.title)`` to sort by track title.
   - :meth:`Queue.reverse` to reverse the order of the queue.
   - :meth:`Queue.dedupe` to remove duplicate tracks from the queue.
+- Added :meth:`Player.skip_to` to skip directly to a track at a specific
+  queue index.
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.2.1..HEAD
 
