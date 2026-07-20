@@ -107,7 +107,7 @@ class Queue(MutableQueueBase):
         self._current_track = value
 
     @property
-    def history(self) -> History:
+    def history(self) -> History | None:
         """The queue history.
 
         Returns
@@ -115,7 +115,7 @@ class Queue(MutableQueueBase):
         :class:`History` | None
             The queue history if history is enabled, otherwise ``None``.
         """
-        return self._history
+        return self._history if self._history.enabled else None
 
     @property
     def mode(self) -> QueueMode:
