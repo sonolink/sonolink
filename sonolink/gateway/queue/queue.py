@@ -256,13 +256,18 @@ class Queue(MutableQueueBase):
             The retrieved track.
         """
         while True:
-            try:
-                return self.get()
-            except QueueEmpty:
-                pass
-
             waiter: asyncio.Future[None] = asyncio.get_running_loop().create_future()
             self._waiters.append(waiter)
+
+            try:
+                result = self.get()
+            except QueueEmpty:
+                pass
+            else:
+                waiter.cancel()
+                if waiter in self._waiters:
+                    self._waiters.remove(waiter)
+                return result
 
             try:
                 await waiter
