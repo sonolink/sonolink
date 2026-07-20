@@ -73,6 +73,8 @@ in specific versions.
   wrong ``original`` track when ``skip()`` was triggered, because
   ``_original_track`` was overwritten by ``play()`` before the event was
   emitted.
+- Fixed :meth:`Player.previous` pushing the previous track back into history
+  after ``play()`` was called, creating a duplicate history entry.
 
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
