@@ -31,7 +31,7 @@ from typing import TYPE_CHECKING, Any, Callable, Iterable
 from sonolink.models.settings import HistorySettings
 from sonolink.models.track import Playable
 
-from ..enums import QueueMode
+from ..enums import QueueMode, ShuffleMode
 from ..errors import HistoryEmpty, QueueEmpty
 from .base import MutableQueueBase
 from .history import History
@@ -49,6 +49,7 @@ class Queue(MutableQueueBase):
         "_history",
         "_lock",
         "_mode",
+        "_shuffle_mode",
         "_waiters",
     )
 
@@ -61,6 +62,7 @@ class Queue(MutableQueueBase):
         super().__init__()
 
         self._mode: QueueMode = mode
+        self._shuffle_mode: ShuffleMode = ShuffleMode.DEFAULT
         self._lock: asyncio.Lock = asyncio.Lock()
         self._waiters: deque[asyncio.Future[None]] = deque()
 
@@ -122,6 +124,34 @@ class Queue(MutableQueueBase):
         self._mode = value
 
     @property
+    def shuffle_mode(self) -> ShuffleMode:
+        """The queue's current shuffle state.
+
+        When :attr:`ShuffleMode.PERSISTENT`, :meth:`get` pops a random track
+        from the user lane (:attr:`tracks`) instead of always popping the
+        head. This is independent of :meth:`shuffle`, and never touches
+        :attr:`tracks` itself — setting this back to :attr:`ShuffleMode.DEFAULT`
+        does not need to restore anything, since the underlying order was
+        never changed while persistent shuffle was on.
+
+        This is independent of :attr:`mode` and composes with any
+        :class:`QueueMode`. It only affects the user lane; the AutoPlay lane
+        is unaffected.
+
+        Returns
+        -------
+        :class:`ShuffleMode`
+            The queue's current shuffle state.
+
+        .. versionadded:: 1.3.0
+        """
+        return self._shuffle_mode
+
+    @shuffle_mode.setter
+    def shuffle_mode(self, value: ShuffleMode) -> None:
+        self._shuffle_mode = value
+
+    @property
     def tracks(self) -> list[Playable]:
         """The list of tracks currently in the queue.
 
@@ -159,6 +189,8 @@ class Queue(MutableQueueBase):
         If the user lane is empty, falls back to the AutoPlay lane.
         If the queue is in ``LOOP`` mode, returns the current track.
         If the queue is in ``LOOP_ALL`` mode and empty, restores tracks from history.
+        If :attr:`shuffle_mode` is :attr:`ShuffleMode.PERSISTENT`, a random
+        track is popped from the user lane instead of the head.
 
         Returns
         -------
@@ -183,6 +215,8 @@ class Queue(MutableQueueBase):
                 self._current_track = None
 
         if self._items:
+            if self._shuffle_mode is ShuffleMode.PERSISTENT:
+                return self.pop_at(random.randrange(len(self._items)))
             return self.pop()
 
         if self._autoplay_items:
@@ -441,7 +475,8 @@ class Queue(MutableQueueBase):
         Returns
         -------
         :class:`Queue`
-            A shallow copy of the queue with the same items, mode, and history.
+            A shallow copy of the queue with the same items, mode, shuffle
+            state, and history.
         """
         new_queue = self.__class__(
             mode=self._mode,
@@ -451,6 +486,7 @@ class Queue(MutableQueueBase):
         new_queue._current_track = self._current_track
         new_queue._history = self._history._copy()
         new_queue._autoplay_items = deque(self._autoplay_items)
+        new_queue._shuffle_mode = self._shuffle_mode
         return new_queue
 
     def reverse(self) -> None:
@@ -502,7 +538,13 @@ class Queue(MutableQueueBase):
         return before - len(self._items)
 
     def shuffle(self) -> None:
-        """Shuffle the queue in place.
+        """Shuffle the queue in place, once.
+
+        This permanently reorders :attr:`tracks`; there is no way to undo it
+        or recover the previous order afterwards. This is unrelated to, and
+        does not change, :attr:`shuffle_mode` -- for a toggleable shuffle
+        that can be turned back off without losing the original order, set
+        :attr:`shuffle_mode` to :attr:`ShuffleMode.PERSISTENT` instead.
 
         This does not return anything.
         """
@@ -537,6 +579,7 @@ class Queue(MutableQueueBase):
         - Clear AutoPlay-discovered tracks
         - Clear history
         - Reset the mode to :class:`QueueMode.NORMAL`
+        - Reset :attr:`shuffle_mode` to :attr:`ShuffleMode.DEFAULT`
         - Clear the current track
         - Cancel all waiting futures
         """
@@ -545,6 +588,7 @@ class Queue(MutableQueueBase):
 
         self._current_track = None
         self._mode = QueueMode.NORMAL
+        self._shuffle_mode = ShuffleMode.DEFAULT
         self._autoplay_items.clear()
 
         while self._waiters:
