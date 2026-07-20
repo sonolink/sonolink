@@ -32,6 +32,8 @@ jobs:
         steps:
             - name: Checkout base branch
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+              with:
+                  persist-credentials: false
             - name: Enforce Template
               uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
               with:
@@ -56,6 +58,8 @@ jobs:
         steps:
             - name: Checkout base branch
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+              with:
+                  persist-credentials: false
             - name: Auto-apply tag
               uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
               with:
