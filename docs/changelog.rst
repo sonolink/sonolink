@@ -22,9 +22,9 @@ in specific versions.
   - :meth:`Queue.reverse` to reverse the order of the queue.
   - :meth:`Queue.dedupe` to remove duplicate tracks from the queue.
 - Added :meth:`Queue.move` to move a track from one index to another, shifting
-other tracks accordingly.
+  other tracks accordingly.
 - Added :meth:`Queue.remove_at` to remove and return a track by index without
-side effects on the current track.
+  side effects on the current track.
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.2.1..HEAD
 
