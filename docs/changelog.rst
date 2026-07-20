@@ -21,6 +21,12 @@ in specific versions.
     - Example: ``queue.sort(key=lambda track: track.title)`` to sort by track title.
   - :meth:`Queue.reverse` to reverse the order of the queue.
   - :meth:`Queue.dedupe` to remove duplicate tracks from the queue.
+- Added a ``key`` parameter to :meth:`Queue.remove` and :meth:`Queue.remove_wait` for removing
+  tracks by an arbitrary derived value instead of equality, without needing to hold the original
+  :class:`Playable` instance.
+
+  - Example: ``queue.remove([track.identifier], key=lambda t: t.identifier)`` to remove a track
+    by its identifier.
 
 - Added :class:`ShuffleMode` and :attr:`Queue.shuffle_mode` for persistent shuffle support.
 
