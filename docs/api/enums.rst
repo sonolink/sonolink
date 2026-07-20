@@ -46,6 +46,11 @@ Gateway
    :no-attributetable:
    :no-inherited-members:
 
+.. autoclass:: sonolink.ShuffleMode()
+   :members:
+   :no-attributetable:
+   :no-inherited-members:
+
 Rest
 ----
 
