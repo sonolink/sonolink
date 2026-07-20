@@ -30,7 +30,7 @@ jobs:
                   cache: "pip"
 
             - name: Install ruff
-              run: pip install -U ruff==0.15.12
+              run: pip install -U ruff==0.15.22
 
             - name: Run ruff format
               run: ruff format . --exclude docs/
@@ -69,7 +69,7 @@ jobs:
                   cache: "pip"
 
             - name: Install ruff
-              run: pip install ruff
+              run: pip install ruff==0.15.22
 
             - name: Check ruff formatting
               run: ruff format --check . --exclude docs/
