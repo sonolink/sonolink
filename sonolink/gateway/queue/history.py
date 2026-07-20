@@ -23,6 +23,7 @@ SOFTWARE.
 
 from __future__ import annotations
 
+import copy
 from collections import deque
 from typing import TYPE_CHECKING, Self
 
@@ -67,7 +68,7 @@ class History(ReadableCollection):
         self._items.append(track)
 
     def _copy(self) -> Self:
-        new = self.__class__(settings=self._settings)
+        new = self.__class__(settings=copy.copy(self._settings))
         new._items = deque(self._items, maxlen=self._settings.max_items)
         return new
 

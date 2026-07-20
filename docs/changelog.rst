@@ -60,6 +60,9 @@ in specific versions.
 - Fixed :meth:`Player.stop` silently resetting :attr:`Queue.mode` to
   :attr:`QueueMode.NORMAL` when ``clear_queue=True``; this is now documented
   behavior.
+- Fixed :class:`Queue` ``copy()`` creating a new :class:`History` that shared a
+  mutable reference to the original settings object, causing mutations to
+  ``enabled`` or ``max_items`` to leak between copies.
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.2.1..HEAD
 
