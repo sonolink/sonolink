@@ -583,7 +583,7 @@ class BasePlayer(abc.ABC):
         index is out of range, an :exc:`IndexError` is raised.
 
         .. versionadded:: 1.3.0
-        
+
         Parameters
         ----------
         index: :class:`int`

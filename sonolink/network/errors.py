@@ -27,6 +27,11 @@ from typing import TYPE_CHECKING
 
 from sonolink.errors import SonoLinkException
 
+__all__ = (
+    "NetworkError",
+    "WebSocketError",
+)
+
 if TYPE_CHECKING:
     import aiohttp
     import curl_cffi

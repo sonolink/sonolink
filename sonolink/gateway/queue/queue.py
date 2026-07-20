@@ -76,7 +76,7 @@ class Queue(MutableQueueBase):
         This allows the built-in :func:`reversed` to be used on the queue.
 
         .. versionadded:: 1.3.0
-        
+
         Returns
         -------
         Iterator[:class:`~sonolink.models.Playable`]
@@ -625,7 +625,6 @@ class Queue(MutableQueueBase):
         ----------
         index: :class:`int`
             The index of the track to remove.
-            
 
         Returns
         -------

@@ -53,7 +53,7 @@ class History(ReadableCollection):
         """Whether history recording is enabled.
 
         .. versionadded:: 1.3.0
-        
+
         Returns
         -------
         :class:`bool`
