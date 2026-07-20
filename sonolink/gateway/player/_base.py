@@ -518,7 +518,8 @@ class BasePlayer(abc.ABC):
         Parameters
         ----------
         clear_queue : :class:`bool`
-            If ``True``, all pending tracks in the queue are removed.
+            If ``True``, all pending tracks in the queue are removed and
+            the :attr:`Queue.mode` is reset to :attr:`QueueMode.NORMAL`.
             Defaults to ``False``.
         clear_history : :class:`bool`
             If ``True``, the playback history is cleared. Defaults to ``False``.
