@@ -45,6 +45,29 @@ in specific versions.
     :attr:`ShuffleMode.DEFAULT` resumes playback in the original order.
   - :meth:`Queue.shuffle` is unaffected and still performs its usual one-time in-place reorder.
 
+**Fixed**
+~~~~~~~~~
+
+- Fixed :meth:`Queue.get_wait` not registering the waiter before attempting to
+  retrieve a track, causing a race condition where a concurrent ``put()`` could
+  be missed and the waiter would hang indefinitely.
+- Fixed :attr:`Queue.history` returning a :class:`History` instance when history
+  is disabled; now correctly returns ``None``.
+- Fixed :meth:`Player.play` not pushing the previously playing track to history
+  before starting a new track, matching the documented behavior.
+- Fixed :meth:`Player.stop` with ``clear_queue=True`` not clearing
+  AutoPlay-discovered tracks from the queue.
+- Fixed :meth:`Player.stop` silently resetting :attr:`Queue.mode` to
+  :attr:`QueueMode.NORMAL` when ``clear_queue=True``; this is now documented
+  behavior.
+- Fixed :class:`Queue` ``copy()`` creating a new :class:`History` that shared a
+  mutable reference to the original settings object, causing mutations to
+  ``enabled`` or ``max_items`` to leak between copies.
+- Fixed :meth:`Queue.remove` with a ``key`` parameter ignoring duplicate lookup
+  values and crashing on unhashable types; both the ``remove_all=True`` and
+  ``remove_all=False`` paths now consistently respect user-provided values.
+  
+
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
 

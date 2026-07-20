@@ -107,7 +107,7 @@ class Queue(MutableQueueBase):
         self._current_track = value
 
     @property
-    def history(self) -> History:
+    def history(self) -> History | None:
         """The queue history.
 
         Returns
@@ -115,7 +115,7 @@ class Queue(MutableQueueBase):
         :class:`History` | None
             The queue history if history is enabled, otherwise ``None``.
         """
-        return self._history
+        return self._history if self._history.enabled else None
 
     @property
     def mode(self) -> QueueMode:
@@ -256,13 +256,18 @@ class Queue(MutableQueueBase):
             The retrieved track.
         """
         while True:
-            try:
-                return self.get()
-            except QueueEmpty:
-                pass
-
             waiter: asyncio.Future[None] = asyncio.get_running_loop().create_future()
             self._waiters.append(waiter)
+
+            try:
+                result = self.get()
+            except QueueEmpty:
+                pass
+            else:
+                waiter.cancel()
+                if waiter in self._waiters:
+                    self._waiters.remove(waiter)
+                return result
 
             try:
                 await waiter
