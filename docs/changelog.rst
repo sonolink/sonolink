@@ -63,6 +63,9 @@ in specific versions.
 - Fixed :class:`Queue` ``copy()`` creating a new :class:`History` that shared a
   mutable reference to the original settings object, causing mutations to
   ``enabled`` or ``max_items`` to leak between copies.
+- Fixed :meth:`Queue.remove` with a ``key`` parameter ignoring duplicate lookup
+  values and crashing on unhashable types; both the ``remove_all=True`` and
+  ``remove_all=False`` paths now consistently respect user-provided values.
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.2.1..HEAD
 

@@ -231,39 +231,41 @@ class MutableQueueBase(ReadableCollection):
         :class:`int`
             The number of tracks removed from the queue.
         """
-        if key is None:
-            to_remove = self._materialize_tracks(tracks, atomic=False)
-        else:
-            to_remove = (
+        to_remove = (
+            self._materialize_tracks(tracks, atomic=False)
+            if key is None
+            else (
                 list(tracks)
                 if isinstance(tracks, Iterable) and not isinstance(tracks, Playable)
                 else [tracks]
             )
-
+        )
         if not to_remove:
             return 0
 
         before = len(self._items)
 
-        if remove_all:
-            lookup = set(to_remove)
-            self._items = deque(
-                track
-                for track in self._items
-                if (key(track) if key else track) not in lookup
-            )
-        else:
+        if key is None and remove_all:
+            self._items = deque(t for t in self._items if t not in set(to_remove))
+
+        elif key is None:
             counts = Counter(to_remove)
-            new_items: deque[Playable] = deque()
+            self._items = deque(
+                t
+                for t in self._items
+                if not counts.get(t, 0) or (counts.update({t: -1}), False)[1]
+            )
 
-            for track in self._items:
-                value = key(track) if key else track
-                if counts.get(value, 0) > 0:
-                    counts[value] -= 1
-                else:
-                    new_items.append(track)
+        elif remove_all:
+            self._items = deque(t for t in self._items if key(t) not in to_remove)
 
-            self._items = new_items
+        else:
+            remaining = list(to_remove)
+            self._items = deque(
+                t
+                for t in self._items
+                if key(t) not in remaining or (remaining.remove(key(t)), False)[1]
+            )
 
         return before - len(self._items)
 
