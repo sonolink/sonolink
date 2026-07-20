@@ -60,7 +60,7 @@ in specific versions.
 - Fixed :meth:`Player.stop` silently resetting :attr:`Queue.mode` to
   :attr:`QueueMode.NORMAL` when ``clear_queue=True``; this is now documented
   behavior.
-- Fixed :class:`Queue` ``copy()`` creating a new :class:`History` that shared a
+- Fixed :meth:`Queue.copy` creating a new :class:`History` that shared a
   mutable reference to the original settings object, causing mutations to
   ``enabled`` or ``max_items`` to leak between copies.
 - Fixed :meth:`Queue.remove` with a ``key`` parameter ignoring duplicate lookup
@@ -81,6 +81,12 @@ in specific versions.
 - Added ``twine check`` and build provenance attestation to the release workflow.
 - Hardened the template-check validation and excluded draft PRs from template
   enforcement, triggering checks only on ``ready_for_review``.
+- Added sticky ``h2``/``h3`` headers, a hover-highlights toggle persisted in
+  ``localStorage``, and alphabetical "On this page" TOC sorting to the docs.
+- Enabled ``nitpicky`` Sphinx mode and ``sphinx-autodoc-typehints``; replaced
+  raw ``:class:`` references with proper cross-references throughout.
+- Exposed missing exception classes (``SonoLinkException``, ``NodeError``,
+  ``NetworkError``) and ``Version``/``GitInfo`` models in the API docs.
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.2.1..HEAD
 
