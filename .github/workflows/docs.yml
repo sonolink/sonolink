@@ -22,6 +22,7 @@ concurrency:
 jobs:
     docs:
         runs-on: ubuntu-latest
+        timeout-minutes: 15
         if: github.actor != 'renovate[bot]'
         steps:
             - name: Checkout

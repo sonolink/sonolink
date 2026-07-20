@@ -10,6 +10,7 @@ concurrency:
 jobs:
     format:
         runs-on: ubuntu-latest
+        timeout-minutes: 15
         if: |
             github.event.pull_request.head.repo.full_name == github.repository &&
             github.actor != 'renovate[bot]'
@@ -54,6 +55,7 @@ jobs:
 
     lint-check:
         runs-on: ubuntu-latest
+        timeout-minutes: 15
         if: |
             github.event.pull_request.head.repo.full_name != github.repository &&
             github.actor != 'renovate[bot]'
