@@ -575,6 +575,36 @@ class BasePlayer(abc.ABC):
         """
         return await self._playback_handler.skip()
 
+    async def skip_to(self, index: int, /) -> Playable:
+        """Skip directly to a track at the given queue index.
+
+        The current track is added to history and the target track begins
+        playing immediately. This does **not** fall back to AutoPlay; if the
+        index is out of range, an :exc:`IndexError` is raised.
+
+        Parameters
+        ----------
+        index: :class:`int`
+            The queue index of the track to play.
+
+        Returns
+        -------
+        :class:`~sonolink.models.Playable`
+            The track that is now playing.
+
+        Raises
+        ------
+        RuntimeError
+            If the player is not connected to a node or an active session.
+        IndexError
+            The index is out of range.
+        QueueEmpty
+            The queue is empty.
+
+        .. versionadded:: 1.3.0
+        """
+        return await self._playback_handler.skip_to(index)
+
     async def previous(self) -> Playable:
         """Return to the most recently played track in the history.
 
