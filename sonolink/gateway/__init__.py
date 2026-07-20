@@ -39,6 +39,7 @@ __all__ = (
     "QueueEmpty",
     "QueueMode",
     "SearchProvider",
+    "ShuffleMode",
     "TrackEndReason",
     "TrackExceptionSeverity",
     "WebSocketClosedEvent",

@@ -82,7 +82,7 @@ class BasePlayer(abc.ABC):
     """Abstract base class that defines the interface for a Lavalink player.
 
     This class is library-agnostic and is intended to be subclassed to provide
-    concrete implementations compatible with ``discord.py``, `py-cord``, ``disnake``, or ``nextcord``.
+    concrete implementations compatible with ``discord.py``, ``py-cord``, ``disnake``, or ``nextcord``.
     Each library-specific subclass is responsible for implementing the voice protocol
     integration (e.g., inheriting from the appropriate ``VoiceProtocol`` class) and
     fulfilling the abstract methods defined here.
@@ -94,10 +94,10 @@ class BasePlayer(abc.ABC):
 
     Parameters
     ----------
-    node : :class:`~sonolink.node.Node` | None
+    node : :class:`~sonolink.Node` | None
         The Lavalink node to associate this player with. If ``None``, the player
         will attempt to resolve an available node at connection time.
-    queue_mode : :class:`~sonolink.enums.QueueMode`
+    queue_mode : :class:`~sonolink.QueueMode`
         The initial queue looping mode. Defaults to ``QueueMode.NORMAL``.
     autoplay_settings : :class:`~sonolink.models.AutoPlaySettings` | None
         Configuration for the AutoPlay feature. If ``None``, a default
@@ -218,7 +218,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def autoplay(self) -> AutoPlayMode:
-        """The current :class:`~sonolink.enums.AutoPlayMode` for this player.
+        """The current :class:`~sonolink.AutoPlayMode` for this player.
 
         When AutoPlay is enabled, the player will automatically fetch and enqueue
         related tracks when the queue is exhausted.
@@ -316,7 +316,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def node(self) -> Node:
-        """The :class:`~sonolink.node.Node` this player is currently attached to.
+        """The :class:`~sonolink.Node` this player is currently attached to.
 
         Raises
         ------
@@ -358,7 +358,7 @@ class BasePlayer(abc.ABC):
 
     @property
     def queue(self) -> Queue:
-        """The :class:`~sonolink.queue.queue.Queue` associated with this player.
+        """The :class:`~sonolink.Queue` associated with this player.
 
         The queue manages both upcoming tracks and playback history. Tracks can
         be added with ``queue.put()`` / ``queue.put_wait()`` and inspected or
@@ -366,19 +366,19 @@ class BasePlayer(abc.ABC):
 
         Returns
         -------
-        :class:`~sonolink.queue.queue.Queue`
+        :class:`~sonolink.Queue`
         """
         return self._queue
 
     @property
     def queue_mode(self) -> QueueMode:
-        """The current :class:`~sonolink.enums.QueueMode` for this player's queue.
+        """The current :class:`~sonolink.QueueMode` for this player's queue.
 
         .. versionadded:: 1.1.0
 
         Returns
         -------
-        :class:`~sonolink.enums.QueueMode`
+        :class:`~sonolink.QueueMode`
         """
         return self._queue.mode
 
@@ -452,7 +452,7 @@ class BasePlayer(abc.ABC):
 
         Parameters
         ----------
-        node: :class:`~sonolink.node.Node`
+        node: :class:`~sonolink.Node`
             The destination node.
         """
         await self._lifecycle_handler.move_to(node)
@@ -575,6 +575,36 @@ class BasePlayer(abc.ABC):
         """
         return await self._playback_handler.skip()
 
+    async def skip_to(self, index: int, /) -> Playable:
+        """Skip directly to a track at the given queue index.
+
+        The current track is added to history and the target track begins
+        playing immediately. This does **not** fall back to AutoPlay; if the
+        index is out of range, an :exc:`IndexError` is raised.
+
+        Parameters
+        ----------
+        index: :class:`int`
+            The queue index of the track to play.
+
+        Returns
+        -------
+        :class:`~sonolink.models.Playable`
+            The track that is now playing.
+
+        Raises
+        ------
+        RuntimeError
+            If the player is not connected to a node or an active session.
+        IndexError
+            The index is out of range.
+        QueueEmpty
+            The queue is empty.
+
+        .. versionadded:: 1.3.0
+        """
+        return await self._playback_handler.skip_to(index)
+
     async def previous(self) -> Playable:
         """Return to the most recently played track in the history.
 
@@ -671,7 +701,7 @@ class BasePlayer(abc.ABC):
 
         Parameters
         ----------
-        queue_mode : :class:`~sonolink.enums.QueueMode` | None
+        queue_mode : :class:`~sonolink.QueueMode` | None
             The new queue looping mode. If ``None``, the current mode is preserved.
         autoplay_settings : :class:`~sonolink.models.AutoPlaySettings` | None
             New AutoPlay configuration. If ``None``, the current settings are preserved.
@@ -752,7 +782,7 @@ class BasePlayer(abc.ABC):
         """
 
     def get_connection_state(self) -> PlayerConnectionState:
-        """Return a :class:`~sonolink.player.player.PlayerConnectionState` instance
+        """Return a :class:`~sonolink.PlayerConnectionState` instance
         for this player.
 
         Override this method to supply a custom connection state subclass with
@@ -760,7 +790,7 @@ class BasePlayer(abc.ABC):
 
         Returns
         -------
-        :class:`~sonolink.player.player.PlayerConnectionState`
+        :class:`~sonolink.PlayerConnectionState`
         """
         return PlayerConnectionState()
 

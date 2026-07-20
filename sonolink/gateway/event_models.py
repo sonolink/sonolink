@@ -276,7 +276,7 @@ class PlayerDisconnectEvent(EventModel["events.PlayerDisconnectEvent"]):
     extra_data: Any | None
     """Extra data from the trigger.
 
-    When :attr:`trigger` is a :attr:`sonolink.gateway.DisconnectTriggerType.ERROR`, this usually
+    When :attr:`trigger` is a :attr:`~sonolink.DisconnectTriggerType.ERROR`, this usually
     is an :exc:`Exception` object.
     """
 
