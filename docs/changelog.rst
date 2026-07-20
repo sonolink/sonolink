@@ -66,7 +66,9 @@ in specific versions.
 - Fixed :meth:`Queue.remove` with a ``key`` parameter ignoring duplicate lookup
   values and crashing on unhashable types; both the ``remove_all=True`` and
   ``remove_all=False`` paths now consistently respect user-provided values.
-  
+- Added missing exports for :exc:`AutoPlaySeedMissing`,
+  :exc:`FrameworkClientMismatch`, and :exc:`FrameworkImportError` to the
+  top-level ``__all__``.
 
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~

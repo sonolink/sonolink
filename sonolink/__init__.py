@@ -18,10 +18,13 @@ from .utils import *
 
 __all__ = (
     "AutoPlayMode",
+    "AutoPlaySeedMissing",
     "Client",
     "DisconnectTriggerType",
     "ErrorResponseType",
     "ExceptionSeverity",
+    "FrameworkClientMismatch",
+    "FrameworkImportError",
     "HTTPException",
     "History",
     "HistoryEmpty",
