@@ -548,6 +548,44 @@ class Queue(MutableQueueBase):
         self._items.insert(insert_at, track)
         return track
 
+    def remove_at(self, index: int) -> Playable:
+        """Remove and return a track at the given index without side effects.
+
+        Unlike :meth:`pop_at`, this method does **not** set the removed track
+        as the current track or push the previous current track to history.
+
+        Parameters
+        ----------
+        index: :class:`int`
+            The index of the track to remove.
+
+        Returns
+        -------
+        :class:`Playable`
+            The removed track.
+
+        Raises
+        ------
+        :exc:`QueueEmpty`
+            The queue is empty.
+        :exc:`IndexError`
+            There is no item at the given index.
+        """
+        if not self:
+            raise QueueEmpty("Queue is empty.")
+
+        if index < 0:
+            index += len(self._items)
+
+        if not 0 <= index < len(self._items):
+            raise IndexError(
+                f"Queue index {index} out of range [0, {len(self._items)})"
+            )
+
+        track = self._items[index]
+        del self._items[index]
+        return track
+
     def swap(self, old: int, new: int) -> None:
         """Swap two tracks in the queue by index.
 
