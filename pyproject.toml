@@ -82,6 +82,7 @@ exclude = ["docs/"]
 
 [tool.ruff]
 exclude = ["docs/"]
+target-version = "py312"
 
 [tool.ruff.lint]
 select = [

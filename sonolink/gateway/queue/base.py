@@ -27,6 +27,8 @@ from collections import Counter, deque
 from collections.abc import Iterable, Iterator
 from typing import TYPE_CHECKING, overload
 
+from typing_extensions import Any, Callable
+
 from sonolink.models.track import Playable
 
 if TYPE_CHECKING:
@@ -203,6 +205,7 @@ class MutableQueueBase(ReadableCollection):
         /,
         *,
         remove_all: bool = True,
+        key: Callable[[Playable], Any] | None = None,
     ) -> int:
         """Remove one or more tracks from this queue.
 
@@ -213,13 +216,29 @@ class MutableQueueBase(ReadableCollection):
         remove_all: :class:`bool`
             Whether to remove all occurrences of a track from this queue. When set to ``False``, only the first occurrence of each
             track is removed. Defaults to ``True``.
+        key: Callable[[:class:`Playable`], Any] | None
+            If provided, tracks are matched by comparing ``key(track)`` against
+            each value in ``tracks`` instead of using equality directly. This lets
+            you remove tracks without holding the original :class:`Playable`
+            instance, e.g. ``queue.remove([track.identifier], key=lambda t: t.identifier)``.
+            When ``key`` is set, items in ``tracks`` are used as-is and are not
+            coerced to :class:`Playable`. Defaults to ``None``.
+
+            .. versionadded:: 1.3.0
 
         Returns
         -------
         :class:`int`
             The number of tracks removed from the queue.
         """
-        to_remove = self._materialize_tracks(tracks, atomic=False)
+        if key is None:
+            to_remove = self._materialize_tracks(tracks, atomic=False)
+        else:
+            to_remove = (
+                list(tracks)
+                if isinstance(tracks, Iterable) and not isinstance(tracks, Playable)
+                else [tracks]
+            )
 
         if not to_remove:
             return 0
@@ -228,14 +247,19 @@ class MutableQueueBase(ReadableCollection):
 
         if remove_all:
             lookup = set(to_remove)
-            self._items = deque(track for track in self._items if track not in lookup)
+            self._items = deque(
+                track
+                for track in self._items
+                if (key(track) if key else track) not in lookup
+            )
         else:
             counts = Counter(to_remove)
             new_items: deque[Playable] = deque()
 
             for track in self._items:
-                if counts.get(track, 0) > 0:
-                    counts[track] -= 1
+                value = key(track) if key else track
+                if counts.get(value, 0) > 0:
+                    counts[value] -= 1
                 else:
                     new_items.append(track)
 

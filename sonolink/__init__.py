@@ -42,6 +42,7 @@ __all__ = (
     "QueueMode",
     "RoutePlannerType",
     "SearchProvider",
+    "ShuffleMode",
     "TrackEndReason",
     "TrackExceptionSeverity",
     "TrackLoadResult",
