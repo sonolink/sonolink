@@ -75,6 +75,8 @@ in specific versions.
   emitted.
 - Fixed :meth:`Player.previous` pushing the previous track back into history
   after ``play()`` was called, creating a duplicate history entry.
+- Fixed :class:`Filters` constructor not calling ``super().__init__()``, leaving
+  ``_client`` and ``_data`` uninitialised on direct construction.
 
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~

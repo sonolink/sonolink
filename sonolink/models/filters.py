@@ -642,6 +642,7 @@ class Filters(BaseModel[filters.PlayerFilters]):
         volume: float = 1.0,
         plugin_filters: dict[str, Any] | None = None,
     ) -> None:
+        super().__init__(client=None, data=filters.PlayerFilters())
         self.equalizer: list[Equalizer] = equalizer or []
         self.karaoke: Karaoke | None = karaoke
         self.timescale: Timescale | None = timescale
