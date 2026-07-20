@@ -550,6 +550,95 @@ class Queue(MutableQueueBase):
         """
         self._items = deque(random.sample(self._items, k=len(self._items)))
 
+    def move(self, old: int, new: int) -> Playable:
+        """Move a track from one index to another, shifting other tracks.
+
+        Parameters
+        ----------
+        old: :class:`int`
+            The index of the track to move.
+        new: :class:`int`
+            The target index for the track.
+
+        Returns
+        -------
+        :class:`Playable`
+            The moved track.
+
+        Raises
+        ------
+        :exc:`QueueEmpty`
+            The queue is empty.
+        :exc:`IndexError`
+            One or both indices are out of range.
+
+        .. versionadded:: 1.3.0
+        """
+        if not self:
+            raise QueueEmpty("Queue is empty.")
+
+        length = len(self._items)
+
+        if old < 0:
+            old += length
+        if new < 0:
+            new += length
+
+        if not 0 <= old < length:
+            raise IndexError(f"Queue index {old} out of range [0, {length})")
+        if not 0 <= new < length:
+            raise IndexError(f"Queue index {new} out of range [0, {length})")
+
+        if old == new:
+            return self._items[old]
+
+        track = self._items[old]
+        del self._items[old]
+
+        insert_at = new if new < old else new - 1
+        self._items.insert(insert_at, track)
+        return track
+
+    def remove_at(self, index: int) -> Playable:
+        """Remove and return a track at the given index without side effects.
+
+        Unlike :meth:`pop_at`, this method does **not** set the removed track
+        as the current track or push the previous current track to history.
+
+        Parameters
+        ----------
+        index: :class:`int`
+            The index of the track to remove.
+
+        Returns
+        -------
+        :class:`Playable`
+            The removed track.
+
+        Raises
+        ------
+        :exc:`QueueEmpty`
+            The queue is empty.
+        :exc:`IndexError`
+            There is no item at the given index.
+
+        .. versionadded:: 1.3.0
+        """
+        if not self:
+            raise QueueEmpty("Queue is empty.")
+
+        if index < 0:
+            index += len(self._items)
+
+        if not 0 <= index < len(self._items):
+            raise IndexError(
+                f"Queue index {index} out of range [0, {len(self._items)})"
+            )
+
+        track = self._items[index]
+        del self._items[index]
+        return track
+
     def swap(self, old: int, new: int) -> None:
         """Swap two tracks in the queue by index.
 
