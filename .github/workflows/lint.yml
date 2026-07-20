@@ -54,6 +54,8 @@ jobs:
                   fi
 
     lint-check:
+        permissions:
+            contents: read
         runs-on: ubuntu-latest
         timeout-minutes: 15
         if: |

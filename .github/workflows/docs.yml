@@ -21,6 +21,8 @@ concurrency:
 
 jobs:
     docs:
+        permissions:
+            contents: read
         runs-on: ubuntu-latest
         timeout-minutes: 15
         if: github.actor != 'renovate[bot]'
