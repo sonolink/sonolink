@@ -48,6 +48,19 @@ class History(ReadableCollection):
         self._settings = settings or HistorySettings.default()
         self._items: deque[Playable] = deque(maxlen=self._settings.max_items)
 
+    @property
+    def enabled(self) -> bool:
+        """Whether history recording is enabled.
+
+        Returns
+        -------
+        :class:`bool`
+            ``True`` if history is enabled, ``False`` otherwise.
+
+        .. versionadded:: 1.3.0
+        """
+        return self._settings.enabled
+
     def _push(self, track: Playable) -> None:
         if not self._settings.enabled:
             return

@@ -233,7 +233,7 @@ class BasePlayer(abc.ABC):
 
     @autoplay.setter
     def autoplay(self, value: AutoPlayMode) -> None:
-        if not self._queue._history._settings.enabled:
+        if not self._queue._history.enabled:
             raise RuntimeError(
                 f"Player {self.guild.id} has disabled history, which is required for AutoPlay."
             )

@@ -22,6 +22,8 @@ in specific versions.
   - :meth:`Queue.reverse` to reverse the order of the queue.
   - :meth:`Queue.dedupe` to remove duplicate tracks from the queue.
   - :meth:`Queue.__reversed__` to allow the built-in :func:`reversed` function on the queue.
+
+- Added :attr:`History.enabled` property for checking whether history recording is active.
 - Added :meth:`Player.skip_to` to skip directly to a track at a specific
   queue index.
 - Added :meth:`Queue.move` to move a track from one index to another, shifting
@@ -34,6 +36,7 @@ in specific versions.
 
   - Example: ``queue.remove([track.identifier], key=lambda t: t.identifier)`` to remove a track
     by its identifier.
+    
 - Added :class:`ShuffleMode` and :attr:`Queue.shuffle_mode` for persistent shuffle support.
 
   - Independent of :class:`QueueMode`.
