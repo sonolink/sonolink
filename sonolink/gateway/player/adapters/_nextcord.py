@@ -47,7 +47,7 @@ __all__ = ("NextcordPlayer",)
 
 
 class NextcordPlayer(BasePlayer, nextcord.VoiceProtocol):
-    """A nextcord implementation of :class:`~sonolink.player.base_player.BasePlayer`.
+    """A nextcord implementation of :class:`~sonolink.gateway.player._base.BasePlayer`.
 
     This class satisfies the :class:`nextcord.VoiceProtocol` contract expected
     by nextcord's voice connection machinery, whilst delegating all Lavalink
@@ -63,18 +63,18 @@ class NextcordPlayer(BasePlayer, nextcord.VoiceProtocol):
 
     2. **Instance-pass** — construct a pre-configured instance and pass it
        instead. nextcord will call ``player(client, channel)`` which hits
-       :meth:`__call__`::
+       ``__call__``::
 
            player = Player(node=some_node, volume=80)
            await voice_channel.connect(cls=player)
 
     Parameters
     ----------
-    node: :class:`~sonolink.node.Node` | None
+    node: :class:`~sonolink.Node` | None
         The Lavalink node to associate with this player. If ``None``, an
         available node is resolved from the client's node pool at connection
         time.
-    queue_mode: :class:`~sonolink.enums.QueueMode`
+    queue_mode: :class:`~sonolink.QueueMode`
         The initial queue looping mode. Defaults to ``QueueMode.NORMAL``.
     autoplay_settings: :class:`~sonolink.models.AutoPlaySettings` | None
         AutoPlay configuration. ``None`` uses the default configuration.

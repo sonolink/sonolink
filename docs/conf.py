@@ -1,6 +1,8 @@
 import datetime
 import sys
+import typing
 from pathlib import Path
+from typing import Any
 
 from sonolink import __version__
 
@@ -27,6 +29,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_copybutton",
     "sphinx.ext.viewcode",
+    "sphinx_autodoc_typehints",
     "attributetable",
     "navigationhome",
     "pythonref",
@@ -44,20 +47,39 @@ intersphinx_mapping = {
     "msgspec": ("https://msgspec.dev/", None),
 }
 
+nitpicky = True
+
 exclude_patterns = [
     "_build",
 ]
 nitpick_ignore_regex = [
     ("py:class", r"(N|D|P|T|T_co|~P|SessionType|WSErrorType|type\[N\])"),
-    ("py:class", r"dict\[str"),
-    ("py:class", r"sonolink\.errors\.SonoLinkException"),
-    ("py:class", r"sonolink\.gateway\.errors\.NodeError"),
-    ("py:class", r"sonolink\.models\.base\.(BaseModel|BaseSettings)"),
-    ("py:class", r"sonolink\.network\.base\.(BaseHTTPManager|BaseWebsocketManager)"),
-    ("py:class", r"sonolink\.rest\.http\..+"),
-    ("py:class", r"sonolink\.gateway\.queue\.base\..+"),
-    ("py:class", r"sonolink\.gateway\.events\..+"),
-    ("py:class", r"sonolink\.utils\.properties\.(T|T_co|_cached_property)"),
+    ("py:class", r"sonolink\.models\.base\.BaseFilter"),
+    ("py:class", r"sonolink\.utils\.properties\._cached_property"),
+    # Internal Lavalink wire-schema event types used only as generic type
+    # parameters; not part of the public API surface.
+    ("py:class", r"events\.\w+"),
+    ("py:class", r"sonolink\.gateway\.schemas\.events\..+"),
+    # Internal-only names never meant to be linkable: bare TypeVars, the
+    # Snowflake structural Protocol, and the FrameworkLiteral type alias
+    # (both its name and its expanded Literal[...] form).
+    ("py:class", r"BaseFilter|FrameworkLiteral"),
+    ("py:class", r"sonolink\.gateway\.(event_models|client)\.[A-Z]"),
+    ("py:class", r"sonolink\.utils\.snowflake\.Snowflake"),
+    # Artifacts of the typehints_formatter workaround in this file:
+    # Literal[...] annotations are rendered as plain text via a fake
+    # TypeVar, which Sphinx still attempts (and fails) to resolve as a
+    # class in some rendering paths (e.g. autodoc_class_signature="mixed",
+    # and the Client.create overloads in the private client factory).
+    ("py:class", r"sphinx_autodoc_typehints\.Literal"),
+    ("py:obj", r"typing\.Literal\['discord\.py'"),
+    # Third-party types/methods that exist in discord.py/py-cord/disnake/
+    # nextcord but aren't exposed at these paths in their published
+    # intersphinx inventory.
+    ("py:class", r"(discord|disnake|nextcord)\.(types|raw_models)\..+"),
+    ("py:class", r"discord\.voice\.VoiceProtocol\.discord\.Client"),
+    ("py:meth", r"(disnake|nextcord)\.abc\.Connectable\.connect"),
+    ("py:class", r"aiohttp\.client\.ClientSession"),
 ]
 
 # -- Options for autodoc --
@@ -69,9 +91,28 @@ autodoc_default_options = {
 autodoc_mock_imports = ["discord", "py-cord", "disnake", "nextcord"]
 autodoc_typehints = "both"
 autodoc_class_signature = "mixed"
-napoleon_preprocess_types = True
+napoleon_preprocess_types = False
+napoleon_use_ivar = True
 autodoc_member_order = "groupwise"
 autodoc_typehints_description_target = "documented"
+
+# -- Options for sphinx-autodoc-typehints --
+# Resolves generic subscripts (e.g. Callable[[Playable], Any]) into
+# individual cross-references instead of leaving them as plain text.
+always_use_bars_union = True
+typehints_use_signature = True
+typehints_document_rtype_none = False
+
+
+def _typehints_formatter(annotation: Any, *_args: Any) -> str | None:
+    """Render ``Literal[...]`` annotations without invalid links."""
+    if typing.get_origin(annotation) is typing.Literal:
+        values = ", ".join(repr(value) for value in typing.get_args(annotation))
+        return f"Literal[{values}]"
+    return None
+
+
+typehints_formatter = _typehints_formatter
 
 # -- Options for HTML output --
 html_theme = "furo"
