@@ -242,36 +242,21 @@ class Queue(MutableQueueBase):
                 self._current_track = None
 
         if self._items:
-            index = None
+            candidates = list(range(len(self._items)))
 
             if key is not None and self._current_track is not None:
                 current_value = key(self._current_track)
+                filtered = [
+                    i for i in candidates if key(self._items[i]) != current_value
+                ]
+                if filtered:
+                    candidates = filtered
 
-                if self._shuffle_mode is ShuffleMode.PERSISTENT:
-                    candidates = [
-                        i
-                        for i, track in enumerate(self._items)
-                        if key(track) != current_value
-                    ]
-                    if candidates:
-                        index = random.choice(candidates)
-                else:
-                    index = next(
-                        (
-                            i
-                            for i, track in enumerate(self._items)
-                            if key(track) != current_value
-                        ),
-                        None,
-                    )
-
-            if index is None:
-                index = (
-                    random.randrange(len(self._items))
-                    if self._shuffle_mode is ShuffleMode.PERSISTENT
-                    else 0
-                )
-
+            index = (
+                random.choice(candidates)
+                if self._shuffle_mode is ShuffleMode.PERSISTENT
+                else candidates[0]
+            )
             return self.pop_at(index)
 
         if self._autoplay_items:
