@@ -49,6 +49,26 @@ article h2 {
     font-weight: 600;
 }
 
+/* Keep each h2 pinned at the top while scrolling through its section, and
+   stack each h3 directly beneath it, so section/subsection context stays
+   visible (the sidebar already shows the page itself, so h1 is left alone). */
+article h2,
+article h3 {
+    position: sticky;
+    z-index: 1;
+    background: var(--color-background-primary);
+}
+
+article h2 {
+    top: 0;
+}
+
+article h3 {
+    /* Overridden per-element by sticky_headers.js to match the height
+       of the h2 in its own section; this is just a safe initial value. */
+    top: 2.75rem;
+}
+
 a code.literal,
 p code.literal,
 .sig-inline {
@@ -85,31 +105,31 @@ dl.py.exception {
     transition: background-color 120ms ease, box-shadow 120ms ease;
 }
 
-dl.py.class:hover,
-dl.py.method:hover,
-dl.py.attribute:hover,
-dl.py.function:hover,
-dl.py.exception:hover {
+body:not(.hover-highlights-disabled) dl.py.class:hover,
+body:not(.hover-highlights-disabled) dl.py.method:hover,
+body:not(.hover-highlights-disabled) dl.py.attribute:hover,
+body:not(.hover-highlights-disabled) dl.py.function:hover,
+body:not(.hover-highlights-disabled) dl.py.exception:hover {
     background: rgba(47, 108, 149, 0.05);
     box-shadow: inset 0 0 0 1px rgba(47, 108, 149, 0.10);
 }
 
-body[data-theme="dark"] dl.py.class:hover,
-body[data-theme="dark"] dl.py.method:hover,
-body[data-theme="dark"] dl.py.attribute:hover,
-body[data-theme="dark"] dl.py.function:hover,
-body[data-theme="dark"] dl.py.exception:hover {
+body[data-theme="dark"]:not(.hover-highlights-disabled) dl.py.class:hover,
+body[data-theme="dark"]:not(.hover-highlights-disabled) dl.py.method:hover,
+body[data-theme="dark"]:not(.hover-highlights-disabled) dl.py.attribute:hover,
+body[data-theme="dark"]:not(.hover-highlights-disabled) dl.py.function:hover,
+body[data-theme="dark"]:not(.hover-highlights-disabled) dl.py.exception:hover {
     background: rgba(105, 167, 209, 0.07);
     box-shadow: inset 0 0 0 1px rgba(105, 167, 209, 0.16);
 }
 
 @media (prefers-color-scheme: dark) {
 
-    body:not([data-theme="light"]) dl.py.class:hover,
-    body:not([data-theme="light"]) dl.py.method:hover,
-    body:not([data-theme="light"]) dl.py.attribute:hover,
-    body:not([data-theme="light"]) dl.py.function:hover,
-    body:not([data-theme="light"]) dl.py.exception:hover {
+    body:not([data-theme="light"]):not(.hover-highlights-disabled) dl.py.class:hover,
+    body:not([data-theme="light"]):not(.hover-highlights-disabled) dl.py.method:hover,
+    body:not([data-theme="light"]):not(.hover-highlights-disabled) dl.py.attribute:hover,
+    body:not([data-theme="light"]):not(.hover-highlights-disabled) dl.py.function:hover,
+    body:not([data-theme="light"]):not(.hover-highlights-disabled) dl.py.exception:hover {
         background: rgba(105, 167, 209, 0.07);
         box-shadow: inset 0 0 0 1px rgba(105, 167, 209, 0.16);
     }

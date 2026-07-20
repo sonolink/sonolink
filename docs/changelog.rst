@@ -51,8 +51,8 @@ v1.2.1 - 2026-07-04
 **Fixed**
 ~~~~~~~~~
 
-- Fixed a typo in ``__repr_attrs__`` of :class:`WebSocketClosedEvent`.
-- Fixed an incorrect datetime timestamp in :attr:`PlayerState.time` caused by differing time units.
+- Fixed a typo in ``__repr_attrs__`` of :class:`~sonolink.gateway.WebSocketClosedEvent`.
+- Fixed an incorrect datetime timestamp in :attr:`~sonolink.gateway.schemas.PlayerState.time` caused by differing time units.
 - Fixed an issue where the node status would remain stuck on :attr:`NodeStatus.CONNECTING` after
   an ``attempt_connect`` failure.
 - Fixed :class:`Filters` not populating data on the instance.
@@ -72,10 +72,10 @@ v1.2.0 - 2026-06-23
 - Added the missing `auto_reconnect` parameter to :meth:`Client.create_node` for controlling whether the client should
   automatically attempt to reconnect to the node on disconnection. This defaults to ``True``.
 - Added :meth:`Node.reconnect` for manually triggering a reconnection to the node.
-- Added :attr:`TrackStartEvent.original` and :attr:`TrackEndEvent.original` to access
+- Added :attr:`~sonolink.gateway.TrackStartEvent.original` and :attr:`~sonolink.gateway.TrackEndEvent.original` to access
   the original track passed to :meth:`Player.play`.
 - Serializable extras are now forwarded to Lavalink as ``user_data`` and accessible via
-  :attr:`Playable.extras` on reconstructed tracks. Non-serializable values are warned and
+  :attr:`~sonolink.models.Playable.extras` on reconstructed tracks. Non-serializable values are warned and
   accessible via ``.original.extras``.
 - Added support for region-aware node selection:
 
@@ -137,7 +137,7 @@ v1.1.0 - 2026-05-14
 - Added :attr:`TrackSourceType.DEEZER` as a supported track source.
 - Added :attr:`Queue.count` and :attr:`History.count` properties.
 - Added :attr:`Queue.autoplay_tracks` and :meth:`Queue.put_autoplay` to fix autoplay queue priority
-  via a dedicated stream. :attr:`Playable.autoplay` is also now exposed.
+  via a dedicated stream. :attr:`~sonolink.models.Playable.autoplay` is also now exposed.
 - Added :exc:`AutoPlaySeedMissing`, a specific error raised when autoplay has no seed tracks to
   generate from.
 - Added framework-specific import and mismatch exceptions:
@@ -164,7 +164,7 @@ v1.1.0 - 2026-05-14
 **Changed**
 ~~~~~~~~~~~
 
-- :class:`WSCloseEvent` has been renamed to :class:`WebSocketClosedEvent`.
+- ``WSCloseEvent`` has been renamed to :class:`~sonolink.gateway.WebSocketClosedEvent`.
 - :meth:`get_best_node` now prefers nodes with known stats over nodes with no reported stats.
 - Swapped :exc:`asyncio.TimeoutError` with the built-in :exc:`TimeoutError` throughout.
 - Cleaned up documentation for all enums.
