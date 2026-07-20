@@ -69,6 +69,10 @@ in specific versions.
 - Added missing exports for :exc:`AutoPlaySeedMissing`,
   :exc:`FrameworkClientMismatch`, and :exc:`FrameworkImportError` to the
   top-level ``__all__``.
+- Fixed :meth:`Player.on_track_end` dispatching :class:`TrackEndEvent` with the
+  wrong ``original`` track when ``skip()`` was triggered, because
+  ``_original_track`` was overwritten by ``play()`` before the event was
+  emitted.
 
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
