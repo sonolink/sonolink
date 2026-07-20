@@ -113,6 +113,7 @@ ignore = [
 
     "F403",    # star imports acceptable in __init__.py re-exports
     "F405",    # star import usage acceptable in __init__.py re-exports
+    "W293",    # blank line whitespace
 
     "RUF001",  # ambiguous unicode in code
     "RUF002",  # ambiguous unicode in docstrings
