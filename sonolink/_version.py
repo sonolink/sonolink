@@ -44,5 +44,5 @@ class VersionInfo(NamedTuple):
         return base + suffix
 
 
-version_info = VersionInfo(major=1, minor=3, patch=0, release_level="final")
+version_info = VersionInfo(major=1, minor=4, patch=0, release_level="alpha")
 __version__ = version_info.as_str()

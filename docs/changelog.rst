@@ -7,6 +7,22 @@ Changelog
 This page keeps a detailed human friendly rendering of what's new and changed
 in specific versions.
 
+`Unreleased`_
+--------------
+
+**Added**
+~~~~~~~~~
+
+**Fixed**
+~~~~~~~~~
+
+**Changed**
+~~~~~~~~~~~
+
+**Miscellaneous**
+~~~~~~~~~~~~~~~~~
+
+.. _unreleased: https://github.com/sonolink/sonolink/compare/v1.3.0..HEAD
 
 .. _vp1p3p0:
 
@@ -38,7 +54,7 @@ v1.3.0 - 2026-07-20
 
   - Example: ``queue.remove([track.identifier], key=lambda t: t.identifier)`` to remove a track
     by its identifier.
-    
+
 - Added :class:`ShuffleMode` and :attr:`Queue.shuffle_mode` for persistent shuffle support.
 
   - Independent of :class:`QueueMode`.
