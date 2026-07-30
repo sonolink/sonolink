@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Literal, cast, overload
+from typing import TYPE_CHECKING, Any, cast
 
 from ..errors import FrameworkClientMismatch, FrameworkImportError
 from ._base import DiscordClient
@@ -11,22 +11,6 @@ if TYPE_CHECKING:
 
 class ClientFactory:
     __slots__ = ()
-
-    @overload
-    @staticmethod
-    def create(client: Any, framework: Literal["discord.py"]) -> DiscordClient[Any]: ...
-
-    @overload
-    @staticmethod
-    def create(client: Any, framework: Literal["pycord"]) -> DiscordClient[Any]: ...
-
-    @overload
-    @staticmethod
-    def create(client: Any, framework: Literal["disnake"]) -> DiscordClient[Any]: ...
-
-    @overload
-    @staticmethod
-    def create(client: Any, framework: Literal["nextcord"]) -> DiscordClient[Any]: ...
 
     @staticmethod
     def create(client: Any, framework: FrameworkLiteral) -> DiscordClient[Any]:
