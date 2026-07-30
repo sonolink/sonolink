@@ -48,14 +48,16 @@ class ClientFactory:
                 case _:  # pyright: ignore[reportUnnecessaryComparison]
                     raise ValueError(f"Unsupported framework: {framework}")
 
-            expected_type = Client.cls
+            adapter_cls = cast("type[DiscordClient[Any]]", Client)
+            expected_type = adapter_cls.cls
+            received_type: type[Any] = type(client)  # pyright: ignore[reportUnknownVariableType]
+
             if not isinstance(client, expected_type):
                 raise FrameworkClientMismatch(
                     expected_type=expected_type,
-                    received_type=cast(type[Any], type(client)),
+                    received_type=received_type,
                     framework=framework,
                 )
-
-            return Client(cast(Any, client))
+            return adapter_cls(client)
         except (ImportError, ModuleNotFoundError):
             raise FrameworkImportError(framework=framework) from None
