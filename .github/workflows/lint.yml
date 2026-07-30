@@ -13,7 +13,7 @@ jobs:
         timeout-minutes: 15
         if: |
             github.event.pull_request.head.repo.full_name == github.repository &&
-            github.actor != 'renovate[bot]'
+            format('{0}', github.event.pull_request.user.id) != vars.RENOVATE_BOT_ID
         permissions:
             contents: write
         steps:
@@ -60,7 +60,7 @@ jobs:
         timeout-minutes: 15
         if: |
             github.event.pull_request.head.repo.full_name != github.repository &&
-            github.actor != 'renovate[bot]'
+            format('{0}', github.event.pull_request.user.id) != vars.RENOVATE_BOT_ID
         steps:
             - name: Checkout
               uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -88,7 +88,7 @@ jobs:
             contents: read
         runs-on: ubuntu-latest
         timeout-minutes: 15
-        if: github.actor != 'renovate[bot]'
+        if: format('{0}', github.event.pull_request.user.id) != vars.RENOVATE_BOT_ID
         strategy:
             fail-fast: false
             matrix:
