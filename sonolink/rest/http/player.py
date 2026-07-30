@@ -33,14 +33,17 @@ class PlayerHTTPMixin:
         session_id: str,
         guild_id: str,
         data: player.UpdatePlayerRequest,
-        no_replace: bool = False,
+        no_replace: bool | None = None,
     ) -> player.UpdatePlayerResponse:
         url = f"/sessions/{session_id}/players/{guild_id}"
+        params: dict[str, str] = {}
+        if no_replace is not None:
+            params["noReplace"] = str(no_replace).lower()
         res = await self.request(
             "PATCH",
             url,
             data=msgspec.json.encode(data),
-            params={"noReplace": str(no_replace).lower()},
+            params=params,
             headers={"Content-Type": "application/json"},
         )
         return msgspec.json.decode(res, type=player.UpdatePlayerResponse)

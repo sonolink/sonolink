@@ -55,6 +55,7 @@ class PlaybackHandler(HandlerBase):
         end: int | None = None,
         volume: int | None = None,
         paused: bool | None = None,
+        no_replace: bool | None = None,
     ) -> Playable:
         node = self._player.node
         assert node._resume_session is not None
@@ -81,6 +82,7 @@ class PlaybackHandler(HandlerBase):
                 session_id=node._resume_session,
                 guild_id=str(self._player.guild.id),
                 data=data,
+                no_replace=no_replace,
             )
         except Exception as exc:
             self._player._original_track = None
