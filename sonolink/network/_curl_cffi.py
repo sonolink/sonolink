@@ -70,7 +70,8 @@ class CurlHTTPManager(BaseHTTPManager[AsyncSession[Response]]):
 
         assert self._session is not None
 
-        response = await self._session.request(
+        # Suppression fixed in: https://github.com/lexiforest/curl_cffi/pull/768
+        response = await self._session.request(  # pyright: ignore[reportUnknownMemberType]
             method=cast("HttpMethod", method.upper()),
             url=url,
             headers=cast("HeaderTypes", headers),
