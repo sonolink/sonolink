@@ -1,5 +1,4 @@
-name: Autoformat with Ruff
-
+name: Lint & Typecheck
 on:
     workflow_dispatch:
     pull_request:
@@ -9,6 +8,7 @@ concurrency:
     cancel-in-progress: true
 jobs:
     format:
+        name: Format with ruff
         runs-on: ubuntu-latest
         timeout-minutes: 15
         if: |
@@ -16,7 +16,6 @@ jobs:
             github.actor != 'renovate[bot]'
         permissions:
             contents: write
-
         steps:
             - name: Checkout
               uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -54,6 +53,7 @@ jobs:
                   fi
 
     lint-check:
+        name: Lint check with ruff
         permissions:
             contents: read
         runs-on: ubuntu-latest
@@ -61,7 +61,6 @@ jobs:
         if: |
             github.event.pull_request.head.repo.full_name != github.repository &&
             github.actor != 'renovate[bot]'
-
         steps:
             - name: Checkout
               uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -82,3 +81,52 @@ jobs:
 
             - name: Check ruff lint
               run: ruff check . --exclude docs/
+
+    typecheck:
+        name: Typecheck / ${{ matrix.adapter }}
+        permissions:
+            contents: read
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        if: github.actor != 'renovate[bot]'
+        strategy:
+            fail-fast: false
+            matrix:
+                adapter: [discord.py, py-cord, disnake, nextcord]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+              with:
+                  persist-credentials: false
+
+            - name: Set up Python
+              uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+              with:
+                  python-version: "3.13"
+                  cache: "pip"
+                  cache-dependency-path: |
+                      pyproject.toml
+
+            - name: Install project (no discord adapter)
+              run: pip install -e ".[speed]"
+
+            - name: Install ${{ matrix.adapter }} in isolation
+              run: |
+                  pip uninstall -y discord.py py-cord disnake nextcord 2>/dev/null || true
+                  pip install "${{ matrix.adapter }}"
+
+            - name: Install basedpyright
+              run: pip install basedpyright==1.39.9
+
+            - name: Run basedpyright
+              env:
+                  TMPDIR: ${{ runner.temp }}
+              run: |
+                  FILES=$(find sonolink -name '*.py' -not -name '_pycord.py' -not -name '_dpy.py' -not -name '_disnake.py' -not -name '_nextcord.py')
+                  case "${{ matrix.adapter }}" in
+                    "discord.py") FILES="$FILES $(find sonolink -name '_dpy.py')" ;;
+                    "py-cord")    FILES="$FILES $(find sonolink -name '_pycord.py')" ;;
+                    "disnake")    FILES="$FILES $(find sonolink -name '_disnake.py')" ;;
+                    "nextcord")   FILES="$FILES $(find sonolink -name '_nextcord.py')" ;;
+                  esac
+                  basedpyright $FILES
