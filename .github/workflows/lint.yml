@@ -116,7 +116,7 @@ jobs:
                   pip install "${{ matrix.adapter }}"
 
             - name: Install basedpyright
-              run: pip install basedpyright==1.31.6
+              run: pip install basedpyright==1.39.9
 
             - name: Run basedpyright
               env:

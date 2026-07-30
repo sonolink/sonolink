@@ -15,15 +15,19 @@ class ClientFactory:
     @overload
     @staticmethod
     def create(client: Any, framework: Literal["discord.py"]) -> DiscordClient[Any]: ...
+
     @overload
     @staticmethod
     def create(client: Any, framework: Literal["pycord"]) -> DiscordClient[Any]: ...
+
     @overload
     @staticmethod
     def create(client: Any, framework: Literal["disnake"]) -> DiscordClient[Any]: ...
+
     @overload
     @staticmethod
     def create(client: Any, framework: Literal["nextcord"]) -> DiscordClient[Any]: ...
+
     @staticmethod
     def create(client: Any, framework: FrameworkLiteral) -> DiscordClient[Any]:
         try:
