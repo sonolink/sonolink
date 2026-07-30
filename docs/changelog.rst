@@ -13,6 +13,11 @@ in specific versions.
 **Added**
 ~~~~~~~~~
 
+- Added a ``no_replace`` parameter to :meth:`Player.play` that maps to
+  Lavalink's ``noReplace`` query parameter. When ``True``, a playing track
+  is not replaced by the new track request (useful for preloading).
+  ``None`` omits the parameter so Lavalink applies its server-side default (``false``).
+
 **Fixed**
 ~~~~~~~~~
 
