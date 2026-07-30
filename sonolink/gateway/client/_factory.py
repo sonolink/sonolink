@@ -8,31 +8,22 @@ from ._base import DiscordClient
 if TYPE_CHECKING:
     from sonolink.gateway.player import FrameworkLiteral
 
-    from .adapters._disnake import DisnakeClient
-    from .adapters._dpy import DpyClient
-    from .adapters._nextcord import NextcordClient
-    from .adapters._pycord import PycordClient
-
 
 class ClientFactory:
     __slots__ = ()
 
     @overload
     @staticmethod
-    def create(client: Any, framework: Literal["discord.py"]) -> DpyClient: ...
-
+    def create(client: Any, framework: Literal["discord.py"]) -> DiscordClient[Any]: ...
     @overload
     @staticmethod
-    def create(client: Any, framework: Literal["pycord"]) -> PycordClient: ...
-
+    def create(client: Any, framework: Literal["pycord"]) -> DiscordClient[Any]: ...
     @overload
     @staticmethod
-    def create(client: Any, framework: Literal["disnake"]) -> DisnakeClient: ...
-
+    def create(client: Any, framework: Literal["disnake"]) -> DiscordClient[Any]: ...
     @overload
     @staticmethod
-    def create(client: Any, framework: Literal["nextcord"]) -> NextcordClient: ...
-
+    def create(client: Any, framework: Literal["nextcord"]) -> DiscordClient[Any]: ...
     @staticmethod
     def create(client: Any, framework: FrameworkLiteral) -> DiscordClient[Any]:
         try:
@@ -50,12 +41,10 @@ class ClientFactory:
 
             adapter_cls = cast("type[DiscordClient[Any]]", Client)
             expected_type = adapter_cls.cls
-            received_type: type[Any] = type(client)  # pyright: ignore[reportUnknownVariableType]
-
             if not isinstance(client, expected_type):
                 raise FrameworkClientMismatch(
                     expected_type=expected_type,
-                    received_type=received_type,
+                    received_type=cast(type[Any], type(client)),
                     framework=framework,
                 )
             return adapter_cls(client)
