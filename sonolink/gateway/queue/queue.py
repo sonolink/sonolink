@@ -26,7 +26,7 @@ from __future__ import annotations
 import asyncio
 import random
 from collections import deque
-from itertools import chain
+from itertools import chain, islice
 from typing import TYPE_CHECKING, Any, Callable, Iterable, Iterator
 
 from sonolink.models.settings import HistorySettings
@@ -230,6 +230,52 @@ class Queue(MutableQueueBase):
             (self._current_track,) if self._current_track is not None else (),
         )
         return sum(len(track) for track in tracks if not track.is_stream)
+
+    def duration_until(self, index: int) -> int:
+        """Return the cumulative duration in milliseconds of all queued tracks
+        before the given index.
+
+        This answers "how long until the track at this index starts playing"
+        under normal playback, or computes the duration of a subset of the
+        queue. The :attr:`current_track`, AutoPlay lane, :attr:`mode`, and
+        :attr:`shuffle_mode` are not considered; the query is purely
+        positional over :attr:`tracks`. Live streams
+        (:attr:`~sonolink.models.Playable.is_stream`) contribute ``0``.
+
+        Passing ``len(queue)`` returns the total duration of all queued
+        tracks, i.e. :attr:`total_duration` excluding the current track when
+        one is set.
+
+        .. versionadded:: 1.4.0
+
+        Parameters
+        ----------
+        index: :class:`int`
+            The queue index. Negative indices count from the end of the queue.
+
+        Returns
+        -------
+        :class:`int`
+            The cumulative duration in milliseconds of the tracks preceding
+            ``index``.
+
+        Raises
+        ------
+        :exc:`IndexError`
+            ``index`` is out of range (``-len(queue)`` to ``len(queue)``
+            inclusive, after normalizing negatives).
+        """
+        length = len(self._items)
+
+        if index < 0:
+            index += length
+
+        if not 0 <= index <= length:
+            raise IndexError(f"Queue index {index} out of range [0, {length}]")
+
+        return sum(
+            len(track) for track in islice(self._items, index) if not track.is_stream
+        )
 
     def get(self, *, key: Callable[[Playable], Any] | None = None) -> Playable:
         """Get the next track from the queue, respecting the current queue mode.
