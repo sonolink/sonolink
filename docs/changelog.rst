@@ -13,6 +13,12 @@ in specific versions.
 **Added**
 ~~~~~~~~~
 
+- Added :meth:`Queue.total_duration` to compute the total duration of all
+  tracks in the queue, including the current track and AutoPlay-discovered
+  tracks. AutoPlay tracks can be excluded via ``with_autoplay=False``.
+- Added :meth:`Queue.duration_until` to compute the cumulative duration of all
+  queued tracks before a given index, supporting negative indices.
+
 **Fixed**
 ~~~~~~~~~
 
