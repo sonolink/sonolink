@@ -26,6 +26,7 @@ from __future__ import annotations
 import asyncio
 import random
 from collections import deque
+from itertools import chain
 from typing import TYPE_CHECKING, Any, Callable, Iterable, Iterator
 
 from sonolink.models.settings import HistorySettings
@@ -195,6 +196,40 @@ class Queue(MutableQueueBase):
             A list of AutoPlay tracks.
         """
         return list(self._autoplay_items)
+
+    @property
+    def total_duration(self) -> int | float:
+        """The total duration in milliseconds of all tracks in the queue.
+
+        This includes the :attr:`current_track`, all user-added tracks, and
+        all AutoPlay-discovered tracks. Live streams
+        (:attr:`~sonolink.models.Playable.is_stream`) contribute ``0``, as
+        their duration is unbounded.
+
+        When :attr:`mode` is :attr:`QueueMode.LOOP` or
+        :attr:`QueueMode.LOOP_ALL` and the queue is not empty, playback never
+        ends on its own and this returns :data:`float("inf")` instead. An
+        empty queue always returns ``0``.
+
+        .. versionadded:: 1.4.0
+
+        Returns
+        -------
+        :class:`int` | :class:`float`
+            The total duration in milliseconds, or :data:`float("inf")` when
+            a loop mode is active and the queue is not empty.
+        """
+        if self._mode in (QueueMode.LOOP, QueueMode.LOOP_ALL) and (
+            self._current_track is not None or self._items or self._autoplay_items
+        ):
+            return float("inf")
+
+        tracks = chain(
+            self._items,
+            self._autoplay_items,
+            (self._current_track,) if self._current_track is not None else (),
+        )
+        return sum(len(track) for track in tracks if not track.is_stream)
 
     def get(self, *, key: Callable[[Playable], Any] | None = None) -> Playable:
         """Get the next track from the queue, respecting the current queue mode.
