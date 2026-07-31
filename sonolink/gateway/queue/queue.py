@@ -197,9 +197,8 @@ class Queue(MutableQueueBase):
         """
         return list(self._autoplay_items)
 
-    @property
-    def total_duration(self) -> int | float:
-        """The total duration in milliseconds of all tracks in the queue.
+    def total_duration(self, *, with_autoplay: bool = True) -> int | float:
+        """Compute the total duration in milliseconds of all tracks in the queue.
 
         This includes the :attr:`current_track`, all user-added tracks, and
         all AutoPlay-discovered tracks. Live streams
@@ -212,6 +211,12 @@ class Queue(MutableQueueBase):
         empty queue always returns ``0``.
 
         .. versionadded:: 1.4.0
+
+        Parameters
+        ----------
+        with_autoplay : :class:`bool`
+            Whether to include AutoPlay-discovered tracks in the total.
+            Defaults to ``True``.
 
         Returns
         -------
@@ -226,7 +231,7 @@ class Queue(MutableQueueBase):
 
         tracks = chain(
             self._items,
-            self._autoplay_items,
+            self._autoplay_items if with_autoplay else (),
             (self._current_track,) if self._current_track is not None else (),
         )
         return sum(len(track) for track in tracks if not track.is_stream)
