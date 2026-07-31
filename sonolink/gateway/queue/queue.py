@@ -202,7 +202,7 @@ class Queue(MutableQueueBase):
 
         This includes the :attr:`current_track`, all user-added tracks, and
         all AutoPlay-discovered tracks. Live streams
-        (:attr:`~sonolink.models.Playable.is_stream`) contribute ``0``, as
+        (:attr:`sonolink.models.Playable.is_stream`) contribute ``0``, as
         their duration is unbounded.
 
         When :attr:`mode` is :attr:`QueueMode.LOOP` or
