@@ -94,7 +94,7 @@ class PlaybackHandler(HandlerBase):
         current = self._player._queue._current_track
         if current is not None and current is not track:
             self._player._queue._history._push(current)
-            
+
         self._player._queue.current_track = track
         self._player._stop_inactivity_timer()
         return track
