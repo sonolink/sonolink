@@ -23,7 +23,7 @@
 - [ ] My code follows Sonolink's **strict typing** standards.
 - [ ] Complex or non-obvious logic is documented where appropriate.
 - [ ] No dead code, debug prints, or leftover TODOs were introduced.
-- [ ] This PR complies with the [AI Contribution Policy](https://github.com/sonolink/sonolink/blob/main/AI_POLICY.md).
+- [ ] This PR complies with the [AI Contribution Policy](https://github.com/sonolink/sonolink/blob/main/.github/AI_POLICY.md).
 
 ### Documentation & Compatibility
 
