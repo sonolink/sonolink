@@ -245,7 +245,7 @@ class Queue(MutableQueueBase):
         queue. The :attr:`current_track`, AutoPlay lane, :attr:`mode`, and
         :attr:`shuffle_mode` are not considered; the query is purely
         positional over :attr:`tracks`. Live streams
-        (:attr:`~sonolink.models.Playable.is_stream`) contribute ``0``.
+        (:attr:`sonolink.models.Playable.is_stream`) contribute ``0``.
 
         Passing ``len(queue)`` returns the total duration of all queued
         tracks, i.e. :attr:`total_duration` excluding the current track when
