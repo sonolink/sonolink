@@ -20,7 +20,6 @@ in specific versions.
   Helper functions already record the outgoing track and set the next one as current
   via :meth:`Queue.get`/:meth:`Queue.pop_at`.
 
-  
 **Changed**
 ~~~~~~~~~~~
 
