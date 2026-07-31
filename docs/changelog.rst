@@ -22,6 +22,8 @@ in specific versions.
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
 
+- Exposed ``SonoLinkException`` exception class to prevent docs building warnings.
+
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.3.0..HEAD
 
 .. _vp1p3p0:
