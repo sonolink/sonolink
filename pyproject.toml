@@ -69,6 +69,10 @@ docs = [
     "sphinx-autodoc-typehints>=2.3",
 ]
 
+[dependency-groups]
+lint = ["ruff>=0.16.1,<0.17"]
+typecheck = ["basedpyright>=1.39.9,<2"]
+
 [project.urls]
 Repository = "https://github.com/sonolink/sonolink"
 

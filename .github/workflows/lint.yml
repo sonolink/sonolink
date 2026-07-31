@@ -30,7 +30,7 @@ jobs:
                   cache: "pip"
 
             - name: Install ruff
-              run: pip install -U ruff==0.15.22
+              run: pip install -U --group lint
 
             - name: Run ruff format
               run: ruff format . --exclude docs/
@@ -74,7 +74,7 @@ jobs:
                   cache: "pip"
 
             - name: Install ruff
-              run: pip install ruff==0.15.22
+              run: pip install -U --group lint
 
             - name: Check ruff formatting
               run: ruff format --check . --exclude docs/
@@ -107,8 +107,8 @@ jobs:
                   cache-dependency-path: |
                       pyproject.toml
 
-            - name: Install project (no discord adapter)
-              run: pip install -e ".[speed]"
+            - name: Install project and basedpyright
+              run: pip install -U -e ".[speed]" --group typecheck
 
             - name: Install ${{ matrix.adapter }} in isolation
               run: |
@@ -116,7 +116,7 @@ jobs:
                   pip install "${{ matrix.adapter }}"
 
             - name: Install basedpyright
-              run: pip install basedpyright==1.39.9
+              run: pip install -U --group typecheck
 
             - name: Run basedpyright
               env:
