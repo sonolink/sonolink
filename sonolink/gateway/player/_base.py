@@ -34,13 +34,13 @@ from sonolink.gateway.player.handlers._events import EventsHandler
 from sonolink.gateway.player.handlers._inactivity import InactivityHandler
 from sonolink.gateway.player.handlers._lifecycle import LifecycleHandler
 from sonolink.gateway.player.handlers._playback import PlaybackHandler
-from sonolink.gateway.queue.history import History
 from sonolink.models.filters import Filters
 
 from ..enums import AutoPlayMode, DisconnectTriggerType, QueueMode
 from ..queue.queue import Queue
 
 if TYPE_CHECKING:
+    from sonolink.gateway.queue.history import History
     from sonolink.gateway.schemas.receive import PlayerState
     from sonolink.models.settings import AutoPlaySettings, HistorySettings
     from sonolink.models.track import Playable
