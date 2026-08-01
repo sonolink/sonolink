@@ -39,8 +39,8 @@ jobs:
                   cache: "pip"
                   check-latest: true
 
-            - name: Install library and dependencies
-              run: pip install ".[docs]"
+            - name: Install dependencies
+              run: pip install . --group docs
 
             - name: Compile Docs
               run: |
