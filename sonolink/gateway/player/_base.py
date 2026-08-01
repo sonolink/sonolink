@@ -403,6 +403,25 @@ class BasePlayer(abc.ABC):
         self._queue.mode = value
 
     @property
+    def remaining(self) -> int:
+        """The estimated playback time remaining for the current track in milliseconds.
+
+        This is calculated as ``track.length - player.position``. Returns
+        ``0`` when the player is idle, paused, or has no track loaded.
+
+        .. versionadded:: 1.4.0
+
+        Returns
+        -------
+        :class:`int`
+            Remaining time in milliseconds.
+        """
+        if self.is_playing:
+            assert self.current is not None
+            return self.current.length - self.position
+        return 0
+
+    @property
     def volume(self) -> int:
         """The current volume of the player as an integer in the range ``0``–``1000``.
 
