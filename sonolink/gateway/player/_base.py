@@ -34,6 +34,7 @@ from sonolink.gateway.player.handlers._events import EventsHandler
 from sonolink.gateway.player.handlers._inactivity import InactivityHandler
 from sonolink.gateway.player.handlers._lifecycle import LifecycleHandler
 from sonolink.gateway.player.handlers._playback import PlaybackHandler
+from sonolink.gateway.queue.history import History
 from sonolink.models.filters import Filters
 
 from ..enums import AutoPlayMode, DisconnectTriggerType, QueueMode
@@ -295,6 +296,21 @@ class BasePlayer(abc.ABC):
         if self._guild is None:
             raise RuntimeError("Player is not yet attached to a guild.")
         return self._guild
+
+    @property
+    def history(self) -> History | None:
+        """The :class:`~sonolink.History` of previously played tracks.
+
+        This is a convenience alias for :attr:`Queue.history`. Returns
+        ``None`` if history tracking is disabled for this player.
+
+        .. versionadded:: 1.4.0
+
+        Returns
+        -------
+        :class:`~sonolink.History` | None
+        """
+        return self.queue.history
 
     @property
     def history_settings(self) -> HistorySettings:

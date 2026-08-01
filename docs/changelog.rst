@@ -17,6 +17,8 @@ in specific versions.
   playing a track (a track is loaded and the player is not paused).
 - Added :attr:`Player.remaining` to check the estimated playback time
   remaining for the current track, calculated as ``track.length - player.position``.
+- Added :attr:`Player.history` as a convenience alias for :attr:`Queue.history`,
+  returning ``None`` when history tracking is disabled.
 
 **Fixed**
 ~~~~~~~~~
