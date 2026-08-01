@@ -227,7 +227,7 @@ class EventsHandler(HandlerBase):
         await self._dispatch_voice_update()
         self._player._check_inactivity()
 
-    async def _dispatch_voice_update(self) -> None:
+    async def _dispatch_voice_update(self, retried: bool = False) -> None:
         if not self._player._connection.is_complete or not self._player._node:
             return
 
@@ -245,12 +245,10 @@ class EventsHandler(HandlerBase):
                     "Player %s: Session wait timed out; reconnecting node...",
                     self._player.guild.id,
                 )
-                try:
-                    await self._player._node.reconnect()
-                except RuntimeError:
-                    pass
+                await self._player._node.reconnect()
                 await self._player._node._wait_session()
-            assert self._player._node._resume_session is not None
+
+        assert self._player._node._resume_session is not None
 
         voice_state = PlayerVoiceState(
             token=self._player._connection.token,
@@ -278,26 +276,31 @@ class EventsHandler(HandlerBase):
                 self._player._node.id,
             )
         except HTTPException as exc:
-            if exc.status == 404:
+            if exc.status == 404 and not retried:
                 _log.warning(
                     "Player %s: Session not found (404) during voice update — "
-                    "node session is stale. Forcing disconnect.",
+                    "node session is stale. Reconnecting and retrying.",
                     self._player.guild.id,
                 )
-                await self._player._node.reconnect()
-                await self._player._lifecycle_handler.disconnect(
-                    force=True,
-                    trigger=DisconnectTriggerType.ERROR,
-                    extra_event_data=exc,
-                )
-            else:
-                _log.error(
-                    "Player %s: Failed to dispatch voice update to Node %r. Error: %s",
-                    self._player.guild.id,
-                    self._player._node.id,
-                    exc,
-                    exc_info=True,
-                )
+                try:
+                    await self._player._node.reconnect()
+                    await self._player._node._wait_session()
+                except RuntimeError:
+                    await self._player._lifecycle_handler.disconnect(
+                        force=True,
+                        trigger=DisconnectTriggerType.ERROR,
+                        extra_event_data=exc,
+                    )
+                    return
+                return await self._dispatch_voice_update(retried=True)
+
+            _log.error(
+                "Player %s: Failed to dispatch voice update to Node %r. Error: %s",
+                self._player.guild.id,
+                self._player._node.id,
+                exc,
+                exc_info=True,
+            )
             return
         except Exception as exc:
             _log.error(
