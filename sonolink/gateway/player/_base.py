@@ -315,6 +315,22 @@ class BasePlayer(abc.ABC):
         self._queue._history._settings = value
 
     @property
+    def is_playing(self) -> bool:
+        """Whether the player is currently playing a track.
+
+        Unlike :attr:`current`, which also returns a track while the player
+        is paused, this property is a convenient shorthand for the common
+        ``current is not None and not paused`` check.
+
+        .. versionadded:: 1.4.0
+
+        Returns
+        -------
+        :class:`bool`
+        """
+        return self.current is not None and not self.paused
+
+    @property
     def node(self) -> Node:
         """The :class:`~sonolink.Node` this player is currently attached to.
 

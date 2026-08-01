@@ -8,10 +8,13 @@ This page keeps a detailed human friendly rendering of what's new and changed
 in specific versions.
 
 `Unreleased`_
---------------
+-------------
 
 **Added**
 ~~~~~~~~~
+
+- Added :attr:`Player.is_playing` to check whether the player is currently
+  playing a track (a track is loaded and the player is not paused).
 
 **Fixed**
 ~~~~~~~~~
