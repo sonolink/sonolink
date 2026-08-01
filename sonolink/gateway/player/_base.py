@@ -301,7 +301,7 @@ class BasePlayer(abc.ABC):
     def history(self) -> History | None:
         """The :class:`~sonolink.History` of previously played tracks.
 
-        This is a convenience alias for :attr:`Queue.history`. Returns
+        This is a convenience alias for :attr:`Queue.history <sonolink.Queue.history>`. Returns
         ``None`` if history tracking is disabled for this player.
 
         .. versionadded:: 1.4.0
@@ -570,7 +570,8 @@ class BasePlayer(abc.ABC):
         ----------
         clear_queue : :class:`bool`
             If ``True``, all pending tracks in the queue are removed and
-            the :attr:`Queue.mode` is reset to :attr:`QueueMode.NORMAL`.
+            the :attr:`Queue.mode <sonolink.Queue.mode>` is reset to
+            :attr:`QueueMode.NORMAL <sonolink.QueueMode.NORMAL>`.
             Defaults to ``False``.
         clear_history : :class:`bool`
             If ``True``, the playback history is cleared. Defaults to ``False``.
@@ -617,7 +618,8 @@ class BasePlayer(abc.ABC):
         Parameters
         ----------
         key: Callable[[:class:`~sonolink.models.Playable`], Any] | :data:`None`
-            Forwarded to :meth:`Queue.get`. See :meth:`Queue.get` for
+            Forwarded to :meth:`Queue.get <sonolink.Queue.get>`. See
+            :meth:`Queue.get <sonolink.Queue.get>` for
             details. Defaults to ``None``.
 
             .. versionadded:: 1.3.0
