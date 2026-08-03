@@ -13,6 +13,8 @@ in specific versions.
 **Added**
 ~~~~~~~~~
 
+- Added a ``no_replace`` parameter to :meth:`Player.play` that maps to
+  Lavalink's ``noReplace`` query parameter. 
 - Added :meth:`Queue.total_duration` to compute the total duration of all
   tracks in the queue, including the current track and AutoPlay-discovered
   tracks. AutoPlay tracks can be excluded via ``with_autoplay=False``.
@@ -29,8 +31,6 @@ in specific versions.
 ~~~~~~~~~
 
 - Fixed duplicated history entries on track transitions in :meth:`Player.play`. 
-  Helper functions already record the outgoing track and set the next one as current
-  via :meth:`Queue.get`/:meth:`Queue.pop_at`.
 
 **Changed**
 ~~~~~~~~~~~

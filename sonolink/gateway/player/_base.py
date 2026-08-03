@@ -517,6 +517,7 @@ class BasePlayer(abc.ABC):
         end: int | None = None,
         volume: int | None = None,
         paused: bool | None = None,
+        no_replace: bool | None = None,
     ) -> Playable:
         """Begin playback of the specified track.
 
@@ -540,6 +541,13 @@ class BasePlayer(abc.ABC):
         paused : :class:`bool` | None
             If ``True``, the track begins in a paused state. If ``None``,
             the player's current pause state is preserved. Defaults to ``None``.
+        no_replace : :class:`bool` | None
+            If ``True`` and a track is already playing, the request is ignored
+            instead of replacing the current track. If ``None``, Lavalink's
+            server-side default is used (``False``). Useful for preloading.
+            Defaults to ``None``.
+
+            .. versionadded:: 1.4.0
 
         Returns
         -------
@@ -552,6 +560,7 @@ class BasePlayer(abc.ABC):
             end=end,
             volume=volume,
             paused=paused,
+            no_replace=no_replace,
         )
 
     async def stop(
