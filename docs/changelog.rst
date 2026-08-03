@@ -13,6 +13,11 @@ in specific versions.
 **Added**
 ~~~~~~~~~
 
+- Added :meth:`Queue.total_duration` to compute the total duration of all
+  tracks in the queue, including the current track and AutoPlay-discovered
+  tracks. AutoPlay tracks can be excluded via ``with_autoplay=False``.
+- Added :meth:`Queue.duration_until` to compute the cumulative duration of all
+  queued tracks before a given index, supporting negative indices.
 - Added :attr:`Player.is_playing` to check whether the player is currently
   playing a track (a track is loaded and the player is not paused).
 - Added :attr:`Player.remaining` to check the estimated playback time
