@@ -55,6 +55,7 @@ class PlaybackHandler(HandlerBase):
         end: int | None = None,
         volume: int | None = None,
         paused: bool | None = None,
+        no_replace: bool | None = None,
     ) -> Playable:
         node = self._player.node
         assert node._resume_session is not None
@@ -81,6 +82,7 @@ class PlaybackHandler(HandlerBase):
                 session_id=node._resume_session,
                 guild_id=str(self._player.guild.id),
                 data=data,
+                no_replace=no_replace,
             )
         except Exception as exc:
             self._player._original_track = None
@@ -90,10 +92,12 @@ class PlaybackHandler(HandlerBase):
         self._player._paused = paused
         self._player._last_position = start
         self._player._last_update = time.monotonic()
-        if self._player._queue._current_track is not None:
-            self._player._queue._history._push(self._player._queue._current_track)
-        self._player._queue.current_track = track
 
+        current = self._player._queue._current_track
+        if current is not None and current is not track:
+            self._player._queue._history._push(current)
+
+        self._player._queue.current_track = track
         self._player._stop_inactivity_timer()
         return track
 
@@ -154,7 +158,6 @@ class PlaybackHandler(HandlerBase):
 
     async def previous(self) -> Playable:
         track = self._player._queue.previous()
-        self._player._queue._current_track = None
         await self.play(track)
         return track
 
