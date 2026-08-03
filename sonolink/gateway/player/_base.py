@@ -40,6 +40,7 @@ from ..enums import AutoPlayMode, DisconnectTriggerType, QueueMode
 from ..queue.queue import Queue
 
 if TYPE_CHECKING:
+    from sonolink.gateway.queue.history import History
     from sonolink.gateway.schemas.receive import PlayerState
     from sonolink.models.settings import AutoPlaySettings, HistorySettings
     from sonolink.models.track import Playable
@@ -297,6 +298,21 @@ class BasePlayer(abc.ABC):
         return self._guild
 
     @property
+    def history(self) -> History | None:
+        """The :class:`~sonolink.History` of previously played tracks.
+
+        This is a convenience alias for :attr:`Queue.history <sonolink.Queue.history>`. Returns
+        ``None`` if history tracking is disabled for this player.
+
+        .. versionadded:: 1.4.0
+
+        Returns
+        -------
+        :class:`~sonolink.History` | None
+        """
+        return self.queue.history
+
+    @property
     def history_settings(self) -> HistorySettings:
         """The current :class:`~sonolink.models.HistorySettings` for this player's queue.
 
@@ -313,6 +329,22 @@ class BasePlayer(abc.ABC):
     @history_settings.setter
     def history_settings(self, value: HistorySettings) -> None:
         self._queue._history._settings = value
+
+    @property
+    def is_playing(self) -> bool:
+        """Whether the player is currently playing a track.
+
+        Unlike :attr:`current`, which also returns a track while the player
+        is paused, this property is a convenient shorthand for the common
+        ``current is not None and not paused`` check.
+
+        .. versionadded:: 1.4.0
+
+        Returns
+        -------
+        :class:`bool`
+        """
+        return self.current is not None and not self.paused
 
     @property
     def node(self) -> Node:
@@ -385,6 +417,25 @@ class BasePlayer(abc.ABC):
     @queue_mode.setter
     def queue_mode(self, value: QueueMode) -> None:
         self._queue.mode = value
+
+    @property
+    def remaining(self) -> int:
+        """The estimated playback time remaining for the current track in milliseconds.
+
+        This is calculated as ``track.length - player.position``. Returns
+        ``0`` when the player is idle, paused, or has no track loaded.
+
+        .. versionadded:: 1.4.0
+
+        Returns
+        -------
+        :class:`int`
+            Remaining time in milliseconds.
+        """
+        if self.is_playing:
+            assert self.current is not None
+            return self.current.length - self.position
+        return 0
 
     @property
     def volume(self) -> int:
@@ -519,7 +570,8 @@ class BasePlayer(abc.ABC):
         ----------
         clear_queue : :class:`bool`
             If ``True``, all pending tracks in the queue are removed and
-            the :attr:`Queue.mode` is reset to :attr:`QueueMode.NORMAL`.
+            the :attr:`Queue.mode <sonolink.Queue.mode>` is reset to
+            :attr:`QueueMode.NORMAL <sonolink.QueueMode.NORMAL>`.
             Defaults to ``False``.
         clear_history : :class:`bool`
             If ``True``, the playback history is cleared. Defaults to ``False``.
@@ -566,7 +618,8 @@ class BasePlayer(abc.ABC):
         Parameters
         ----------
         key: Callable[[:class:`~sonolink.models.Playable`], Any] | :data:`None`
-            Forwarded to :meth:`Queue.get`. See :meth:`Queue.get` for
+            Forwarded to :meth:`Queue.get <sonolink.Queue.get>`. See
+            :meth:`Queue.get <sonolink.Queue.get>` for
             details. Defaults to ``None``.
 
             .. versionadded:: 1.3.0

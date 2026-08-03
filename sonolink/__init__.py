@@ -11,6 +11,7 @@ A high-performance Lavalink v4 wrapper for Python, inspired by WaveLink.
 from . import gateway, models, rest, utils
 from ._registry import get_client
 from ._version import __version__, version_info
+from .errors import *
 from .gateway import *
 from .network.errors import *
 from .rest import *
@@ -46,6 +47,7 @@ __all__ = (
     "RoutePlannerType",
     "SearchProvider",
     "ShuffleMode",
+    "SonoLinkException",
     "TrackEndReason",
     "TrackExceptionSeverity",
     "TrackLoadResult",

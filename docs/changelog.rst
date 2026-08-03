@@ -8,7 +8,7 @@ This page keeps a detailed human friendly rendering of what's new and changed
 in specific versions.
 
 `Unreleased`_
---------------
+-------------
 
 **Added**
 ~~~~~~~~~
@@ -18,15 +18,29 @@ in specific versions.
   tracks. AutoPlay tracks can be excluded via ``with_autoplay=False``.
 - Added :meth:`Queue.duration_until` to compute the cumulative duration of all
   queued tracks before a given index, supporting negative indices.
+- Added :attr:`Player.is_playing` to check whether the player is currently
+  playing a track (a track is loaded and the player is not paused).
+- Added :attr:`Player.remaining` to check the estimated playback time
+  remaining for the current track, calculated as ``track.length - player.position``.
+- Added :attr:`Player.history` as a convenience alias for :attr:`Queue.history`,
+  returning ``None`` when history tracking is disabled.
 
 **Fixed**
 ~~~~~~~~~
+
+- Fixed duplicated history entries on track transitions in :meth:`Player.play`. 
+  Helper functions already record the outgoing track and set the next one as current
+  via :meth:`Queue.get`/:meth:`Queue.pop_at`.
 
 **Changed**
 ~~~~~~~~~~~
 
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
+
+- Exposed ``SonoLinkException`` exception class to prevent docs building warnings.
+- Moved ``ruff`` and `basedpyright` into dependency-groups so CI workflows can install them 
+  individually via ``pip install --group <name>``.
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.3.0..HEAD
 
@@ -45,7 +59,7 @@ v1.3.0 - 2026-07-20
     - Example: ``queue.sort(key=lambda track: track.title)`` to sort by track title.
   - :meth:`Queue.reverse` to reverse the order of the queue.
   - :meth:`Queue.dedupe` to remove duplicate tracks from the queue.
-  - :meth:`Queue.__reversed__` to allow the built-in :func:`reversed` function on the queue.
+  - ``Queue.__reversed__`` to allow the built-in :func:`reversed` function on the queue.
 
 - Added :attr:`History.enabled` property for checking whether history recording is active.
 - Added :meth:`Player.skip_to` to skip directly to a track at a specific
@@ -107,7 +121,7 @@ v1.3.0 - 2026-07-20
 - Added missing exports for :exc:`AutoPlaySeedMissing`,
   :exc:`FrameworkClientMismatch`, and :exc:`FrameworkImportError` to the
   top-level ``__all__``.
-- Fixed :meth:`Player.on_track_end` dispatching :class:`TrackEndEvent` with the
+- Fixed ``Player.on_track_end`` dispatching :class:`TrackEndEvent` with the
   wrong ``original`` track when ``skip()`` was triggered, because
   ``_original_track`` was overwritten by ``play()`` before the event was
   emitted.
