@@ -61,6 +61,10 @@ classifiers = [
 
 [project.optional-dependencies]
 speed = ["curl-cffi>=0.14.0,<1"]
+
+[dependency-groups]
+lint = ["ruff>=0.16.1,<0.17"]
+typecheck = ["basedpyright>=1.39.9,<2"]
 docs = [
     "sphinx>=9.1.0",
     "furo",

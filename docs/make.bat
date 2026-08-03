@@ -44,8 +44,8 @@ goto end
 %SPHINXAUTOBUILD% >NUL 2>NUL
 if errorlevel 9009 (
 	echo.
-	echo.The 'sphinx-autobuild' command was not found. Install docs extras first:
-	echo.  pip install -e .[docs]
+	echo.The 'sphinx-autobuild' command was not found. Install docs group first:
+	echo.  pip install -e . --group docs
 	echo.
 	exit /b 1
 )
