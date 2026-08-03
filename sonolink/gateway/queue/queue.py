@@ -693,14 +693,14 @@ class Queue(MutableQueueBase):
     def move(self, old: int, new: int) -> Playable:
         """Move a track from one index to another, shifting other tracks.
 
+        .. versionadded:: 1.3.0
+
         Parameters
         ----------
         old: :class:`int`
             The index of the track to move.
         new: :class:`int`
             The target index for the track.
-
-        .. versionadded:: 1.3.0
 
         Returns
         -------
@@ -734,9 +734,7 @@ class Queue(MutableQueueBase):
 
         track = self._items[old]
         del self._items[old]
-
-        insert_at = new if new < old else new - 1
-        self._items.insert(insert_at, track)
+        self._items.insert(new, track)
         return track
 
     def remove_at(self, index: int) -> Playable:
