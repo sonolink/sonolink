@@ -23,6 +23,10 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed duplicated history entries on track transitions in :meth:`Player.play`. 
+  Helper functions already record the outgoing track and set the next one as current
+  via :meth:`Queue.get`/:meth:`Queue.pop_at`.
+
 **Changed**
 ~~~~~~~~~~~
 
