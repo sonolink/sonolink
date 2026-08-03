@@ -92,10 +92,12 @@ class PlaybackHandler(HandlerBase):
         self._player._paused = paused
         self._player._last_position = start
         self._player._last_update = time.monotonic()
-        if self._player._queue._current_track is not None:
-            self._player._queue._history._push(self._player._queue._current_track)
-        self._player._queue.current_track = track
 
+        current = self._player._queue._current_track
+        if current is not None and current is not track:
+            self._player._queue._history._push(current)
+
+        self._player._queue.current_track = track
         self._player._stop_inactivity_timer()
         return track
 
@@ -156,7 +158,6 @@ class PlaybackHandler(HandlerBase):
 
     async def previous(self) -> Playable:
         track = self._player._queue.previous()
-        self._player._queue._current_track = None
         await self.play(track)
         return track
 
