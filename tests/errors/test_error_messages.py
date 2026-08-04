@@ -4,7 +4,6 @@ import sonolink
 
 
 class TestErrorInstantiation:
-
     def test_sonolink_exception_message(self) -> None:
         error = sonolink.SonoLinkException("Test error")
         assert str(error) == "Test error"
@@ -32,7 +31,6 @@ class TestErrorInstantiation:
 
 
 class TestErrorWithDetails:
-
     def test_node_error_with_node_id(self) -> None:
         node_id = "primary-node"
         error = sonolink.NodeError(f"Node {node_id} failed")

@@ -6,7 +6,6 @@ import sonolink
 
 
 class TestErrorCatching:
-
     def test_catch_sonolink_exception(self) -> None:
         try:
             raise sonolink.SonoLinkException("test")
@@ -33,7 +32,6 @@ class TestErrorCatching:
 
 
 class TestErrorHandlingScenarios:
-
     def test_handle_queue_empty(self) -> None:
 
         def operation_requiring_queue() -> None:
@@ -62,7 +60,6 @@ class TestErrorHandlingScenarios:
 
 
 class TestErrorFallthrough:
-
     def test_error_fallthrough_to_general(self) -> None:
 
         def operation() -> None:

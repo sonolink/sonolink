@@ -10,7 +10,6 @@ from ...helpers import make_playable
 
 
 class TestHistoryBasics:
-
     def test_history_init_is_empty(self) -> None:
         history = History()
         assert len(history) == 0
@@ -31,7 +30,6 @@ class TestHistoryBasics:
 
 
 class TestHistoryRecording:
-
     def test_push_records_track(self, track: Playable) -> None:
         history = History()
         history._push(track)
@@ -76,7 +74,6 @@ class TestHistoryRecording:
 
 
 class TestHistoryIsReadOnly:
-
     @pytest.mark.parametrize("name", ["add", "put", "append", "clear", "remove"])
     def test_no_public_mutators(self, name: str) -> None:
         assert not hasattr(History(), name)

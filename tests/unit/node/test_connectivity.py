@@ -26,7 +26,6 @@ def connectable(node: Node, manager: MagicMock) -> Node:
 
 
 class TestNodeConnectionState:
-
     def test_starts_disconnected(self, node: Node) -> None:
         assert node._status is NodeStatus.DISCONNECTED
         assert node.is_connected is False
@@ -55,7 +54,6 @@ class TestNodeConnectionState:
 
 
 class TestNodeConnect:
-
     async def test_connect_sets_up_manager(
         self, connectable: Node, manager: MagicMock
     ) -> None:
@@ -80,7 +78,6 @@ class TestNodeConnect:
 
 
 class TestNodeClose:
-
     async def test_close_without_client_raises(self, connectable: Node) -> None:
         connectable._client = None
 
@@ -113,7 +110,6 @@ class TestNodeClose:
 
 
 class TestNodeReconnect:
-
     async def test_reconnect_without_client_raises(self, connectable: Node) -> None:
         connectable._client = None
 

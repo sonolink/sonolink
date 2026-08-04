@@ -11,7 +11,6 @@ from ...helpers import ConcreteTestPlayer, make_playable
 
 
 class TestPlayerQueueAccess:
-
     def test_queue_starts_empty(self, ready_player: ConcreteTestPlayer) -> None:
         assert len(ready_player.queue) == 0
 
@@ -23,7 +22,6 @@ class TestPlayerQueueAccess:
 
 
 class TestPlayerSkip:
-
     async def test_skip_plays_next_queued_track(
         self, ready_player: ConcreteTestPlayer, mock_rest_manager: MagicMock
     ) -> None:
@@ -60,7 +58,6 @@ class TestPlayerSkip:
 
 
 class TestPlayerSkipTo:
-
     async def test_skip_to_index(self, ready_player: ConcreteTestPlayer) -> None:
         ready_player.queue.put(
             [
@@ -91,7 +88,6 @@ class TestPlayerSkipTo:
 
 
 class TestPlayerPrevious:
-
     async def test_previous_replays_history(
         self, ready_player: ConcreteTestPlayer
     ) -> None:

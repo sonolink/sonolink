@@ -15,17 +15,16 @@ from ...helpers import make_playable
 def client(mock_discord_client: MagicMock) -> Client[MagicMock]:
     with patch(
         "sonolink.gateway.client._factory.ClientFactory.create",
-        return_value=MagicMock()
+        return_value=MagicMock(),
     ):
         with patch(
             "sonolink.gateway.player.PlayerFactory.detect_framework",
-            return_value="discord.py"
+            return_value="discord.py",
         ):
             return Client(mock_discord_client)
 
 
 class TestClientSearch:
-
     async def test_search_track_default_source(self, client: Client[MagicMock]) -> None:
         mock_node = MagicMock(spec=Node)
         mock_result = MagicMock(spec=SearchResult)
@@ -44,10 +43,7 @@ class TestClientSearch:
         with patch.object(client, "get_best_node", return_value=mock_node):
             await client.search_track("query", source="soundcloud")
 
-            mock_node.search_track.assert_called_once_with(
-                "query",
-                source="soundcloud"
-            )
+            mock_node.search_track.assert_called_once_with("query", source="soundcloud")
 
     async def test_search_track_with_region(self, client: Client[MagicMock]) -> None:
         mock_node = MagicMock(spec=Node)
@@ -60,7 +56,6 @@ class TestClientSearch:
 
 
 class TestClientDecode:
-
     async def test_decode_track(self, client: Client[MagicMock]) -> None:
         mock_node = MagicMock(spec=Node)
         playable = make_playable()
@@ -97,7 +92,6 @@ class TestClientDecode:
 
 
 class TestClientNodeSelection:
-
     @pytest.fixture
     def client_with_nodes(self, client: Client[MagicMock]) -> Client[MagicMock]:
         node1 = MagicMock(spec=Node)

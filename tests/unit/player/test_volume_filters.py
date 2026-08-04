@@ -10,7 +10,6 @@ from ...helpers import ConcreteTestPlayer
 
 
 class TestPlayerVolume:
-
     def test_default_volume(self, ready_player: ConcreteTestPlayer) -> None:
         assert ready_player.volume == 100
 
@@ -51,7 +50,6 @@ class TestPlayerVolume:
 
 
 class TestPlayerFilters:
-
     def test_default_filters_is_empty(self, ready_player: ConcreteTestPlayer) -> None:
         assert isinstance(ready_player.filters, Filters)
 

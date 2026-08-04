@@ -4,7 +4,6 @@ from ..helpers import ConcreteTestPlayer, make_playable
 
 
 class TestPlayerPlayworkflow:
-
     async def test_play_track_workflow(self, ready_player: ConcreteTestPlayer) -> None:
         track = make_playable(title="Test Track")
 
@@ -20,7 +19,9 @@ class TestPlayerPlayworkflow:
         assert ready_player.paused is False
         assert ready_player.is_playing is True
 
-    async def test_queue_and_play_workflow(self, ready_player: ConcreteTestPlayer) -> None:
+    async def test_queue_and_play_workflow(
+        self, ready_player: ConcreteTestPlayer
+    ) -> None:
         first = make_playable(identifier="first")
         second = make_playable(identifier="second")
 

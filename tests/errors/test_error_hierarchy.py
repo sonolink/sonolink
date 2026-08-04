@@ -4,7 +4,6 @@ import sonolink
 
 
 class TestErrorHierarchy:
-
     def test_sonolink_exception_is_exception(self) -> None:
         assert issubclass(sonolink.SonoLinkException, Exception)
 
@@ -28,7 +27,6 @@ class TestErrorHierarchy:
 
 
 class TestErrorInheritanceChain:
-
     def test_invalid_node_password_inheritance_chain(self) -> None:
         node = object()
         error = sonolink.InvalidNodePassword(node)  # type: ignore[arg-type]

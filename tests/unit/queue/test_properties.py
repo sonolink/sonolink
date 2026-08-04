@@ -9,7 +9,6 @@ from ...helpers import make_playable
 
 
 class TestQueueLength:
-
     def test_queue_empty_length(self) -> None:
         queue = Queue()
         assert len(queue) == 0
@@ -34,7 +33,6 @@ class TestQueueLength:
 
 
 class TestQueueDuration:
-
     def test_queue_total_duration(self) -> None:
         queue = Queue()
         queue.put(
@@ -90,7 +88,6 @@ class TestQueueDuration:
 
 
 class TestQueueEmpty:
-
     def test_queue_is_falsy_when_empty(self) -> None:
         queue = Queue()
         assert not queue
@@ -105,7 +102,6 @@ class TestQueueEmpty:
 
 
 class TestQueueDuplication:
-
     def test_queue_allows_duplicate_tracks(self) -> None:
         queue = Queue()
         track = make_playable()

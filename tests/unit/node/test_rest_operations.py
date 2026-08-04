@@ -69,7 +69,6 @@ def manager(node: Node) -> MagicMock:
 
 
 class TestCreatePlayer:
-
     def test_create_player_respects_configuration(
         self, node: Node, monkeypatch: pytest.MonkeyPatch
     ) -> None:
@@ -79,9 +78,7 @@ class TestCreatePlayer:
         filters = Filters(timescale=Timescale(speed=1.2))
         autoplay = AutoPlaySettings(discovery_count=3)
         history = HistorySettings(enabled=True, max_items=5)
-        monkeypatch.setattr(
-            node._player_factory, "get_player", get_test_player
-        )
+        monkeypatch.setattr(node._player_factory, "get_player", get_test_player)
 
         player = node.create_player(
             volume=250,
@@ -105,7 +102,6 @@ class TestCreatePlayer:
 
 
 class TestFetch:
-
     async def test_fetch_info_returns_server_info(
         self, node: Node, manager: MagicMock
     ) -> None:
@@ -148,7 +144,6 @@ class TestFetch:
 
 
 class TestSend:
-
     async def test_send_forwards_arguments_and_decodes_json(
         self, node: Node, manager: MagicMock
     ) -> None:
@@ -188,6 +183,5 @@ class TestSend:
 
 
 class TestCleanup:
-
     async def test_cleanup_is_noop(self, node: Node) -> None:
         assert await node.cleanup() is None

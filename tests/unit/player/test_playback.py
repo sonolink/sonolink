@@ -10,7 +10,6 @@ from ...helpers import ConcreteTestPlayer, make_playable
 
 
 class TestPlayerPlay:
-
     async def test_play_returns_track(
         self, ready_player: ConcreteTestPlayer, track: Playable
     ) -> None:
@@ -108,7 +107,6 @@ class TestPlayerPlay:
 
 
 class TestPlayerPauseResume:
-
     async def test_pause_sets_state(
         self, ready_player: ConcreteTestPlayer, track: Playable
     ) -> None:
@@ -143,7 +141,6 @@ class TestPlayerPauseResume:
 
 
 class TestPlayerStop:
-
     async def test_stop_resets_position(
         self, ready_player: ConcreteTestPlayer, track: Playable
     ) -> None:
@@ -170,7 +167,6 @@ class TestPlayerStop:
 
 
 class TestPlayerRequiresNode:
-
     async def test_play_without_node_raises(self, track: Playable) -> None:
         player = ConcreteTestPlayer(node=None)
         player._guild = MagicMock(id=1)

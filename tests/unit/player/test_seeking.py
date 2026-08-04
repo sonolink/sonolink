@@ -6,8 +6,9 @@ from ...helpers import ConcreteTestPlayer, make_playable
 
 
 class TestPlayerSeeking:
-
-    async def test_seek_updates_position(self, ready_player: ConcreteTestPlayer) -> None:
+    async def test_seek_updates_position(
+        self, ready_player: ConcreteTestPlayer
+    ) -> None:
         await ready_player.play(make_playable())
         await ready_player.seek(30000)
 
@@ -41,14 +42,14 @@ class TestPlayerSeeking:
 
 
 class TestPlayerPosition:
-
     def test_position_starts_at_zero(self, ready_player: ConcreteTestPlayer) -> None:
         assert ready_player.position == 0
 
     def test_position_is_read_only(self, ready_player: ConcreteTestPlayer) -> None:
-        assert not isinstance(type(ready_player).position, property) or type(
-            ready_player
-        ).position.fset is None
+        assert (
+            not isinstance(type(ready_player).position, property)
+            or type(ready_player).position.fset is None
+        )
 
     async def test_position_frozen_while_paused(
         self, ready_player: ConcreteTestPlayer

@@ -18,7 +18,6 @@ from sonolink.models import (
 
 
 class TestIndividualFilters:
-
     def test_equalizer_fields(self) -> None:
         equalizer = Equalizer(band=2, gain=0.15)
 
@@ -144,7 +143,6 @@ class TestIndividualFilters:
 
 
 class TestFilters:
-
     def test_defaults_build_partial_wire_payload(self) -> None:
         filters = Filters()
         payload = filters.payload

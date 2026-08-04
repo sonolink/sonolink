@@ -7,7 +7,6 @@ from sonolink.models.track import Playable
 
 
 class TestPop:
-
     def test_pop_removes_head_and_updates_history(
         self, queue_with_tracks: Queue, tracks: list[Playable]
     ) -> None:
@@ -27,7 +26,6 @@ class TestPop:
 
 
 class TestPopAt:
-
     @pytest.mark.parametrize(("index", "expected"), [(2, 2), (-1, 4)])
     def test_pop_at_supports_indices(
         self,
@@ -52,7 +50,6 @@ class TestPopAt:
 
 
 class TestPrevious:
-
     def test_previous_restores_history_and_requeues_current(
         self, queue_with_tracks: Queue, tracks: list[Playable]
     ) -> None:

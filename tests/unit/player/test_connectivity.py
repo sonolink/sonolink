@@ -6,7 +6,6 @@ from ...helpers import ConcreteTestPlayer
 
 
 class TestPlayerConnect:
-
     async def test_connect_requests_voice_state_change(
         self, test_player: ConcreteTestPlayer
     ) -> None:
@@ -39,7 +38,6 @@ class TestPlayerConnect:
 
 
 class TestPlayerDisconnect:
-
     async def test_disconnect_without_node_is_a_no_op(
         self, test_player: ConcreteTestPlayer
     ) -> None:
@@ -64,7 +62,9 @@ class TestPlayerDisconnect:
 
         assert not test_player._connection._connected_flag.is_set()
 
-    async def test_disconnect_resets_queue(self, test_player: ConcreteTestPlayer) -> None:
+    async def test_disconnect_resets_queue(
+        self, test_player: ConcreteTestPlayer
+    ) -> None:
         from ...helpers import make_playable
 
         test_player.queue.put(make_playable())
@@ -74,6 +74,5 @@ class TestPlayerDisconnect:
 
 
 class TestPlayerConnectionState:
-
     def test_starts_disconnected(self, test_player: ConcreteTestPlayer) -> None:
         assert not test_player._connection._connected_flag.is_set()

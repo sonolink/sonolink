@@ -39,7 +39,6 @@ def make_playable(
 
 
 class ConcreteTestPlayer(BasePlayer):
-
     def __call__(self, client: Any, channel: Any) -> ConcreteTestPlayer:
         self._guild = getattr(channel, "guild", None)
         self.client = client

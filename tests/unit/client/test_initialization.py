@@ -8,13 +8,12 @@ from sonolink import Client
 
 
 class TestClientInitialization:
-
     def test_client_init_with_discord_py(self, mock_discord_client: MagicMock) -> None:
         mock_discord_client.__class__.__module__ = "discord"
 
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             client = Client(mock_discord_client, framework="discord.py")
 
@@ -27,11 +26,11 @@ class TestClientInitialization:
     ) -> None:
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             with patch(
                 "sonolink.gateway.player.PlayerFactory.detect_framework",
-                return_value="discord.py"
+                return_value="discord.py",
             ):
                 client = Client(mock_discord_client)
                 assert client.framework == "discord.py"
@@ -41,11 +40,11 @@ class TestClientInitialization:
     ) -> None:
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             with patch(
                 "sonolink.gateway.player.PlayerFactory.detect_framework",
-                return_value="discord.py"
+                return_value="discord.py",
             ):
                 _client1 = Client(mock_discord_client)
 
@@ -55,11 +54,11 @@ class TestClientInitialization:
     def test_client_repr(self, mock_discord_client: MagicMock) -> None:
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             with patch(
                 "sonolink.gateway.player.PlayerFactory.detect_framework",
-                return_value="discord.py"
+                return_value="discord.py",
             ):
                 client = Client(mock_discord_client)
                 assert "Client" in repr(client)

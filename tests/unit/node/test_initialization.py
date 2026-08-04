@@ -21,7 +21,6 @@ def build_node(client: MagicMock, **kwargs: object) -> Node:
 
 
 class TestNodeInitialization:
-
     def test_node_init_with_uri(self, mock_client: MagicMock) -> None:
         node = build_node(mock_client)
 
@@ -60,7 +59,6 @@ class TestNodeInitialization:
 
 
 class TestNodeSettings:
-
     def test_inactivity_settings_are_stored(self, mock_client: MagicMock) -> None:
         settings = InactivitySettings(timeout=600)
         node = build_node(mock_client, inactivity_settings=settings)
@@ -101,7 +99,6 @@ class TestNodeSettings:
 
 
 class TestNodeRegions:
-
     def test_regions_default_to_empty(self, mock_client: MagicMock) -> None:
         assert build_node(mock_client).regions == []
 
@@ -119,7 +116,6 @@ class TestNodeRegions:
 
 
 class TestNodeIdMutation:
-
     def test_id_cannot_change_while_bound_to_client(
         self, mock_client: MagicMock
     ) -> None:

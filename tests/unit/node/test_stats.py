@@ -9,7 +9,6 @@ from ..helpers import make_stats
 
 
 class TestNodeStats:
-
     def test_stats_start_as_none(self, node: Node) -> None:
         assert node.stats is None
 
@@ -56,15 +55,14 @@ class TestNodeStats:
 
 
 class TestNodePenaltyComparison:
-
     def test_lower_penalty_node_is_preferred(self) -> None:
-        assert make_stats(playing_players=1).penalty < make_stats(
-            playing_players=100
-        ).penalty
+        assert (
+            make_stats(playing_players=1).penalty
+            < make_stats(playing_players=100).penalty
+        )
 
 
 class TestNodePlayers:
-
     def test_node_starts_with_no_players(self, node: Node) -> None:
         assert node._players == {}
 

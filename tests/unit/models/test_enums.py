@@ -2,7 +2,6 @@ import sonolink
 
 
 class TestAutoPlayMode:
-
     def test_autoplay_mode_exists(self):
         assert hasattr(sonolink, "AutoPlayMode")
 
@@ -18,7 +17,6 @@ class TestAutoPlayMode:
 
 
 class TestTrackSourceType:
-
     def test_track_source_type_exists(self):
         assert hasattr(sonolink, "TrackSourceType")
 
@@ -40,12 +38,13 @@ class TestTrackSourceType:
 
     def test_track_source_multiple_sources(self):
         if hasattr(sonolink, "TrackSourceType"):
-            sources = [s for s in dir(sonolink.TrackSourceType) if not s.startswith("_")]
+            sources = [
+                s for s in dir(sonolink.TrackSourceType) if not s.startswith("_")
+            ]
             assert len(sources) >= 1
 
 
 class TestNodeRegion:
-
     def test_node_region_exists(self):
         assert hasattr(sonolink, "NodeRegion")
 

@@ -12,14 +12,19 @@ from ...helpers import ConcreteTestPlayer
 
 
 class TestPlayerInitialization:
-
-    def test_player_bound_to_guild(self, test_player: ConcreteTestPlayer, mock_guild: MagicMock) -> None:
+    def test_player_bound_to_guild(
+        self, test_player: ConcreteTestPlayer, mock_guild: MagicMock
+    ) -> None:
         assert test_player.guild is mock_guild
 
-    def test_player_bound_to_node(self, test_player: ConcreteTestPlayer, node: Node) -> None:
+    def test_player_bound_to_node(
+        self, test_player: ConcreteTestPlayer, node: Node
+    ) -> None:
         assert test_player.node is node
 
-    def test_player_starts_with_empty_queue(self, test_player: ConcreteTestPlayer) -> None:
+    def test_player_starts_with_empty_queue(
+        self, test_player: ConcreteTestPlayer
+    ) -> None:
         assert len(test_player.queue) == 0
 
     def test_player_starts_idle(self, test_player: ConcreteTestPlayer) -> None:
@@ -40,8 +45,9 @@ class TestPlayerInitialization:
 
 
 class TestPlayerAutoplay:
-
-    def test_autoplay_disabled_by_default(self, test_player: ConcreteTestPlayer) -> None:
+    def test_autoplay_disabled_by_default(
+        self, test_player: ConcreteTestPlayer
+    ) -> None:
         assert test_player.autoplay is AutoPlayMode.DISABLED
 
     def test_autoplay_requires_history(self, node: Node, mock_guild: MagicMock) -> None:
@@ -75,7 +81,9 @@ class TestPlayerGuildRequired:
         with pytest.raises(AttributeError):
             player.guild
 
-    def test_node_raises_when_unbound_and_guild_is_set(self, mock_guild: MagicMock) -> None:
+    def test_node_raises_when_unbound_and_guild_is_set(
+        self, mock_guild: MagicMock
+    ) -> None:
         player = ConcreteTestPlayer(node=None)
         player._guild = mock_guild
 

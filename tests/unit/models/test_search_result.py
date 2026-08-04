@@ -38,7 +38,6 @@ ERROR_PAYLOAD: dict[str, Any] = {
 
 
 class TestSearchResultIsExported:
-
     def test_importable_from_models(self) -> None:
         from sonolink import models
 
@@ -46,7 +45,6 @@ class TestSearchResultIsExported:
 
 
 class TestSearchResultType:
-
     @pytest.mark.parametrize(
         "load_type",
         [
@@ -77,7 +75,6 @@ class TestSearchResultType:
 
 
 class TestSearchResultResult:
-
     def test_track_result_is_playable(self) -> None:
         result = make_result(TrackLoadResult.TRACK, track_payload(title="Only Track"))
         resolved = result.result
@@ -114,7 +111,6 @@ class TestSearchResultResult:
 
 
 class TestSearchResultException:
-
     def test_exception_none_when_not_error(self) -> None:
         result = make_result(TrackLoadResult.TRACK, track_payload())
         assert result.exception is None

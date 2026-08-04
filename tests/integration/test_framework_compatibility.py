@@ -7,12 +7,11 @@ from sonolink.gateway.player._factory import FrameworkLiteral
 
 
 class TestFrameworkDetection:
-
     def test_discord_py_framework(self) -> None:
         mock_discord_client = MagicMock()
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             client = Client(mock_discord_client, framework="discord.py")
             assert client.framework == "discord.py"
@@ -21,7 +20,7 @@ class TestFrameworkDetection:
         mock_client = MagicMock()
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             client = Client(mock_client, framework="pycord")
             assert client.framework == "pycord"
@@ -30,7 +29,7 @@ class TestFrameworkDetection:
         mock_client = MagicMock()
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             client = Client(mock_client, framework="disnake")
             assert client.framework == "disnake"
@@ -39,23 +38,22 @@ class TestFrameworkDetection:
         mock_client = MagicMock()
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             client = Client(mock_client, framework="nextcord")
             assert client.framework == "nextcord"
 
 
 class TestAutoFrameworkDetection:
-
     def test_auto_detect_discord_py(self) -> None:
         mock_discord_client = MagicMock()
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             with patch(
                 "sonolink.gateway.player.PlayerFactory.detect_framework",
-                return_value="discord.py"
+                return_value="discord.py",
             ):
                 client = Client(mock_discord_client)
                 assert client.framework == "discord.py"
@@ -64,18 +62,17 @@ class TestAutoFrameworkDetection:
         mock_client = MagicMock()
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             with patch(
                 "sonolink.gateway.player.PlayerFactory.detect_framework",
-                return_value="pycord"
+                return_value="pycord",
             ):
                 client = Client(mock_client)
                 assert client.framework == "pycord"
 
 
 class TestFrameworkInteroperability:
-
     @pytest.mark.parametrize(
         "framework", ["discord.py", "pycord", "disnake", "nextcord"]
     )
@@ -85,15 +82,12 @@ class TestFrameworkInteroperability:
         mock_client = MagicMock()
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             client = Client(mock_client, framework=framework)
 
             # Create node (should work with any framework)
-            node = client.create_node(
-                uri="ws://localhost:2333",
-                password="test"
-            )
+            node = client.create_node(uri="ws://localhost:2333", password="test")
             assert node in client.nodes
 
             # Get node (should work with any framework)

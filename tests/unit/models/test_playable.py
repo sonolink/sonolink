@@ -10,7 +10,6 @@ from ...helpers import make_playable
 
 
 class TestPlayableMetadata:
-
     def test_title(self) -> None:
         assert make_playable(title="Test Track").title == "Test Track"
 
@@ -45,7 +44,6 @@ class TestPlayableMetadata:
 
 
 class TestPlayableFlags:
-
     def test_is_stream_false(self) -> None:
         assert make_playable(is_stream=False).is_stream is False
 
@@ -60,7 +58,6 @@ class TestPlayableFlags:
 
 
 class TestPlayableEquality:
-
     def test_same_encoded_is_equal(self) -> None:
         assert make_playable(identifier="same") == make_playable(identifier="same")
 
@@ -71,7 +68,9 @@ class TestPlayableEquality:
         assert make_playable() != "not a track"
 
     def test_hashes_match_equality(self) -> None:
-        assert hash(make_playable(identifier="x")) == hash(make_playable(identifier="x"))
+        assert hash(make_playable(identifier="x")) == hash(
+            make_playable(identifier="x")
+        )
 
     def test_usable_in_a_set(self) -> None:
         track = make_playable(identifier="dupe")
@@ -79,7 +78,6 @@ class TestPlayableEquality:
 
 
 class TestPlayableExtras:
-
     def test_extras_defaults_to_namespace(self) -> None:
         assert isinstance(make_playable().extras, types.SimpleNamespace)
 
@@ -97,7 +95,6 @@ class TestPlayableExtras:
 
 
 class TestPluginMetadata:
-
     def test_album_without_plugin_info(self) -> None:
         album = make_playable().album
 
@@ -115,7 +112,6 @@ class TestPluginMetadata:
 
 
 class TestPlayableIsExported:
-
     def test_importable_from_models(self) -> None:
         from sonolink import models
 

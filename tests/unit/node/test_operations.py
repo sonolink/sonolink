@@ -35,7 +35,6 @@ def manager(node: Node) -> MagicMock:
 
 
 class TestNodeSearch:
-
     async def test_search_track_returns_search_result(
         self, node: Node, manager: MagicMock
     ) -> None:
@@ -44,9 +43,7 @@ class TestNodeSearch:
         assert isinstance(result, SearchResult)
         manager.load_track.assert_awaited_once_with("query")
 
-    async def test_search_prefixes_source(
-        self, node: Node, manager: MagicMock
-    ) -> None:
+    async def test_search_prefixes_source(self, node: Node, manager: MagicMock) -> None:
         await node.search_track("query", source="spotify")
 
         manager.load_track.assert_awaited_once_with("spotify:query")
@@ -84,7 +81,6 @@ class TestNodeSearch:
 
 
 class TestNodeDecode:
-
     async def test_decode_track_returns_playable(
         self, node: Node, manager: MagicMock
     ) -> None:
@@ -109,7 +105,6 @@ class TestNodeDecode:
 
 
 class TestNodeRequiresClient:
-
     async def test_search_without_client_raises(self, node: Node) -> None:
         node._client = None
 

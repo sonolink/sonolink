@@ -8,26 +8,22 @@ from sonolink.gateway.enums import NodeStatus
 
 
 class TestClientFullLifecycle:
-
     @pytest.fixture
     def client(self) -> Client[Any]:
         mock_discord_client = MagicMock()
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
-            return_value=MagicMock()
+            return_value=MagicMock(),
         ):
             with patch(
                 "sonolink.gateway.player.PlayerFactory.detect_framework",
-                return_value="discord.py"
+                return_value="discord.py",
             ):
                 return Client(mock_discord_client)
 
     async def test_full_player_lifecycle(self, client: Client[Any]) -> None:
         # 1. Create node
-        node = client.create_node(
-            uri="ws://localhost:2333",
-            password="test"
-        )
+        node = client.create_node(uri="ws://localhost:2333", password="test")
         assert node in client.nodes
 
         # 2. Connect to node (bypassing the real websocket handshake, since
