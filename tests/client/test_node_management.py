@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import Any, cast
 from unittest.mock import MagicMock
 
 import pytest
@@ -65,7 +66,7 @@ class TestCreateNode:
         self, client: Client[MagicMock]
     ) -> None:
         with pytest.raises(ValueError, match="Cannot specify both uri and host/port"):
-            client.create_node(  # pyright: ignore[reportCallIssue]
+            cast(Any, client.create_node)(
                 uri="ws://localhost:2333",
                 host="localhost",
                 port=2333,
@@ -76,9 +77,7 @@ class TestCreateNode:
         with pytest.raises(
             ValueError, match="Must specify either uri or host and port"
         ):
-            client.create_node(  # pyright: ignore[reportCallIssue]
-                host="localhost", password="youshallnotpass"
-            )
+            cast(Any, client.create_node)(host="localhost", password="youshallnotpass")
 
 
 class TestGetRemoveNode:

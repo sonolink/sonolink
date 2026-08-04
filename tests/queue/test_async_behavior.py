@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from collections.abc import Callable
+from typing import Any, cast
 
 import pytest
 
@@ -178,7 +179,7 @@ class TestPutWaitConcurrency:
         self, empty_queue: Queue, track: Playable
     ) -> None:
         with pytest.raises(TypeError, match="Expected Playable"):
-            await empty_queue.put_wait([track, "invalid"])  # pyright: ignore[reportArgumentType]
+            await empty_queue.put_wait(cast(Any, [track, "invalid"]))
 
         assert empty_queue.tracks == []
 
@@ -193,7 +194,7 @@ class TestPutWaitConcurrency:
     ) -> None:
         async def failing_put() -> str:
             try:
-                await empty_queue.put_wait([track, "invalid"])  # pyright: ignore[reportArgumentType]
+                await empty_queue.put_wait(cast(Any, [track, "invalid"]))
             except TypeError:
                 return "raised"
             return "unexpected"

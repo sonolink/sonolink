@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+from typing import Any, cast
 from unittest.mock import MagicMock
 
 import pytest
@@ -9,15 +11,15 @@ from sonolink.gateway.enums import NodeRegion, NodeStatus
 from sonolink.models.settings import CacheSettings, InactivitySettings
 
 
-def build_node(client: MagicMock, **kwargs: object) -> Node:
-    params: dict[str, object] = {
+def build_node(client: MagicMock, **kwargs: Any) -> Node:
+    params: dict[str, Any] = {
         "client": client,
         "uri": "ws://localhost:2333",
         "password": "youshallnotpass",
         "inactivity_settings": InactivitySettings.default(),
     }
     params.update(kwargs)
-    return Node(**params)  # pyright: ignore[reportArgumentType]
+    return Node(**params)
 
 
 class TestNodeInitialization:
@@ -68,7 +70,7 @@ class TestNodeSettings:
 
     def test_inactivity_settings_is_required(self, mock_client: MagicMock) -> None:
         with pytest.raises(TypeError):
-            Node(  # pyright: ignore[reportCallIssue]
+            cast(Callable[..., Node], Node)(
                 client=mock_client,
                 uri="ws://localhost:2333",
                 password="youshallnotpass",

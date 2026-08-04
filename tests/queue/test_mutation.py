@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from typing import Any, cast
 
 import pytest
 
@@ -20,7 +21,7 @@ class TestPutAndRemove:
         self, empty_queue: Queue, track: Playable
     ) -> None:
         with pytest.raises(TypeError, match="Expected Playable"):
-            await empty_queue.put_wait([track, "invalid"])  # pyright: ignore[reportArgumentType]
+            await empty_queue.put_wait(cast(Any, [track, "invalid"]))
         assert empty_queue.tracks == []
 
     def test_put_autoplay_tags_and_stages_tracks(
@@ -57,7 +58,7 @@ class TestPutAndRemove:
 
         assert (
             empty_queue.remove(
-                ["a"],  # pyright: ignore[reportArgumentType]
+                cast(Any, ["a"]),
                 key=lambda item: item.identifier,
             )
             == 2

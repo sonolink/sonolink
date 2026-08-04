@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Any
+from unittest.mock import MagicMock
 
 from sonolink.gateway.player._base import BasePlayer
 from sonolink.models.track import Playable
@@ -41,7 +42,7 @@ def make_playable(
         plugin_info=None,
         user_data=None,
     )
-    return Playable(client=None, data=data)  # pyright: ignore[reportArgumentType]
+    return Playable(client=MagicMock(), data=data)
 
 
 class ConcreteTestPlayer(BasePlayer):

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from typing import Any, cast
 
 import pytest
 
@@ -36,7 +37,7 @@ class TestQueuePutGet:
         self, empty_queue: Queue
     ) -> None:
         with pytest.raises(TypeError):
-            empty_queue.put("not a track")  # type: ignore[arg-type]
+            empty_queue.put(cast(Any, "not a track"))
 
     def test_queue_get(
         self, empty_queue: Queue, make_playable: Callable[..., Playable]

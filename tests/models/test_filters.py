@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any, cast
+
 import msgspec
 import pytest
 
@@ -137,9 +139,9 @@ class TestIndividualFilters:
         timescale = Timescale(speed=1.0)
 
         with pytest.raises(TypeError, match=r"Cannot merge.*Karaoke.*Timescale"):
-            timescale.merge(Karaoke())  # pyright: ignore[reportArgumentType]
+            timescale.merge(cast(Any, Karaoke()))
         with pytest.raises(TypeError, match=r"Cannot merge.*Karaoke.*Timescale"):
-            timescale.combine(Karaoke())  # pyright: ignore[reportArgumentType]
+            timescale.combine(cast(Any, Karaoke()))
 
 
 class TestFilters:
@@ -247,6 +249,6 @@ class TestFilters:
         filters = Filters()
 
         with pytest.raises(TypeError, match="same type, got Timescale"):
-            filters.merge(Timescale())  # pyright: ignore[reportArgumentType]
+            filters.merge(cast(Any, Timescale()))
         with pytest.raises(TypeError, match="same type, got Timescale"):
-            filters.combine(Timescale())  # pyright: ignore[reportArgumentType]
+            filters.combine(cast(Any, Timescale()))

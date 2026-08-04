@@ -14,7 +14,7 @@ class TestNodeStats:
 
     def test_stats_property_has_no_setter(self, node: Node) -> None:
         with pytest.raises(AttributeError):
-            node.stats = make_stats()  # pyright: ignore[reportAttributeAccessIssue]
+            setattr(node, "stats", make_stats())
 
     def test_stats_expose_received_payload(self, node: Node) -> None:
         node._stats = make_stats(players=5, playing_players=3)

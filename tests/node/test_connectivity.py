@@ -21,7 +21,7 @@ def manager() -> MagicMock:
 @pytest.fixture
 def connectable(node: Node, manager: MagicMock) -> Node:
     node._manager = manager
-    node._connection.attempt_connect = AsyncMock()  # pyright: ignore[reportAttributeAccessIssue]
+    node._connection.attempt_connect = AsyncMock()
     return node
 
 
