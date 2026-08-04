@@ -77,7 +77,6 @@ tests = [
     "pytest-asyncio>=1.4.0,<2",
 ]
 
-
 [project.urls]
 Repository = "https://github.com/sonolink/sonolink"
 

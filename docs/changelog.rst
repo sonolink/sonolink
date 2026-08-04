@@ -43,6 +43,7 @@ in specific versions.
 - Exposed ``SonoLinkException`` exception class to prevent docs building warnings.
 - Moved ``ruff`` and `basedpyright` into dependency-groups so CI workflows can install them 
   individually via ``pip install --group <name>``.
+- Added a unit test suite, run via a new ``tests`` workflow on every PR.
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.3.0..HEAD
 
