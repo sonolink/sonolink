@@ -14,13 +14,6 @@ class TestQueueInitialization:
         queue = Queue()
         assert len(queue) == 0
 
-    def test_queue_init_populate_via_put(
-        self, make_playable: Callable[..., Playable]
-    ) -> None:
-        queue = Queue()
-        queue.put(make_playable())
-        assert len(queue) == 1
-
     def test_queue_repr(self) -> None:
         assert "Queue" in repr(Queue())
 

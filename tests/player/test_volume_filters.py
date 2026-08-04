@@ -6,7 +6,7 @@ import pytest
 
 from sonolink.models.filters import Filters
 
-from ...helpers import ConcreteTestPlayer
+from ..helpers import ConcreteTestPlayer
 
 
 class TestPlayerVolume:
@@ -23,7 +23,6 @@ class TestPlayerVolume:
         self, ready_player: ConcreteTestPlayer, mock_rest_manager: MagicMock
     ) -> None:
         await ready_player.set_volume(75)
-
         data = mock_rest_manager.update_player.await_args.kwargs["data"]
         assert data.volume == 75
 
@@ -32,7 +31,6 @@ class TestPlayerVolume:
     ) -> None:
         await ready_player.set_volume(0)
         assert ready_player.volume == 0
-
         await ready_player.set_volume(1000)
         assert ready_player.volume == 1000
 
@@ -58,7 +56,6 @@ class TestPlayerFilters:
     ) -> None:
         filters = Filters(volume=1.5)
         await ready_player.set_filters(filters)
-
         data = mock_rest_manager.update_player.await_args.kwargs["data"]
         assert data.filters == filters.payload
 
@@ -66,12 +63,10 @@ class TestPlayerFilters:
         self, ready_player: ConcreteTestPlayer, mock_rest_manager: MagicMock
     ) -> None:
         await ready_player.set_filters(Filters())
-
         assert mock_rest_manager.update_player.await_count == 1
 
     async def test_set_filters_with_seek_also_seeks(
         self, ready_player: ConcreteTestPlayer, mock_rest_manager: MagicMock
     ) -> None:
         await ready_player.set_filters(Filters(), seek=True)
-
         assert mock_rest_manager.update_player.await_count == 2

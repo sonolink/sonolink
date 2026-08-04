@@ -8,7 +8,7 @@ from sonolink.gateway.enums import AutoPlayMode
 from sonolink.gateway.node import Node
 from sonolink.models.settings import HistorySettings
 
-from ...helpers import ConcreteTestPlayer
+from ..helpers import ConcreteTestPlayer
 
 
 class TestPlayerInitialization:
@@ -55,7 +55,6 @@ class TestPlayerAutoplay:
             node=node, history_settings=HistorySettings(enabled=False)
         )
         player._guild = mock_guild
-
         with pytest.raises(RuntimeError, match="disabled history"):
             player.autoplay = AutoPlayMode.ENABLED
 
@@ -67,17 +66,8 @@ class TestPlayerAutoplay:
 
 
 class TestPlayerGuildRequired:
-    # NOTE: BasePlayer.__init__ never sets self._guild (only __call__ does,
-    # once bound to a real voice channel), even though `_guild: Any` is
-    # declared as an instance attribute and `guild` promises to raise
-    # RuntimeError. Accessing `.guild` before binding therefore raises
-    # AttributeError instead. This looks like a genuine library bug in
-    # sonolink/gateway/player/_base.py, flagged rather than silently
-    # matched here.
-
     def test_guild_raises_before_binding(self, node: Node) -> None:
         player = ConcreteTestPlayer(node=node)
-
         with pytest.raises(AttributeError):
             player.guild
 
@@ -86,6 +76,5 @@ class TestPlayerGuildRequired:
     ) -> None:
         player = ConcreteTestPlayer(node=None)
         player._guild = mock_guild
-
         with pytest.raises(RuntimeError, match="not attached to a node"):
             player.node

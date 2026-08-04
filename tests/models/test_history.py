@@ -6,7 +6,7 @@ from sonolink import History
 from sonolink.models.settings import HistorySettings
 from sonolink.models.track import Playable
 
-from ...helpers import make_playable
+from ..helpers import make_playable
 
 
 class TestHistoryBasics:

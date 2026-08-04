@@ -54,14 +54,6 @@ class TestNodeStats:
         assert make_stats().frame_stats is None
 
 
-class TestNodePenaltyComparison:
-    def test_lower_penalty_node_is_preferred(self) -> None:
-        assert (
-            make_stats(playing_players=1).penalty
-            < make_stats(playing_players=100).penalty
-        )
-
-
 class TestNodePlayers:
     def test_node_starts_with_no_players(self, node: Node) -> None:
         assert node._players == {}

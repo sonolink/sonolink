@@ -1,25 +1,12 @@
 from __future__ import annotations
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
 from sonolink import Client
 from sonolink.gateway.enums import NodeRegion
 from sonolink.models.settings import CacheSettings, InactivitySettings
-
-
-@pytest.fixture
-def client(mock_discord_client: MagicMock) -> Client[MagicMock]:
-    with patch(
-        "sonolink.gateway.client._factory.ClientFactory.create",
-        return_value=MagicMock(),
-    ):
-        with patch(
-            "sonolink.gateway.player.PlayerFactory.detect_framework",
-            return_value="discord.py",
-        ):
-            return Client(mock_discord_client)
 
 
 class TestCreateNode:

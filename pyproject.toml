@@ -75,7 +75,6 @@ docs = [
 tests = [
     "pytest>=9.1.1,<10",
     "pytest-asyncio>=1.4.0,<2",
-    "pytest-mock>=3.15.1,<4",
 ]
 
 
@@ -83,21 +82,16 @@ tests = [
 Repository = "https://github.com/sonolink/sonolink"
 
 [tool.pytest.ini_options]
-minversion = "7.0"
+minversion = "9.1"
 testpaths = ["tests"]
 asyncio_mode = "auto"
 addopts = "-v --strict-markers --tb=short -ra"
 markers = [
-    "integration: marks tests as integration tests",
-    "slow: marks tests as slow running",
-    "unit: marks tests as unit tests",
     "client: marks tests related to Client",
     "node: marks tests related to Node",
     "player: marks tests related to Player",
     "queue: marks tests related to Queue",
     "search: marks tests related to search functionality",
-    "error: marks tests related to error handling",
-    "framework: marks tests related to framework compatibility",
 ]
 
 [tool.basedpyright]

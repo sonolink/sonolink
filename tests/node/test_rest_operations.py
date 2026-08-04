@@ -22,7 +22,7 @@ from sonolink.rest.schemas.player import (
     PlayerVoiceState,
 )
 
-from ...helpers import ConcreteTestPlayer
+from ..helpers import ConcreteTestPlayer
 
 
 def make_player_payload(guild_id: str = "123") -> PlayerPayload:

@@ -11,7 +11,7 @@ from sonolink.rest.enums import TrackLoadResult
 from sonolink.rest.http import RESTClient
 from sonolink.rest.schemas.track import TrackLoadingResponse
 
-from ...helpers import make_playable
+from ..helpers import make_playable
 
 
 @pytest.fixture

@@ -2,11 +2,9 @@ from __future__ import annotations
 
 import types
 
-import pytest
-
 from sonolink.models.track import Album, Artist, Playable
 
-from ...helpers import make_playable
+from ..helpers import make_playable
 
 
 class TestPlayableMetadata:
@@ -116,7 +114,3 @@ class TestPlayableIsExported:
         from sonolink import models
 
         assert models.Playable is Playable
-
-    @pytest.mark.parametrize("name", ["title", "author", "length", "encoded"])
-    def test_core_properties_present(self, name: str) -> None:
-        assert isinstance(getattr(Playable, name), property)

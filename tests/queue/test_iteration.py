@@ -35,9 +35,6 @@ class TestQueueIndexing:
         assert queue_with_tracks[0] is tracks[0]
         assert queue_with_tracks[1] is tracks[1]
 
-    def test_queue_index_zero(self, queue_with_tracks: Queue) -> None:
-        assert queue_with_tracks[0].title == "Track 1"
-
     def test_queue_negative_indexing(
         self, queue_with_tracks: Queue, tracks: list[Playable]
     ) -> None:

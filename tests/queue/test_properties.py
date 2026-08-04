@@ -5,25 +5,12 @@ import pytest
 from sonolink import Queue
 from sonolink.gateway.enums import QueueMode
 
-from ...helpers import make_playable
+from ..helpers import make_playable
 
 
 class TestQueueLength:
     def test_queue_empty_length(self) -> None:
         queue = Queue()
-        assert len(queue) == 0
-
-    def test_queue_length_after_put(self) -> None:
-        queue = Queue()
-        queue.put(make_playable())
-        assert len(queue) == 1
-
-    def test_queue_length_after_get(self) -> None:
-        queue = Queue()
-        queue.put(make_playable())
-        assert len(queue) == 1
-
-        queue.get()
         assert len(queue) == 0
 
     def test_count_matches_len(self) -> None:

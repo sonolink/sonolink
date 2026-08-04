@@ -7,7 +7,7 @@ import pytest
 from sonolink import QueueEmpty
 from sonolink.models.track import Playable
 
-from ...helpers import ConcreteTestPlayer, make_playable
+from ..helpers import ConcreteTestPlayer, make_playable
 
 
 class TestPlayerQueueAccess:
@@ -67,16 +67,13 @@ class TestPlayerSkipTo:
             ]
         )
         await ready_player.play(make_playable(identifier="current"))
-
         result = await ready_player.skip_to(1)
-
         assert result.identifier == "b"
 
     async def test_skip_to_out_of_range_raises(
         self, ready_player: ConcreteTestPlayer
     ) -> None:
         ready_player.queue.put(make_playable())
-
         with pytest.raises(IndexError):
             await ready_player.skip_to(5)
 

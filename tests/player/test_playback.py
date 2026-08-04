@@ -6,7 +6,7 @@ import pytest
 
 from sonolink.models.track import Playable
 
-from ...helpers import ConcreteTestPlayer, make_playable
+from ..helpers import ConcreteTestPlayer, make_playable
 
 
 class TestPlayerPlay:
@@ -19,7 +19,6 @@ class TestPlayerPlay:
         self, ready_player: ConcreteTestPlayer, track: Playable
     ) -> None:
         await ready_player.play(track)
-
         assert ready_player.current is track
         assert ready_player.is_playing is True
 
@@ -30,7 +29,6 @@ class TestPlayerPlay:
         track: Playable,
     ) -> None:
         await ready_player.play(track)
-
         mock_rest_manager.update_player.assert_awaited_once()
         kwargs = mock_rest_manager.update_player.await_args.kwargs
         assert kwargs["session_id"] == "session-abc"
@@ -43,7 +41,6 @@ class TestPlayerPlay:
         track: Playable,
     ) -> None:
         await ready_player.play(track)
-
         data = mock_rest_manager.update_player.await_args.kwargs["data"]
         assert data.track.encoded == track.encoded
 
@@ -51,21 +48,18 @@ class TestPlayerPlay:
         self, ready_player: ConcreteTestPlayer, track: Playable
     ) -> None:
         await ready_player.play(track, start=5000)
-
         assert ready_player._last_position == 5000
 
     async def test_play_volume_override(
         self, ready_player: ConcreteTestPlayer, track: Playable
     ) -> None:
         await ready_player.play(track, volume=50)
-
         assert ready_player.volume == 50
 
     async def test_play_paused_override(
         self, ready_player: ConcreteTestPlayer, track: Playable
     ) -> None:
         await ready_player.play(track, paused=True)
-
         assert ready_player.paused is True
         assert ready_player.is_playing is False
 
@@ -76,7 +70,6 @@ class TestPlayerPlay:
         track: Playable,
     ) -> None:
         await ready_player.play(track, no_replace=True)
-
         assert mock_rest_manager.update_player.await_args.kwargs["no_replace"] is True
 
     async def test_previous_track_goes_to_history(
@@ -87,8 +80,8 @@ class TestPlayerPlay:
 
         await ready_player.play(first)
         await ready_player.play(second)
-
         history = ready_player.history
+
         assert history is not None
         assert first in history
 
@@ -99,7 +92,6 @@ class TestPlayerPlay:
         track: Playable,
     ) -> None:
         mock_rest_manager.update_player = AsyncMock(side_effect=RuntimeError("boom"))
-
         with pytest.raises(RuntimeError, match="boom"):
             await ready_player.play(track)
 
@@ -112,7 +104,6 @@ class TestPlayerPauseResume:
     ) -> None:
         await ready_player.play(track)
         await ready_player.pause()
-
         assert ready_player.paused is True
 
     async def test_resume_clears_state(
@@ -120,14 +111,12 @@ class TestPlayerPauseResume:
     ) -> None:
         await ready_player.play(track, paused=True)
         await ready_player.resume()
-
         assert ready_player.paused is False
 
     async def test_pause_notifies_node(
         self, ready_player: ConcreteTestPlayer, mock_rest_manager: MagicMock
     ) -> None:
         await ready_player.pause()
-
         data = mock_rest_manager.update_player.await_args.kwargs["data"]
         assert data.paused is True
 
@@ -135,7 +124,6 @@ class TestPlayerPauseResume:
         self, ready_player: ConcreteTestPlayer, mock_rest_manager: MagicMock
     ) -> None:
         await ready_player.resume()
-
         data = mock_rest_manager.update_player.await_args.kwargs["data"]
         assert data.paused is False
 
@@ -146,7 +134,6 @@ class TestPlayerStop:
     ) -> None:
         await ready_player.play(track, start=5000)
         await ready_player.stop()
-
         assert ready_player._last_position == 0
 
     async def test_stop_can_clear_queue(
@@ -154,7 +141,6 @@ class TestPlayerStop:
     ) -> None:
         ready_player.queue.put(tracks)
         await ready_player.stop(clear_queue=True)
-
         assert len(ready_player.queue) == 0
 
     async def test_stop_keeps_queue_by_default(
@@ -162,7 +148,6 @@ class TestPlayerStop:
     ) -> None:
         ready_player.queue.put(tracks)
         await ready_player.stop()
-
         assert len(ready_player.queue) == len(tracks)
 
 
@@ -170,6 +155,5 @@ class TestPlayerRequiresNode:
     async def test_play_without_node_raises(self, track: Playable) -> None:
         player = ConcreteTestPlayer(node=None)
         player._guild = MagicMock(id=1)
-
         with pytest.raises(RuntimeError, match="not attached to a node"):
             await player.play(track)

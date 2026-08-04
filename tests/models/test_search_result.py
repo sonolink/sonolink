@@ -12,7 +12,7 @@ from sonolink.models.track import Playable
 from sonolink.rest.enums import TrackLoadResult
 from sonolink.rest.schemas.track import TrackLoadingResponse
 
-from ...helpers import make_playable
+from ..helpers import make_playable
 
 
 def make_result(
