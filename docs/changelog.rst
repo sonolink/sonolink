@@ -30,6 +30,8 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed AutoPlay re-discovering and re-queueing tracks that were already
+  recommended in a previous round, because only the seed reference was tracked.
 - Fixed duplicated history entries on track transitions in :meth:`Player.play`. 
 - Fixed :meth:`Queue.move` placing tracks one position before the requested
   target index when moving them forward.
