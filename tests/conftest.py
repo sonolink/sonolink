@@ -47,7 +47,7 @@ def mock_guild() -> MagicMock:
 @pytest.fixture
 def mock_client() -> MagicMock:
     client = MagicMock(spec=Client)
-    client.framework = "discord.py"
+    client.framework = "py-cord"
     return client
 
 
@@ -136,7 +136,7 @@ def client(mock_discord_client: MagicMock) -> Client[MagicMock]:
     ):
         with patch(
             "sonolink.gateway.player.PlayerFactory.detect_framework",
-            return_value="discord.py",
+            return_value="py-cord",
         ):
             return Client(mock_discord_client)
 

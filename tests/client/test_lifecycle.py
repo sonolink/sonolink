@@ -12,7 +12,7 @@ class TestClientInitialization:
     def test_client_init_with_auto_framework_detection(
         self, client: Client[MagicMock]
     ) -> None:
-        assert client.framework == "discord.py"
+        assert client.framework == "py-cord"
 
     def test_client_init_duplicate_client_raises_error(
         self, mock_discord_client: MagicMock
@@ -24,7 +24,7 @@ class TestClientInitialization:
             ),
             patch(
                 "sonolink.gateway.player.PlayerFactory.detect_framework",
-                return_value="discord.py",
+                return_value="py-cord",
             ),
         ):
             Client(mock_discord_client)
