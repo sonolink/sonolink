@@ -36,7 +36,7 @@ class TestQueuePutGet:
     def test_queue_put_rejects_non_playable_when_atomic(
         self, empty_queue: Queue
     ) -> None:
-        with pytest.raises(TypeError):
+        with pytest.raises(TypeError, match="Expected Playable"):
             empty_queue.put(cast(Any, "not a track"))
 
     def test_queue_get(

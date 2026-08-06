@@ -17,7 +17,6 @@ class TestClientInitialization:
 
             assert client.framework == "discord.py"
             assert client.nodes == []
-            assert len(client._nodes) == 0
 
     def test_client_init_with_auto_framework_detection(
         self, client: Client[MagicMock]
