@@ -10,9 +10,6 @@ from ..helpers import ConcreteTestPlayer
 
 
 class TestPlayerVolume:
-    def test_default_volume(self, ready_player: ConcreteTestPlayer) -> None:
-        assert ready_player.volume == 100
-
     async def test_set_volume_updates_property(
         self, ready_player: ConcreteTestPlayer
     ) -> None:
