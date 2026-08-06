@@ -24,6 +24,20 @@ class TestPutAndRemove:
             await empty_queue.put_wait(cast(Any, [track, "invalid"]))
         assert empty_queue.tracks == []
 
+    async def test_put_wait_atomic_false_filters_invalid_items(
+        self, empty_queue: Queue, track: Playable
+    ) -> None:
+        assert (
+            await empty_queue.put_wait(cast(Any, [track, "invalid"]), atomic=False) == 1
+        )
+        assert empty_queue.tracks == [track]
+
+    async def test_put_wait_atomic_false_with_all_invalid_adds_nothing(
+        self, empty_queue: Queue
+    ) -> None:
+        assert await empty_queue.put_wait(cast(Any, ["invalid"]), atomic=False) == 0
+        assert empty_queue.tracks == []
+
     def test_put_autoplay_tags_and_stages_tracks(
         self, empty_queue: Queue, tracks: list[Playable]
     ) -> None:

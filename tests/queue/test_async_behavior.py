@@ -17,10 +17,10 @@ async def _wait_for_waiters(queue: Queue, count: int) -> None:
 
 
 class TestGetWait:
-    def test_get_wait_returns_existing_track_immediately(
+    async def test_get_wait_returns_existing_track_immediately(
         self, queue_with_tracks: Queue, tracks: list[Playable]
     ) -> None:
-        result = asyncio.run(queue_with_tracks.get_wait())
+        result = await queue_with_tracks.get_wait()
 
         assert result is tracks[0]
         assert queue_with_tracks.tracks == tracks[1:]
@@ -44,7 +44,7 @@ class TestGetWait:
 
         assert await task is track
         assert track.autoplay is True
-        assert empty_queue.autoplay_tracks == []
+        assert not empty_queue.autoplay_tracks
 
     async def test_many_waiters_wake_fifo(
         self, empty_queue: Queue, tracks: list[Playable]
@@ -81,18 +81,20 @@ class TestGetWait:
             tracks[1].identifier,
         ]
 
-    def test_get_wait_autoplay_fallback(
+    async def test_get_wait_autoplay_fallback(
         self, empty_queue: Queue, tracks: list[Playable]
     ) -> None:
         empty_queue.put_autoplay(tracks[:2])
 
-        result = asyncio.run(empty_queue.get_wait())
+        result = await empty_queue.get_wait()
 
         assert result is tracks[0]
         assert result.autoplay is True
         assert empty_queue.autoplay_tracks == tracks[1:2]
 
-    def test_get_wait_loop_all_restores_history(self, tracks: list[Playable]) -> None:
+    async def test_get_wait_loop_all_restores_history(
+        self, tracks: list[Playable]
+    ) -> None:
         queue = Queue(
             mode=QueueMode.LOOP_ALL,
             history_settings=HistorySettings(enabled=True),
@@ -103,7 +105,7 @@ class TestGetWait:
         assert queue.history is not None
         assert len(queue.history) == 1
 
-        result = asyncio.run(queue.get_wait())
+        result = await queue.get_wait()
 
         assert result is tracks[0]
         assert queue.tracks == [tracks[1]]
