@@ -9,8 +9,6 @@ from sonolink import Client
 
 class TestClientInitialization:
     def test_client_init_with_discord_py(self, mock_discord_client: MagicMock) -> None:
-        mock_discord_client.__class__.__module__ = "discord"
-
         with patch(
             "sonolink.gateway.client._factory.ClientFactory.create",
             return_value=MagicMock(),
