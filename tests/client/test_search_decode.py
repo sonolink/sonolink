@@ -147,7 +147,6 @@ class TestSearchPlaySequence:
         search_result = make_search_result(
             TrackLoadResult.TRACK,
             track_payload(title="Test Song"),
-            client=MagicMock(),
         )
         decoded_track = make_playable(title="Test Song")
 
