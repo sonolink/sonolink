@@ -160,7 +160,6 @@ class DisnakePlayer(BasePlayer, disnake.VoiceProtocol):
             disnake.VoiceProtocol.__init__(self, client=client, channel=channel)
             if isinstance(channel, disnake.abc.GuildChannel):
                 self._guild = channel.guild
-            self._ready = True
 
     def __call__(
         self,

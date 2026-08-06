@@ -144,7 +144,6 @@ class BasePlayer(abc.ABC):
         "_paused",
         "_playback_handler",
         "_queue",
-        "_ready",
         "_volume",
     )
 
@@ -156,7 +155,6 @@ class BasePlayer(abc.ABC):
     _original_track: Playable | None
     _paused: bool
     _queue: Queue
-    _ready: bool
     _volume: int
 
     client: Any
@@ -193,8 +191,6 @@ class BasePlayer(abc.ABC):
         self._inactivity_handler: InactivityHandler = InactivityHandler(self)
         self._lifecycle_handler: LifecycleHandler = LifecycleHandler(self)
         self._playback_handler: PlaybackHandler = PlaybackHandler(self)
-
-        self._ready = False
 
     @abc.abstractmethod
     def __call__(self, client: Any, channel: Any) -> BasePlayer:
