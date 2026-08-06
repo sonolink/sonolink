@@ -14,6 +14,23 @@ from sonolink.rest.enums import TrackLoadResult
 from ..helpers import make_playable
 
 
+def register_node(
+    client: Client[MagicMock],
+    node_id: str,
+    *,
+    penalty: int,
+    connected: bool = True,
+    regions: list[str] | None = None,
+) -> MagicMock:
+    node = MagicMock(spec=Node)
+    node.id = node_id
+    node.is_connected = connected
+    node.stats = MagicMock(penalty=penalty)
+    node.regions = regions or []
+    client._nodes[node.id] = node
+    return node
+
+
 class TestClientSearch:
     async def test_search_track_default_source(self, client: Client[MagicMock]) -> None:
         mock_node = MagicMock(spec=Node)
@@ -84,19 +101,8 @@ class TestClientDecode:
 class TestClientNodeSelection:
     @pytest.fixture
     def client_with_nodes(self, client: Client[MagicMock]) -> Client[MagicMock]:
-        node1 = MagicMock(spec=Node)
-        node1.id = "node1"
-        node1.is_connected = True
-        node1.stats = MagicMock(penalty=10)
-        node1.regions = []
-        client._nodes[node1.id] = node1
-
-        node2 = MagicMock(spec=Node)
-        node2.id = "node2"
-        node2.is_connected = True
-        node2.stats = MagicMock(penalty=5)
-        node2.regions = []
-        client._nodes[node2.id] = node2
+        register_node(client, "node1", penalty=10)
+        register_node(client, "node2", penalty=5)
 
         return client
 
@@ -108,12 +114,7 @@ class TestClientNodeSelection:
     def test_get_best_node_with_region(
         self, client_with_nodes: Client[MagicMock]
     ) -> None:
-        node_us = MagicMock(spec=Node)
-        node_us.id = "node_us"
-        node_us.is_connected = True
-        node_us.stats = MagicMock(penalty=100)
-        node_us.regions = ["us-east"]
-        client_with_nodes._nodes[node_us.id] = node_us
+        register_node(client_with_nodes, "node_us", penalty=100, regions=["us-east"])
 
         best = client_with_nodes.get_best_node(region="us-east")
         assert best.id == "node_us"
@@ -127,10 +128,7 @@ class TestClientNodeSelection:
     def test_get_best_node_no_connected_nodes_raises(
         self, client: Client[MagicMock]
     ) -> None:
-        node = MagicMock(spec=Node)
-        node.id = "node1"
-        node.is_connected = False
-        client._nodes[node.id] = node
+        register_node(client, "node1", penalty=0, connected=False)
 
         with pytest.raises(RuntimeError, match="No nodes are currently connected"):
             client.get_best_node()
