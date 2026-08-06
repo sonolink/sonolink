@@ -7,7 +7,16 @@ import pytest
 
 from sonolink import Client
 from sonolink.gateway.enums import NodeRegion
+from sonolink.gateway.node import Node
 from sonolink.models.settings import CacheSettings, InactivitySettings
+
+
+def make_node(client: Client[MagicMock], **kwargs: Any) -> Node:
+    return client.create_node(
+        uri="ws://localhost:2333",
+        password="youshallnotpass",
+        **kwargs,
+    )
 
 
 class TestCreateNode:
@@ -25,19 +34,13 @@ class TestCreateNode:
         assert node in client.nodes
 
     def test_create_node_with_custom_id(self, client: Client[MagicMock]) -> None:
-        node = client.create_node(
-            uri="ws://localhost:2333", password="youshallnotpass", id="primary-us-node"
-        )
+        node = make_node(client, id="primary-us-node")
 
         assert node.id == "primary-us-node"
 
     def test_create_node_with_cache_settings(self, client: Client[MagicMock]) -> None:
         cache_settings = CacheSettings(enabled=True, max_items=1000)
-        node = client.create_node(
-            uri="ws://localhost:2333",
-            password="youshallnotpass",
-            cache_settings=cache_settings,
-        )
+        node = make_node(client, cache_settings=cache_settings)
 
         assert node._cache is not None
 
@@ -45,20 +48,12 @@ class TestCreateNode:
         self, client: Client[MagicMock]
     ) -> None:
         inactivity_settings = InactivitySettings(timeout=300)
-        node = client.create_node(
-            uri="ws://localhost:2333",
-            password="youshallnotpass",
-            inactivity_settings=inactivity_settings,
-        )
+        node = make_node(client, inactivity_settings=inactivity_settings)
 
         assert node.inactivity_settings is inactivity_settings
 
     def test_create_node_with_regions(self, client: Client[MagicMock]) -> None:
-        node = client.create_node(
-            uri="ws://localhost:2333",
-            password="youshallnotpass",
-            regions=["us-east", NodeRegion.US_CENTRAL],
-        )
+        node = make_node(client, regions=["us-east", NodeRegion.US_CENTRAL])
 
         assert node.regions == ["us-east", NodeRegion.US_CENTRAL]
 
@@ -82,9 +77,7 @@ class TestCreateNode:
 
 class TestGetRemoveNode:
     def test_get_node_existing(self, client: Client[MagicMock]) -> None:
-        node = client.create_node(
-            uri="ws://localhost:2333", password="youshallnotpass", id="test-node"
-        )
+        node = make_node(client, id="test-node")
 
         assert client.get_node("test-node") is node
 
@@ -92,9 +85,7 @@ class TestGetRemoveNode:
         assert client.get_node("nonexistent") is None
 
     async def test_remove_node(self, client: Client[MagicMock]) -> None:
-        client.create_node(
-            uri="ws://localhost:2333", password="youshallnotpass", id="remove-me"
-        )
+        make_node(client, id="remove-me")
 
         client.remove_node("remove-me")
         assert client.get_node("remove-me") is None
