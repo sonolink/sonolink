@@ -159,7 +159,6 @@ class DpyPlayer(BasePlayer, discord.VoiceProtocol):
             discord.VoiceProtocol.__init__(self, client=client, channel=channel)
             if isinstance(channel, discord.abc.GuildChannel):
                 self._guild = channel.guild
-            self._ready = True
 
     def __call__(
         self,

@@ -158,7 +158,6 @@ class PycordPlayer(BasePlayer, VoiceProtocol[discord.Client]):
             super(BasePlayer, self).__init__(client, channel)
             if isinstance(channel, discord.abc.GuildChannel):
                 self._guild = channel.guild
-            self._ready = True
 
     def __call__(
         self,

@@ -40,6 +40,7 @@ in specific versions.
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
 
+- Removed the internal, never-read ``_ready`` attribute from the player.
 - Exposed ``SonoLinkException`` exception class to prevent docs building warnings.
 - Moved ``ruff`` and `basedpyright` into dependency-groups so CI workflows can install them 
   individually via ``pip install --group <name>``.

@@ -159,7 +159,6 @@ class NextcordPlayer(BasePlayer, nextcord.VoiceProtocol):
             nextcord.VoiceProtocol.__init__(self, client=client, channel=channel)
             if isinstance(channel, nextcord.abc.GuildChannel):
                 self._guild = channel.guild
-            self._ready = True
 
     def __call__(
         self,
