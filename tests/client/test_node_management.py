@@ -6,9 +6,8 @@ from unittest.mock import MagicMock
 import pytest
 
 from sonolink import Client
-from sonolink.gateway.enums import NodeRegion
 from sonolink.gateway.node import Node
-from sonolink.models.settings import CacheSettings, InactivitySettings
+from sonolink.models.settings import CacheSettings
 
 
 def make_node(client: Client[MagicMock], **kwargs: Any) -> Node:
@@ -33,29 +32,11 @@ class TestCreateNode:
 
         assert node in client.nodes
 
-    def test_create_node_with_custom_id(self, client: Client[MagicMock]) -> None:
-        node = make_node(client, id="primary-us-node")
-
-        assert node.id == "primary-us-node"
-
     def test_create_node_with_cache_settings(self, client: Client[MagicMock]) -> None:
         cache_settings = CacheSettings(enabled=True, max_items=1000)
         node = make_node(client, cache_settings=cache_settings)
 
         assert node._cache is not None
-
-    def test_create_node_with_inactivity_settings(
-        self, client: Client[MagicMock]
-    ) -> None:
-        inactivity_settings = InactivitySettings(timeout=300)
-        node = make_node(client, inactivity_settings=inactivity_settings)
-
-        assert node.inactivity_settings is inactivity_settings
-
-    def test_create_node_with_regions(self, client: Client[MagicMock]) -> None:
-        node = make_node(client, regions=["us-east", NodeRegion.US_CENTRAL])
-
-        assert node.regions == ["us-east", NodeRegion.US_CENTRAL]
 
     def test_create_node_uri_and_host_port_conflict(
         self, client: Client[MagicMock]

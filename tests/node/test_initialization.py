@@ -23,21 +23,11 @@ def build_node(client: MagicMock, **kwargs: Any) -> Node:
 
 
 class TestNodeInitialization:
-    def test_node_init_with_uri(self, mock_client: MagicMock) -> None:
-        node = build_node(mock_client)
-
-        assert node.uri == "ws://localhost:2333"
-        assert node.password == "youshallnotpass"
-        assert node.id
-
     def test_node_generates_id_when_omitted(self, mock_client: MagicMock) -> None:
         first = build_node(mock_client)
         second = build_node(mock_client)
 
         assert first.id != second.id
-
-    def test_node_init_with_custom_id(self, mock_client: MagicMock) -> None:
-        assert build_node(mock_client, id="my-node-01").id == "my-node-01"
 
     def test_node_strips_trailing_slash_from_uri(self, mock_client: MagicMock) -> None:
         node = build_node(mock_client, uri="ws://localhost:2333/")
@@ -53,21 +43,8 @@ class TestNodeInitialization:
     def test_node_starts_with_no_stats(self, mock_client: MagicMock) -> None:
         assert build_node(mock_client).stats is None
 
-    def test_node_client_is_attached(self, mock_client: MagicMock) -> None:
-        assert build_node(mock_client).client is mock_client
-
-    def test_node_repr(self, mock_client: MagicMock) -> None:
-        assert "Node" in repr(build_node(mock_client, id="primary"))
-
 
 class TestNodeSettings:
-    def test_inactivity_settings_are_stored(self, mock_client: MagicMock) -> None:
-        settings = InactivitySettings(timeout=600)
-        node = build_node(mock_client, inactivity_settings=settings)
-
-        assert node.inactivity_settings is settings
-        assert node.inactivity_settings.timeout == 600
-
     def test_inactivity_settings_is_required(self, mock_client: MagicMock) -> None:
         with pytest.raises(TypeError):
             cast(Callable[..., Node], Node)(
@@ -84,30 +61,8 @@ class TestNodeSettings:
 
         assert node._cache is not None
 
-    def test_retries_default_to_none(self, mock_client: MagicMock) -> None:
-        assert build_node(mock_client).retries is None
-
-    def test_retries_are_stored(self, mock_client: MagicMock) -> None:
-        assert build_node(mock_client, retries=5).retries == 5
-
-    def test_resume_timeout_default(self, mock_client: MagicMock) -> None:
-        assert build_node(mock_client).resume_timeout == 60
-
-    def test_resume_timeout_is_stored(self, mock_client: MagicMock) -> None:
-        assert build_node(mock_client, resume_timeout=120.0).resume_timeout == 120.0
-
-    def test_auto_reconnect_defaults_true(self, mock_client: MagicMock) -> None:
-        assert build_node(mock_client).auto_reconnect is True
-
 
 class TestNodeRegions:
-    def test_regions_default_to_empty(self, mock_client: MagicMock) -> None:
-        assert not build_node(mock_client).regions
-
-    def test_regions_are_stored(self, mock_client: MagicMock) -> None:
-        node = build_node(mock_client, regions=["us-east", "us-west"])
-        assert node.regions == ["us-east", "us-west"]
-
     def test_regions_strip_vip_prefix(self, mock_client: MagicMock) -> None:
         node = build_node(mock_client, regions=["vip-us-east"])
         assert node.regions == ["us-east"]

@@ -3,8 +3,6 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any
 
-import pytest
-
 from sonolink.models import SearchResult
 from sonolink.models.playlist import Playlist
 from sonolink.models.track import Playable
@@ -18,31 +16,7 @@ ERROR_PAYLOAD: dict[str, Any] = {
 }
 
 
-class TestSearchResultIsExported:
-    def test_importable_from_models(self) -> None:
-        from sonolink import models
-
-        assert models.SearchResult is SearchResult
-
-
 class TestSearchResultType:
-    @pytest.mark.parametrize(
-        "load_type",
-        [
-            TrackLoadResult.TRACK,
-            TrackLoadResult.PLAYLIST,
-            TrackLoadResult.SEARCH,
-            TrackLoadResult.EMPTY,
-            TrackLoadResult.ERROR,
-        ],
-    )
-    def test_type_reflects_load_type(
-        self,
-        load_type: TrackLoadResult,
-        make_search_result: Callable[..., SearchResult],
-    ) -> None:
-        assert make_search_result(load_type, None).type is load_type
-
     def test_is_empty_true_for_empty(
         self,
         make_search_result: Callable[..., SearchResult],

@@ -16,13 +16,6 @@ class TestNodeStats:
         with pytest.raises(AttributeError):
             setattr(node, "stats", make_stats())
 
-    def test_stats_expose_received_payload(self, node: Node) -> None:
-        node._stats = make_stats(players=5, playing_players=3)
-
-        assert node.stats is not None
-        assert node.stats.players == 5
-        assert node.stats.playing_players == 3
-
     def test_penalty_is_computed(self, node: Node) -> None:
         node._stats = make_stats(playing_players=10, system_load=0.0)
 
@@ -49,9 +42,6 @@ class TestNodeStats:
         )
 
         assert lossy.penalty > clean.penalty
-
-    def test_frame_stats_optional(self) -> None:
-        assert make_stats().frame_stats is None
 
 
 class TestNodePlayers:

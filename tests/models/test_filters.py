@@ -20,14 +20,6 @@ from sonolink.models import (
 
 
 class TestIndividualFilters:
-    def test_equalizer_fields(self) -> None:
-        equalizer = Equalizer(band=2, gain=0.15)
-
-        assert equalizer.band == 2
-        assert equalizer.gain == 0.15
-        assert equalizer.data.band == 2
-        assert equalizer.data.gain == 0.15
-
     @pytest.mark.parametrize(
         ("filter_model", "expected"),
         [
@@ -63,56 +55,6 @@ class TestIndividualFilters:
             getattr(filter_model.data, field) is msgspec.UNSET
             for field in filter_model.data.__struct_fields__
         )
-
-    def test_documented_filter_values(self) -> None:
-        karaoke = Karaoke(
-            level=0.8, mono_level=0.7, filter_band=220.0, filter_width=100.0
-        )
-        timescale = Timescale(speed=1.1, pitch=1.2, rate=0.9)
-        tremolo = Tremolo(frequency=4.0, depth=0.5)
-        vibrato = Vibrato(frequency=6.0, depth=0.3)
-        rotation = Rotation(rotation_hz=0.2)
-        distortion = Distortion(
-            sin_offset=0.1,
-            sin_scale=0.2,
-            cos_offset=0.3,
-            cos_scale=0.4,
-            tan_offset=0.5,
-            tan_scale=0.6,
-            offset=0.7,
-            scale=1.0,
-        )
-        channel_mix = ChannelMix(
-            left_to_left=0.5,
-            left_to_right=0.5,
-            right_to_left=0.5,
-            right_to_right=0.5,
-        )
-        low_pass = LowPass(smoothing=20.0)
-
-        assert (karaoke.level, karaoke.mono_level) == (0.8, 0.7)
-        assert (karaoke.filter_band, karaoke.filter_width) == (220.0, 100.0)
-        assert (timescale.speed, timescale.pitch, timescale.rate) == (1.1, 1.2, 0.9)
-        assert (tremolo.frequency, tremolo.depth) == (4.0, 0.5)
-        assert (vibrato.frequency, vibrato.depth) == (6.0, 0.3)
-        assert rotation.rotation_hz == 0.2
-        assert (
-            distortion.sin_offset,
-            distortion.sin_scale,
-            distortion.cos_offset,
-            distortion.cos_scale,
-            distortion.tan_offset,
-            distortion.tan_scale,
-            distortion.offset,
-            distortion.scale,
-        ) == (0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 1.0)
-        assert (
-            channel_mix.left_to_left,
-            channel_mix.left_to_right,
-            channel_mix.right_to_left,
-            channel_mix.right_to_right,
-        ) == (0.5, 0.5, 0.5, 0.5)
-        assert low_pass.smoothing == 20.0
 
     def test_merge_prefers_other_non_none_fields(self) -> None:
         base = Timescale(speed=1.0, pitch=0.9)

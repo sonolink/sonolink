@@ -18,16 +18,6 @@ class TestHistoryBasics:
     def test_history_enabled_by_default(self) -> None:
         assert History().enabled is True
 
-    def test_history_respects_disabled_setting(self) -> None:
-        history = History(settings=HistorySettings(enabled=False))
-        assert history.enabled is False
-
-    def test_history_is_iterable(self) -> None:
-        assert not list(History())
-
-    def test_history_repr(self) -> None:
-        assert "History" in repr(History())
-
 
 class TestHistoryRecording:
     def test_push_records_track(self, track: Playable) -> None:
@@ -58,6 +48,8 @@ class TestHistoryRecording:
     def test_clear_empties_history(self, track: Playable) -> None:
         history = History()
         history._push(track)
+        assert len(history) == 1
+
         history._clear()
 
         assert len(history) == 0

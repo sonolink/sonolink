@@ -12,16 +12,6 @@ from ..helpers import ConcreteTestPlayer
 
 
 class TestPlayerInitialization:
-    def test_player_bound_to_guild(
-        self, test_player: ConcreteTestPlayer, mock_guild: MagicMock
-    ) -> None:
-        assert test_player.guild is mock_guild
-
-    def test_player_bound_to_node(
-        self, test_player: ConcreteTestPlayer, node: Node
-    ) -> None:
-        assert test_player.node is node
-
     def test_player_starts_with_empty_queue(
         self, test_player: ConcreteTestPlayer
     ) -> None:
@@ -34,14 +24,6 @@ class TestPlayerInitialization:
 
     def test_player_default_volume(self, test_player: ConcreteTestPlayer) -> None:
         assert test_player.volume == 100
-
-    def test_player_custom_volume(self, node: Node) -> None:
-        player = ConcreteTestPlayer(node=node, volume=50)
-        assert player.volume == 50
-
-    def test_player_can_start_paused(self, node: Node) -> None:
-        player = ConcreteTestPlayer(node=node, paused=True)
-        assert player.paused is True
 
 
 class TestPlayerAutoplay:

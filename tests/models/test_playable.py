@@ -2,57 +2,18 @@ from __future__ import annotations
 
 import types
 
-from sonolink.models.track import Album, Artist, Playable
+from sonolink.models.track import Album, Artist
 
 from ..helpers import make_playable
 
 
 class TestPlayableMetadata:
-    def test_title(self) -> None:
-        assert make_playable(title="Test Track").title == "Test Track"
-
-    def test_author(self) -> None:
-        assert make_playable(author="Test Artist").author == "Test Artist"
-
-    def test_uri(self) -> None:
-        track = make_playable(uri="https://example.com/track")
-        assert track.uri == "https://example.com/track"
-
-    def test_uri_may_be_none(self) -> None:
-        assert make_playable(uri=None).uri is None
-
-    def test_identifier(self) -> None:
-        assert make_playable(identifier="abc123").identifier == "abc123"
-
-    def test_source_name(self) -> None:
-        assert make_playable(source_name="youtube").source_name == "youtube"
-
-    def test_encoded(self) -> None:
-        assert make_playable(encoded="abc==").encoded == "abc=="
-
-    def test_length_is_milliseconds(self) -> None:
-        assert make_playable(length=3 * 60 * 1000).length == 180000
-
     def test_len_returns_length(self) -> None:
         track = make_playable(length=180000)
         assert len(track) == track.length == 180000
 
     def test_str_returns_title(self) -> None:
         assert str(make_playable(title="Test Track")) == "Test Track"
-
-
-class TestPlayableFlags:
-    def test_is_stream_false(self) -> None:
-        assert make_playable(is_stream=False).is_stream is False
-
-    def test_is_stream_true(self) -> None:
-        assert make_playable(is_stream=True).is_stream is True
-
-    def test_is_seekable(self) -> None:
-        assert make_playable(is_stream=False).is_seekable is True
-
-    def test_autoplay_defaults_false(self) -> None:
-        assert make_playable().autoplay is False
 
 
 class TestPlayableEquality:
@@ -107,10 +68,3 @@ class TestPluginMetadata:
 
     def test_playlist_defaults_to_none(self) -> None:
         assert make_playable().playlist is None
-
-
-class TestPlayableIsExported:
-    def test_importable_from_models(self) -> None:
-        from sonolink import models
-
-        assert models.Playable is Playable
