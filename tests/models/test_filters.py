@@ -150,7 +150,7 @@ class TestFilters:
         payload = filters.payload
 
         assert filters.volume == 1.0
-        assert filters.equalizer == []
+        assert not filters.equalizer
         assert filters.plugin_filters == {}
         assert payload.volume == 1.0
         assert all(

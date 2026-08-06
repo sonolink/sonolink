@@ -23,7 +23,7 @@ class TestHistoryBasics:
         assert history.enabled is False
 
     def test_history_is_iterable(self) -> None:
-        assert list(History()) == []
+        assert not list(History())
 
     def test_history_repr(self) -> None:
         assert "History" in repr(History())

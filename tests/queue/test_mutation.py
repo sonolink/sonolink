@@ -22,7 +22,7 @@ class TestPutAndRemove:
     ) -> None:
         with pytest.raises(TypeError, match="Expected Playable"):
             await empty_queue.put_wait(cast(Any, [track, "invalid"]))
-        assert empty_queue.tracks == []
+        assert not empty_queue.tracks
 
     async def test_put_wait_atomic_false_filters_invalid_items(
         self, empty_queue: Queue, track: Playable
@@ -36,7 +36,7 @@ class TestPutAndRemove:
         self, empty_queue: Queue
     ) -> None:
         assert await empty_queue.put_wait(cast(Any, ["invalid"]), atomic=False) == 0
-        assert empty_queue.tracks == []
+        assert not empty_queue.tracks
 
     def test_put_autoplay_tags_and_stages_tracks(
         self, empty_queue: Queue, tracks: list[Playable]
@@ -267,8 +267,8 @@ class TestState:
 
         queue.reset()
 
-        assert queue.tracks == []
-        assert queue.autoplay_tracks == []
+        assert not queue.tracks
+        assert not queue.autoplay_tracks
         assert queue.history is not None
         assert len(queue.history) == 0
         assert queue.mode is QueueMode.NORMAL

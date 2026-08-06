@@ -101,7 +101,7 @@ class TestNodeDecode:
     async def test_decode_tracks_empty(self, node: Node, manager: MagicMock) -> None:
         manager.decode_tracks = AsyncMock(return_value=[])
 
-        assert await node.decode_tracks() == []
+        assert not await node.decode_tracks()
 
 
 class TestNodeRequiresClient:

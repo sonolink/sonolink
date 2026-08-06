@@ -102,7 +102,7 @@ class TestNodeSettings:
 
 class TestNodeRegions:
     def test_regions_default_to_empty(self, mock_client: MagicMock) -> None:
-        assert build_node(mock_client).regions == []
+        assert not build_node(mock_client).regions
 
     def test_regions_are_stored(self, mock_client: MagicMock) -> None:
         node = build_node(mock_client, regions=["us-east", "us-west"])

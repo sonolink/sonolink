@@ -183,7 +183,7 @@ class TestPutWaitConcurrency:
         with pytest.raises(TypeError, match="Expected Playable"):
             await empty_queue.put_wait(cast(Any, [track, "invalid"]))
 
-        assert empty_queue.tracks == []
+        assert not empty_queue.tracks
 
         added = await asyncio.wait_for(empty_queue.put_wait([track]), timeout=2.0)
         assert added == 1
