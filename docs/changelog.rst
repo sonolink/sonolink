@@ -30,6 +30,8 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed :attr:`TrackStartEvent.original` being ``None`` after a track ended
+  and the next started via ``skip()``.
 - Fixed AutoPlay re-discovering and re-queueing tracks that were already
   recommended in a previous round, because only the seed reference was tracked.
 - Fixed duplicated history entries on track transitions in :meth:`Player.play`. 
