@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import Any
 from unittest.mock import MagicMock
 
-import msgspec
 import pytest
 
 from sonolink.models import SearchResult
@@ -11,8 +11,6 @@ from sonolink.models.playlist import Playlist
 from sonolink.models.track import Playable
 from sonolink.rest.enums import TrackLoadResult
 from sonolink.rest.schemas.track import TrackLoadingResponse
-
-from ..helpers import make_playable
 
 
 def make_result(
@@ -25,15 +23,11 @@ def make_result(
     return SearchResult(client=client or MagicMock(), data=response)
 
 
-def track_payload(**kwargs: Any) -> dict[str, Any]:
-    return msgspec.to_builtins(make_playable(**kwargs).data)
-
-
 ERROR_PAYLOAD: dict[str, Any] = {
     "message": "boom",
     "severity": "common",
     "cause": "test",
-    "causeStackTrace": "…",
+    "causeStackTrace": "...",
 }
 
 
@@ -61,7 +55,9 @@ class TestSearchResultType:
     def test_is_empty_true_for_empty(self) -> None:
         assert make_result(TrackLoadResult.EMPTY, None).is_empty() is True
 
-    def test_is_empty_false_for_track(self) -> None:
+    def test_is_empty_false_for_track(
+        self, track_payload: Callable[..., dict[str, Any]]
+    ) -> None:
         result = make_result(TrackLoadResult.TRACK, track_payload())
         assert result.is_empty() is False
 
@@ -69,20 +65,26 @@ class TestSearchResultType:
         data = ERROR_PAYLOAD
         assert make_result(TrackLoadResult.ERROR, data).is_error() is True
 
-    def test_is_error_false_for_track(self) -> None:
+    def test_is_error_false_for_track(
+        self, track_payload: Callable[..., dict[str, Any]]
+    ) -> None:
         result = make_result(TrackLoadResult.TRACK, track_payload())
         assert result.is_error() is False
 
 
 class TestSearchResultResult:
-    def test_track_result_is_playable(self) -> None:
+    def test_track_result_is_playable(
+        self, track_payload: Callable[..., dict[str, Any]]
+    ) -> None:
         result = make_result(TrackLoadResult.TRACK, track_payload(title="Only Track"))
         resolved = result.result
 
         assert isinstance(resolved, Playable)
         assert resolved.title == "Only Track"
 
-    def test_search_result_is_list_of_playables(self) -> None:
+    def test_search_result_is_list_of_playables(
+        self, track_payload: Callable[..., dict[str, Any]]
+    ) -> None:
         payload = [
             track_payload(identifier="a", title="First"),
             track_payload(identifier="b", title="Second"),
@@ -92,7 +94,9 @@ class TestSearchResultResult:
         assert isinstance(resolved, list)
         assert [track.title for track in resolved] == ["First", "Second"]
 
-    def test_playlist_result_is_playlist(self) -> None:
+    def test_playlist_result_is_playlist(
+        self, track_payload: Callable[..., dict[str, Any]]
+    ) -> None:
         payload = {
             "info": {"name": "Test Playlist", "selectedTrack": -1},
             "pluginInfo": {},
@@ -111,7 +115,9 @@ class TestSearchResultResult:
 
 
 class TestSearchResultException:
-    def test_exception_none_when_not_error(self) -> None:
+    def test_exception_none_when_not_error(
+        self, track_payload: Callable[..., dict[str, Any]]
+    ) -> None:
         result = make_result(TrackLoadResult.TRACK, track_payload())
         assert result.exception is None
 
