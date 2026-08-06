@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from sonolink import QueueEmpty
+from sonolink import HistoryEmpty, QueueEmpty
 from sonolink.models.track import Playable
 
 from ..helpers import ConcreteTestPlayer, make_playable
@@ -101,7 +101,5 @@ class TestPlayerPrevious:
     async def test_previous_on_empty_history_raises(
         self, ready_player: ConcreteTestPlayer
     ) -> None:
-        from sonolink import HistoryEmpty
-
         with pytest.raises(HistoryEmpty):
             await ready_player.previous()
