@@ -31,6 +31,8 @@ in specific versions.
 ~~~~~~~~~
 
 - Fixed duplicated history entries on track transitions in :meth:`Player.play`. 
+- Fixed :meth:`Queue.move` placing tracks one position before the requested
+  target index when moving them forward.
 
 **Changed**
 ~~~~~~~~~~~
