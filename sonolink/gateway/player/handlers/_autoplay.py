@@ -104,6 +104,7 @@ class AutoPlayHandler(HandlerBase):
             if not discovery:
                 return None
 
+            self._seeds.update(t.identifier for t in discovery)
             return await self._apply_discovery(discovery)
         except Exception as exc:
             _log.error(

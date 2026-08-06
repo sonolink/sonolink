@@ -30,6 +30,8 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed AutoPlay re-discovering and re-queueing tracks that were already
+  recommended in a previous round, because only the seed reference was tracked.
 - Fixed duplicated history entries on track transitions in :meth:`Player.play`. 
 - Fixed :meth:`Queue.move` placing tracks one position before the requested
   target index when moving them forward.
@@ -40,6 +42,7 @@ in specific versions.
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
 
+- Removed the internal, never-read ``_ready`` attribute from the player.
 - Exposed ``SonoLinkException`` exception class to prevent docs building warnings.
 - Moved ``ruff`` and `basedpyright` into dependency-groups so CI workflows can install them 
   individually via ``pip install --group <name>``.
