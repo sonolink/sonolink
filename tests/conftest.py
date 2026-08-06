@@ -152,9 +152,12 @@ def track_payload() -> Callable[..., dict[str, Any]]:
 @pytest.fixture
 def make_search_result() -> Callable[..., SearchResult]:
     def _make_search_result(
-        load_type: TrackLoadResult, data: Any, *, client: MagicMock
+        load_type: TrackLoadResult,
+        data: Any,
+        *,
+        client: MagicMock | None = None,
     ) -> SearchResult:
         response = TrackLoadingResponse(load_type=load_type, data=data)
-        return SearchResult(client=client, data=response)
+        return SearchResult(client=client or MagicMock(), data=response)
 
     return _make_search_result
