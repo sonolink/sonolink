@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+
 import pytest
 
 from sonolink import Queue
 from sonolink.gateway.enums import QueueMode
-
-from ..helpers import make_playable
+from sonolink.models.track import Playable
 
 
 class TestQueueLength:
@@ -13,14 +14,14 @@ class TestQueueLength:
         queue = Queue()
         assert len(queue) == 0
 
-    def test_count_matches_len(self) -> None:
+    def test_count_matches_len(self, make_playable: Callable[..., Playable]) -> None:
         queue = Queue()
         queue.put([make_playable(identifier="a"), make_playable(identifier="b")])
         assert queue.count == len(queue) == 2
 
 
 class TestQueueDuration:
-    def test_queue_total_duration(self) -> None:
+    def test_queue_total_duration(self, make_playable: Callable[..., Playable]) -> None:
         queue = Queue()
         queue.put(
             [
@@ -34,7 +35,9 @@ class TestQueueDuration:
     def test_queue_empty_duration(self) -> None:
         assert Queue().total_duration() == 0
 
-    def test_streams_contribute_zero(self) -> None:
+    def test_streams_contribute_zero(
+        self, make_playable: Callable[..., Playable]
+    ) -> None:
         queue = Queue()
         queue.put(
             [
@@ -45,13 +48,15 @@ class TestQueueDuration:
 
         assert queue.total_duration() == 120000
 
-    def test_loop_mode_is_infinite(self) -> None:
+    def test_loop_mode_is_infinite(
+        self, make_playable: Callable[..., Playable]
+    ) -> None:
         queue = Queue(mode=QueueMode.LOOP)
         queue.put(make_playable(length=120000))
 
         assert queue.total_duration() == float("inf")
 
-    def test_duration_until(self) -> None:
+    def test_duration_until(self, make_playable: Callable[..., Playable]) -> None:
         queue = Queue()
         queue.put(
             [
@@ -66,7 +71,9 @@ class TestQueueDuration:
         assert queue.duration_until(2) == 300000
         assert queue.duration_until(len(queue)) == 360000
 
-    def test_duration_until_out_of_range(self) -> None:
+    def test_duration_until_out_of_range(
+        self, make_playable: Callable[..., Playable]
+    ) -> None:
         queue = Queue()
         queue.put(make_playable())
 
@@ -80,7 +87,9 @@ class TestQueueEmpty:
         assert not queue
         assert len(queue) == 0
 
-    def test_queue_is_truthy_when_not_empty(self) -> None:
+    def test_queue_is_truthy_when_not_empty(
+        self, make_playable: Callable[..., Playable]
+    ) -> None:
         queue = Queue()
         queue.put(make_playable())
 
@@ -89,7 +98,9 @@ class TestQueueEmpty:
 
 
 class TestQueueDuplication:
-    def test_queue_allows_duplicate_tracks(self) -> None:
+    def test_queue_allows_duplicate_tracks(
+        self, make_playable: Callable[..., Playable]
+    ) -> None:
         queue = Queue()
         track = make_playable()
         queue.put(track)
@@ -97,7 +108,9 @@ class TestQueueDuplication:
 
         assert len(queue) == 2
 
-    def test_queue_duplicates_remain_separate(self) -> None:
+    def test_queue_duplicates_remain_separate(
+        self, make_playable: Callable[..., Playable]
+    ) -> None:
         queue = Queue()
         track = make_playable()
         queue.put([track, track])
@@ -106,7 +119,9 @@ class TestQueueDuplication:
         assert queue[1] is track
         assert len(queue) == 2
 
-    def test_dedupe_removes_duplicates(self) -> None:
+    def test_dedupe_removes_duplicates(
+        self, make_playable: Callable[..., Playable]
+    ) -> None:
         queue = Queue()
         track = make_playable(identifier="dupe")
         queue.put([track, track, make_playable(identifier="unique")])
