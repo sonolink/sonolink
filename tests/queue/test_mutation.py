@@ -119,11 +119,17 @@ class TestOrdering:
         assert queue_with_tracks.tracks == list(reversed(tracks))
 
     @pytest.mark.parametrize("reverse", [False, True])
-    def test_sort(self, queue_with_tracks: Queue, reverse: bool) -> None:
+    def test_sort(
+        self,
+        queue_with_tracks: Queue,
+        tracks: list[Playable],
+        reverse: bool,
+    ) -> None:
         queue_with_tracks.sort(key=lambda track: track.title, reverse=reverse)
 
         assert [track.title for track in queue_with_tracks] == sorted(
-            [track.title for track in queue_with_tracks], reverse=reverse
+            (track.title for track in tracks),
+            reverse=reverse,
         )
 
     @pytest.mark.parametrize("count", [0, 1, 2, 5])
