@@ -72,9 +72,26 @@ docs = [
     "sphinx-autobuild>=2024.10.3",
     "sphinx-autodoc-typehints>=2.3",
 ]
+tests = [
+    "pytest>=9.1.1,<10",
+    "pytest-asyncio>=1.4.0,<2",
+]
 
 [project.urls]
 Repository = "https://github.com/sonolink/sonolink"
+
+[tool.pytest.ini_options]
+minversion = "9.1"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-v --strict-markers --tb=short -ra"
+markers = [
+    "client: marks tests related to Client",
+    "node: marks tests related to Node",
+    "player: marks tests related to Player",
+    "queue: marks tests related to Queue",
+    "search: marks tests related to search functionality",
+]
 
 [tool.basedpyright]
 pythonVersion = "3.12"
