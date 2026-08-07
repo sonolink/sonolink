@@ -48,6 +48,7 @@ intersphinx_mapping = {
 }
 
 nitpicky = True
+set_type_checking_flag = True
 
 exclude_patterns = [
     "_build",
