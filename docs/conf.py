@@ -48,7 +48,6 @@ intersphinx_mapping = {
 }
 
 nitpicky = True
-set_type_checking_flag = True
 
 exclude_patterns = [
     "_build",
@@ -101,6 +100,7 @@ autodoc_typehints_description_target = "documented"
 # Resolves generic subscripts (e.g. Callable[[Playable], Any]) into
 # individual cross-references instead of leaving them as plain text.
 always_use_bars_union = True
+set_type_checking_flag = True
 typehints_use_signature = True
 typehints_document_rtype_none = False
 
