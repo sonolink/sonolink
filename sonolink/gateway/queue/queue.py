@@ -207,7 +207,7 @@ class Queue(MutableQueueBase):
 
         When :attr:`mode` is :attr:`QueueMode.LOOP` or
         :attr:`QueueMode.LOOP_ALL` and the queue is not empty, playback never
-        ends on its own and this returns :data:`float("inf")` instead. An
+        ends on its own and this returns ``float("inf")`` instead. An
         empty queue always returns ``0``.
 
         .. versionadded:: 1.4.0
@@ -221,7 +221,7 @@ class Queue(MutableQueueBase):
         Returns
         -------
         :class:`int` | :class:`float`
-            The total duration in milliseconds, or :data:`float("inf")` when
+            The total duration in milliseconds, or ``float("inf")`` when
             a loop mode is active and the queue is not empty.
         """
         if self._mode in (QueueMode.LOOP, QueueMode.LOOP_ALL) and (
