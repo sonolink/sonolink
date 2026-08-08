@@ -121,7 +121,8 @@ class EventsHandler(HandlerBase):
                         original=original,
                     ),
                 )
-                self._player._original_track = None
+                if self._player._original_track is original:
+                    self._player._original_track = None
                 self._player._check_inactivity()
 
             case "TrackExceptionEvent":

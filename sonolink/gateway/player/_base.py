@@ -144,7 +144,6 @@ class BasePlayer(abc.ABC):
         "_paused",
         "_playback_handler",
         "_queue",
-        "_ready",
         "_volume",
     )
 
@@ -156,7 +155,6 @@ class BasePlayer(abc.ABC):
     _original_track: Playable | None
     _paused: bool
     _queue: Queue
-    _ready: bool
     _volume: int
 
     client: Any
@@ -193,8 +191,6 @@ class BasePlayer(abc.ABC):
         self._inactivity_handler: InactivityHandler = InactivityHandler(self)
         self._lifecycle_handler: LifecycleHandler = LifecycleHandler(self)
         self._playback_handler: PlaybackHandler = PlaybackHandler(self)
-
-        self._ready = False
 
     @abc.abstractmethod
     def __call__(self, client: Any, channel: Any) -> BasePlayer:
@@ -423,7 +419,8 @@ class BasePlayer(abc.ABC):
         """The estimated playback time remaining for the current track in milliseconds.
 
         This is calculated as ``track.length - player.position``. Returns
-        ``0`` when the player is idle, paused, or has no track loaded.
+        ``0`` when the player is idle, paused, has no track loaded, or is
+        playing a live stream (whose duration is unbounded).
 
         .. versionadded:: 1.4.0
 
@@ -432,8 +429,8 @@ class BasePlayer(abc.ABC):
         :class:`int`
             Remaining time in milliseconds.
         """
-        if self.is_playing:
-            assert self.current is not None
+        assert self.current is not None
+        if self.is_playing and not self.current.is_stream:
             return self.current.length - self.position
         return 0
 
