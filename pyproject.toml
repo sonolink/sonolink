@@ -80,6 +80,8 @@ tests = [
 
 [project.urls]
 Repository = "https://github.com/sonolink/sonolink"
+Documentation = "https://sonolink.readthedocs.io/en/stable"
+Discord = "https://discord.gg/tPHVWBPedt"
 
 [tool.pytest.ini_options]
 minversion = "9.1"
