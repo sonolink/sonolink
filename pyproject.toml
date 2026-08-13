@@ -24,7 +24,8 @@ maintainers = [
 ]
 description = "A high-performance Lavalink v4 wrapper for Python, inspired by WaveLink."
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE", "NOTICE.txt"]
 keywords = [
     "lavalink",
     "wavelink",
