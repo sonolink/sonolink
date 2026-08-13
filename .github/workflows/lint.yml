@@ -117,9 +117,6 @@ jobs:
                   pip uninstall -y discord.py py-cord disnake nextcord 2>/dev/null || true
                   pip install "${{ matrix.adapter }}"
 
-            - name: Install basedpyright
-              run: pip install -U --group typecheck
-
             - name: Run basedpyright
               env:
                   TMPDIR: ${{ runner.temp }}
