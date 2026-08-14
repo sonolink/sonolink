@@ -6,7 +6,7 @@ const {
     removeLabelSafe,
 } = require("./utils.js");
 
-// Checkbox text in the template -> label to apply when it's checked.
+// Checkbox text in the template -> label to apply when it's checked
 const TAGS = {
     "Bug fix": "type: bugfix",
     "New feature": "idea: new feature",
@@ -18,7 +18,7 @@ const TAGS = {
 
 const AUTO_LABELS = new Set(Object.values(TAGS));
 
-/** Returns the list of labels implied by checked boxes in the section. */
+/** Returns the list of labels implied by checked boxes in the section */
 function labelsFromSection(section) {
     return Object.entries(TAGS)
         .filter(([text]) => {
@@ -31,7 +31,7 @@ function labelsFromSection(section) {
         .map(([, label]) => label);
 }
 
-/** Removes any auto-label that's no longer implied by the checked boxes. */
+/** Removes any auto-label that's no longer implied by the checked boxes */
 async function removeStaleLabels(
     github,
     target,
@@ -52,7 +52,7 @@ async function removeStaleLabels(
     );
 }
 
-/** Adds whichever implied labels aren't already on the PR. */
+/** Adds whichever implied labels aren't already on the PR */
 async function addNewLabels(
     github,
     target,
@@ -88,7 +88,7 @@ module.exports = async ({ github, context, core }) => {
 
     const section = extractSection(prContent, "## Type of change");
     // Shouldn't happen in practice, because this job only runs once template-check has
-    // passed (or been skipped), which already guarantees the section exists.
+    // passed (or been skipped), which already guarantees the section exists
     if (section === null) {
         core.info(
             "The Type of change section is not found. Ensure the PR follows the template.",
@@ -98,7 +98,7 @@ module.exports = async ({ github, context, core }) => {
 
     const labelsToApply = labelsFromSection(section);
 
-    // Independent operations on disjoint label sets — no need to serialize them.
+    // Independent operations on disjoint label sets; no need to serialize them
     await Promise.all([
         removeStaleLabels(github, target, currentLabels, labelsToApply, core),
         addNewLabels(github, target, currentLabels, labelsToApply, core),
