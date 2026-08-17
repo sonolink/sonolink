@@ -8,7 +8,7 @@ concurrency:
     group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
     cancel-in-progress: true
 jobs:
-    semtitle:
+    semantic-title:
         name: Check Semantic Title
         runs-on: ubuntu-latest
         timeout-minutes: 15
@@ -21,7 +21,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    template-check:
+    template-validation:
         name: Validate PR Template
         runs-on: ubuntu-latest
         timeout-minutes: 15
@@ -43,7 +43,7 @@ jobs:
                       const script = require(path.resolve('.github/scripts/template-validator.js'));
                       await script({ github, context, core });
 
-    auto-apply-tags:
+    apply-labels:
         name: Apply labels
         runs-on: ubuntu-latest
         needs: [template-check]

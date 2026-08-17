@@ -13,7 +13,7 @@ const TEMPLATE_URL =
     "https://github.com/SonoLink/sonolink/blob/main/.github/pull_request_template.md";
 
 // Hidden in the comment body so later runs can find and edit it instead of
-// posting a new one every time. Never shown to the user (HTML comments don't render).
+// posting a new one every time. Never shown to the user (HTML comments don't render)
 const COMMENT_MARKER = "<!-- template-validator-comment -->";
 
 /** Returns a reason string if enforcement should be skipped, otherwise null. */
@@ -23,7 +23,7 @@ function skipReason(pr) {
     return null;
 }
 
-/** Checks that every required "## Heading" is present, on its own line. */
+/** Checks that every required "## Heading" is present, on its own line */
 function findMissingHeadings(content) {
     return REQUIRED_HEADINGS.filter((heading) => {
         const regex = new RegExp(`^${escapeRegExp(heading)}\\s*$`, "m");
@@ -31,7 +31,7 @@ function findMissingHeadings(content) {
     }).map((heading) => `Missing required section "${heading}".`);
 }
 
-/** "Type of change" only makes sense if at least one box under it is checked. */
+/** "Type of change" only makes sense if at least one box under it is checked */
 function findUncheckedType(content) {
     const section = extractSection(content, "## Type of change");
     if (section !== null && !/^-\s*\[[xX]\]/m.test(section)) {
@@ -40,12 +40,12 @@ function findUncheckedType(content) {
     return null;
 }
 
-/** Returns one problem string per unchecked box under "## Checklist" (all required). */
+/** Returns one problem string per unchecked box under "## Checklist" (all required) */
 function findUncheckedChecklistItems(content) {
     const section = extractSection(content, "## Checklist");
     if (section === null) return [];
 
-    // Accept both "-" and "*" bullets since gh's checkbox UI can rewrite either way.
+    // Accept both "-" and "*" bullets since gh's checkbox UI can rewrite either way
     const itemRegex = /^[-*]\s*\[([ xX])\]\s*(.+)$/gm;
     const problems = [];
     let match;
