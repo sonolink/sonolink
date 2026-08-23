@@ -46,7 +46,7 @@ jobs:
     apply-labels:
         name: Apply labels
         runs-on: ubuntu-latest
-        needs: [template-check]
+        needs: [template-validation]
         timeout-minutes: 15
         permissions:
             pull-requests: write
