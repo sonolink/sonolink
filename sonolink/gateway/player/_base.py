@@ -764,6 +764,7 @@ class BasePlayer(abc.ABC):
         history_settings: HistorySettings | None = None,
         volume: int | None = None,
         filters: Filters | None = None,
+        paused: bool | None = None,
     ) -> None:
         """Update the player's configuration in-place.
 
@@ -781,6 +782,12 @@ class BasePlayer(abc.ABC):
             New volume in the range ``0``–``1000``. If ``None``, the current volume is preserved.
         filters : :class:`~sonolink.models.Filters` | None
             New audio filters. If ``None``, the current filters are preserved.
+        paused : :class:`bool` | None
+            If ``True``, the player is paused. If ``False``, playback is
+            resumed. If ``None``, the player's current pause state is
+            preserved.
+
+            .. versionadded:: 1.4.0
         """
         if queue_mode is not None:
             self.queue_mode = queue_mode
@@ -796,6 +803,9 @@ class BasePlayer(abc.ABC):
 
         if filters is not None:
             await self.set_filters(filters)
+
+        if paused is not None:
+            await self._playback_handler.pause(paused)
 
     @abc.abstractmethod
     async def on_voice_server_update(self, data: Any) -> None:
