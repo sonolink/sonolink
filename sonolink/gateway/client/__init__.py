@@ -191,6 +191,8 @@ class Client(Generic[N]):
         cache_settings: CacheSettings | None = ...,
         inactivity_settings: InactivitySettings | None = ...,
         session: SessionType | None = ...,
+        auto_reconnect: bool = ...,
+        secure: bool = ...,
         regions: list[str | NodeRegion] | None = ...,
     ) -> N: ...
 
@@ -206,6 +208,7 @@ class Client(Generic[N]):
         cache_settings: CacheSettings | None = ...,
         inactivity_settings: InactivitySettings | None = ...,
         session: SessionType | None = ...,
+        auto_reconnect: bool = ...,
         regions: list[str | NodeRegion] | None = ...,
     ) -> N: ...
 
@@ -223,6 +226,7 @@ class Client(Generic[N]):
         inactivity_settings: InactivitySettings | None = None,
         session: SessionType | None = None,
         auto_reconnect: bool = True,
+        secure: bool = False,
         regions: list[str | NodeRegion] | None = None,
     ) -> N:
         """Create a :class:`Node` attached to this client.
@@ -239,12 +243,20 @@ class Client(Generic[N]):
                 This is optional now to accommodate users who prefer providing host and port separately.
         host: :class:`str` | :data:`None`
             The host of the node. This is mutually exclusive with providing ``uri``.
+            The node will connect over ``http://{host}:{port}`` unless ``secure=True``,
+            in which case ``https://{host}:{port}`` is used.
 
             .. versionadded:: 1.1.0
         port: :class:`int` | :data:`None`
             The port of the node. This is mutually exclusive with providing ``uri``.
 
             .. versionadded:: 1.1.0
+        secure: :class:`bool`
+            Whether to connect to the node over TLS (``https://`` and ``wss://``).
+            This only applies when providing ``host`` and ``port``; when using
+            ``uri``, include the scheme there instead. Defaults to ``False``.
+
+            .. versionadded:: 1.4.0
         id: :class:`str` | :data:`None`
             The ID of this node. This is used internally to identify this node. If ``None`` is passed, it is
             generated automatically.
@@ -275,7 +287,8 @@ class Client(Generic[N]):
         ------
         ValueError
             Invalid combination of parameters. You must provide either
-            ``uri`` or both ``host`` and ``port``, but not all three.
+            ``uri`` or both ``host`` and ``port``, but not all three. You also
+            cannot pass ``secure`` together with ``uri``.
 
         Returns
         -------
@@ -286,13 +299,18 @@ class Client(Generic[N]):
             msg = "Cannot specify both uri and host/port."
             raise ValueError(msg)
 
+        if uri is not None and secure:
+            msg = "Cannot specify both uri and secure; include the scheme in the uri instead."
+            raise ValueError(msg)
+
         if (uri is None) and (host is None or port is None):
             msg = "Must specify either uri or host and port."
             raise ValueError(msg)
 
         i_settings = inactivity_settings or InactivitySettings.default()
         c_settings = cache_settings or CacheSettings.default()
-        uri = uri or f"{host}:{port}"
+        scheme = "https" if secure else "http"
+        uri = uri or f"{scheme}://{host}:{port}"
 
         node = self._node_cls(
             client=self,
