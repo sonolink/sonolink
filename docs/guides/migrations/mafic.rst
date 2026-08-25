@@ -22,10 +22,10 @@ What stays familiar
 What changes
 ------------
 
-Mafic centers its API around a class-level ``NodePool`` and a ``Player.fetch_tracks`` search
-flow. SonoLink replaces both with instance-based equivalents, introduces a structured settings
-system, and adds features like autoplay, track history, and a node-level search cache that
-have no equivalent in Mafic.
+Mafic centers its API around a ``NodePool`` bound to your Discord client and a
+``Player.fetch_tracks`` search flow. SonoLink replaces both with instance-based equivalents,
+introduces a structured settings system, and adds features like autoplay, track history, and a
+node-level search cache that have no equivalent in Mafic.
 
 Concept mapping
 ---------------
@@ -48,7 +48,7 @@ Concept mapping
    * - ``mafic.Playlist``
      - :class:`sonolink.models.Playlist`
    * - ``mafic.SearchType``
-     - :class:`sonolink.SearchProvider`
+     - :class:`sonolink.TrackSourceType`
    * - ``mafic.Filter``
      - :class:`sonolink.models.Filters`
    * - ``player.add_filter(filter)``
@@ -59,15 +59,15 @@ Concept mapping
 Connection lifecycle
 --------------------
 
-In Mafic, you create a ``NodePool`` class-level pool and call ``NodePool.create_node`` with
-the bot instance at the class level:
+In Mafic, you instantiate a ``NodePool`` with your bot and call ``create_node`` on it:
 
 .. code-block:: python
 
    # Mafic
+   pool = mafic.NodePool(bot)
+
    async def on_ready(self):
-       await NodePool.create_node(
-           bot=bot,
+       await pool.create_node(
            host="127.0.0.1",
            port=2333,
            password="youshallnotpass",
@@ -111,7 +111,7 @@ handled automatically. If you need to target a specific node, you can do so expl
 
 .. code-block:: python
 
-   node = sl_client.get_node(id="main")
+   node = sl_client.get_node("main")
    player = node.create_player(...)
 
 For most bots the automatic selection is sufficient and you will not need to call this directly.
@@ -164,12 +164,12 @@ In Mafic, searching is done on the player instance and returns a list of tracks 
 
 In SonoLink, searching is done on the client or node and returns a
 :class:`sonolink.models.SearchResult` wrapper that makes the result type explicit. The search
-provider is passed as a :class:`sonolink.SearchProvider` value rather than a ``SearchType``:
+source is passed as a :class:`sonolink.TrackSourceType` value rather than a ``SearchType``:
 
 .. code-block:: python
 
    # SonoLink
-   result = await sl_client.search_track(query)
+   result = await sl_client.search_track(query, source=sonolink.TrackSourceType.YOUTUBE)
    if result.is_error() or result.is_empty() or result.result is None:
        return
 
@@ -185,6 +185,13 @@ provider is passed as a :class:`sonolink.SearchProvider` value rather than a ``S
 :class:`sonolink.models.SearchResult` covers all possible outcomes: a single track, a
 playlist, a search result list, an empty result, or an error — so you no longer need to
 branch on the return type yourself.
+
+.. note::
+    Some ``mafic.SearchType`` members (e.g. ``APPLE_MUSIC``, ``TTS``, ``VK_MUSIC``,
+    ``YANDEX_MUSIC``, ``DEEZER_ISRC``, ``SPOTIFY_RECOMMENDATIONS``) have no dedicated
+    :class:`sonolink.TrackSourceType` member. Pass their raw prefix string (e.g.
+    ``"amsearch"``) instead — source support still depends on your Lavalink server and
+    installed plugins.
 
 Tracks and playlists
 --------------------
@@ -228,7 +235,7 @@ time via ``player.add_filter``:
 .. code-block:: python
 
    # Mafic
-   await player.add_filter(mafic.Karaoke(level=0.5))
+   await player.add_filter(mafic.Karaoke(level=0.5), label="karaoke")
 
 SonoLink groups all filter configuration into a single :class:`sonolink.models.Filters`
 object applied with :meth:`sonolink.Player.set_filters`. The individual filter types
@@ -258,7 +265,7 @@ player errors, and library compatibility issues. SonoLink has a separate excepti
    * - ``NoNodesAvailable``
      - *(node selection is automatic; no direct equivalent)*
    * - ``PlayerNotConnected``
-     - :exc:`sonolink.WebSocketError`
+     - :exc:`RuntimeError`, raised when calling playback methods while disconnected
    * - ``HTTPException``
      - :exc:`sonolink.HTTPException`
    * - ``HTTPBadRequest``
@@ -328,8 +335,9 @@ Track history is enabled via :class:`sonolink.models.HistorySettings` and expose
 as its seed, so the two features work together.
 
 .. warning::
-   Autoplay requires history to be enabled. If :class:`sonolink.models.HistorySettings` is
-   left at its default, autoplay will have no reference track to discover from.
+   Autoplay requires history to be enabled. If history is disabled through
+   :class:`sonolink.models.HistorySettings` (``enabled=False``), autoplay will have no
+   reference track to discover from.
 
 Useful references
 -----------------

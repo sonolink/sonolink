@@ -29,6 +29,8 @@ from collections import deque
 from itertools import chain, islice
 from typing import TYPE_CHECKING, Any, Callable, Iterable, Iterator
 
+from typing_extensions import deprecated
+
 from sonolink.models.settings import HistorySettings
 from sonolink.models.track import Playable
 
@@ -321,7 +323,7 @@ class Queue(MutableQueueBase):
         if self._mode is QueueMode.LOOP_ALL and not self._items:
             if len(self._history) > 0:
                 self._items.extend(self._history)
-                self._history._clear()
+                self._history.clear()
 
             if self._current_track is not None:
                 self._items.append(self._current_track)
@@ -794,9 +796,17 @@ class Queue(MutableQueueBase):
         """
         self._items[old], self._items[new] = self._items[new], self._items[old]
 
+    @deprecated(
+        "Queue.clear_history is deprecated since version 1.4.0 and will be "
+        "removed in 2.0 in favor of History.clear."
+    )
     def clear_history(self) -> None:
-        """Clear the queue history if history is enabled."""
-        self._history._clear()
+        """Clear the queue history if history is enabled.
+
+        .. deprecated:: 1.4.0
+            Use :meth:`History.clear` instead.
+        """
+        self._history.clear()
 
     def reset(self) -> None:
         """Reset the queue to its default state.
@@ -812,7 +822,7 @@ class Queue(MutableQueueBase):
         - Cancel all waiting futures
         """
         self.clear()
-        self.clear_history()
+        self._history.clear()
 
         self._current_track = None
         self._mode = QueueMode.NORMAL

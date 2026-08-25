@@ -28,6 +28,10 @@ in specific versions.
   returning ``None`` when history tracking is disabled.
 - Added ``Queue.__setitem__`` to replace the track(s) at an index or slice,
   mirroring ``list`` assignment semantics.
+- Added :meth:`History.clear` to remove all tracks from the history.
+  Previously only reachable indirectly through :meth:`Queue.clear_history`.
+- Added a ``paused`` parameter to :meth:`Player.update` for pausing or
+  resuming playback.
 
 **Fixed**
 ~~~~~~~~~
@@ -43,16 +47,23 @@ in specific versions.
 **Changed**
 ~~~~~~~~~~~
 
+**Deprecated**
+~~~~~~~~~~~~~~
+
+- Deprecated :meth:`Queue.clear_history` in favor of :meth:`History.clear`.
+
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
 
 - Removed the internal, never-read ``_ready`` attribute from the player.
 - Exposed ``SonoLinkException`` exception class to prevent docs building warnings.
-- Moved ``ruff`` and `basedpyright` into dependency-groups so CI workflows can install them 
+- Moved ``ruff`` and `basedpyright` into dependency-groups so CI workflows can install them
   individually via ``pip install --group <name>``.
 - Added a unit test suite, run via a new ``tests`` workflow on every PR.
 - Added automatic version bumping after each release, so the development version
   and changelog are committed and pushed by the release workflow.
+- Corrected API inaccuracies in the library migration guides
+  (:doc:`/guides/migrations/index`).
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.3.0..HEAD
 
