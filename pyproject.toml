@@ -143,6 +143,7 @@ ignore = [
     "RUF002",  # ambiguous unicode in docstrings
     "RUF003",  # ambiguous unicode in comments
     "RUF029",  # async def WITH await enforcement
+    "RUF067",  # Non Empty Init Module enforcement 
 ]
 
 unfixable = [
