@@ -42,7 +42,7 @@ Examples may be found in the [examples](https://github.com/sonolink/sonolink/tre
   - [discord.py](https://pypi.org/project/discord.py) 2.7+
   - [py-cord](https://pypi.org/project/py-cord) 2.8+
   - [disnake](https://pypi.org/project/disnake) 2.12+
-  - [nextcord](https://pypi.org/project/nextcord) 3.1.1+
+  - [nextcord](https://pypi.org/project/nextcord) 3.2+
   
 ### Install
 
