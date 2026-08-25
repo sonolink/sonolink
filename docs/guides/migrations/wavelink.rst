@@ -42,7 +42,7 @@ Concept mapping
    * - ``wavelink.Playable.search(...)``
      - :meth:`sonolink.Client.search_track`
    * - ``wavelink.Pool.fetch_tracks(...)``
-     - :meth:`sonolink.Node.search_track`
+     - :meth:`sonolink.Client.search_track`
    * - ``wavelink.Search``
      - :class:`sonolink.models.SearchResult`
    * - ``wavelink.Filters``
@@ -112,16 +112,21 @@ over behavior that Wavelink left to ad-hoc configuration:
        ),
    )
 
-   player = sl_client.get_best_node().create_player(
-       autoplay_settings=AutoPlaySettings(
-           mode=AutoPlayMode.ENABLED,
-           discovery_count=10,
-       ),
-       history_settings=HistorySettings(
-           enabled=True,
-           max_items=100,
-       ),
-   )
+   async def setup_hook() -> None:
+       await sl_client.start()
+
+       # get_best_node requires a connected node, so create players
+       # only after Client.start() has finished.
+       player = sl_client.get_best_node().create_player(
+           autoplay_settings=AutoPlaySettings(
+               mode=AutoPlayMode.ENABLED,
+               discovery_count=10,
+           ),
+           history_settings=HistorySettings(
+               enabled=True,
+               max_items=100,
+           ),
+       )
 
 Searching
 ---------
@@ -207,8 +212,8 @@ See :doc:`/guides/players` for the full player reference.
 Playback flow
 -------------
 
-SonoLink does not expose a ``playing`` property — use :attr:`sonolink.Player.current` instead
-(see `State helpers`_). The common pattern is to call :meth:`sonolink.Player.play` directly
+For replacements of Wavelink's ``player.playing`` state checks, see `State helpers`_.
+The common pattern is to call :meth:`sonolink.Player.play` directly
 when nothing is currently playing, and put remaining tracks into the queue. Queue progression
 after a track ends is handled automatically:
 
@@ -317,8 +322,8 @@ State helpers
 -------------
 
 Wavelink exposes ``player.playing`` and ``player.paused`` as the primary state checks.
-SonoLink does not have a ``playing`` property — replace any ``player.playing`` checks with
-``player.current is not None``:
+Note that Wavelink's ``playing`` stays ``True`` while the player is paused as long as a
+track is loaded, so pick the SonoLink check that matches the behaviour you want:
 
 .. code-block:: python
 
@@ -327,12 +332,13 @@ SonoLink does not have a ``playing`` property — replace any ``player.playing``
        ...
 
    # SonoLink
-   if player.current is not None:
+   if player.is_playing:
        ...
 
 The full public player state in SonoLink is:
 
 * :attr:`sonolink.Player.current` — the track currently playing, or ``None``.
+* :attr:`sonolink.Player.is_playing` — whether a track is loaded **and** the player is not paused.
 * :attr:`sonolink.Player.paused` — whether the player is paused.
 * :attr:`sonolink.Player.position` — the current playback position in milliseconds.
 * :attr:`sonolink.Player.volume` — the current volume, between 0 and 1000.

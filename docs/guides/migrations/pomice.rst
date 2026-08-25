@@ -112,7 +112,7 @@ explicitly:
 
 .. code-block:: python
 
-   node = sl_client.get_node(id="MAIN")
+   node = sl_client.get_node("MAIN")
    player = node.create_player(...)
 
 For most bots, using :meth:`sonolink.Client.search_track` and connecting with
@@ -149,16 +149,21 @@ SonoLink keeps node and player behaviour in structured settings objects:
        ),
    )
 
-   player = sl_client.get_best_node().create_player(
-       autoplay_settings=AutoPlaySettings(
-           mode=AutoPlayMode.ENABLED,
-           discovery_count=10,
-       ),
-       history_settings=HistorySettings(
-           enabled=True,
-           max_items=100,
-       ),
-   )
+   async def setup_hook() -> None:
+       await sl_client.start()
+
+       # get_best_node requires a connected node, so create players
+       # only after Client.start() has finished.
+       player = sl_client.get_best_node().create_player(
+           autoplay_settings=AutoPlaySettings(
+               mode=AutoPlayMode.ENABLED,
+               discovery_count=10,
+           ),
+           history_settings=HistorySettings(
+               enabled=True,
+               max_items=100,
+           ),
+       )
 
 Searching
 ---------
@@ -247,9 +252,9 @@ Playback flow
 -------------
 
 Pomice exposes ``Player.is_playing`` and lets ``Player.play`` replace the current track when
-``ignore_if_playing`` is used. SonoLink does not expose an ``is_playing`` property — use
-:attr:`sonolink.Player.current` instead. Queue progression after a track ends is handled
-automatically:
+``ignore_if_playing`` is used. SonoLink exposes the equivalent
+:attr:`sonolink.Player.is_playing` property, or you can check :attr:`sonolink.Player.current`
+directly. Queue progression after a track ends is handled automatically:
 
 .. code-block:: python
 
@@ -351,14 +356,15 @@ Track history is enabled via :class:`sonolink.models.HistorySettings` and expose
 as its seed, so the two features work together.
 
 .. warning::
-   Autoplay requires history to be enabled. If :class:`sonolink.models.HistorySettings` is
-   left at its default, autoplay will have no reference track to discover from.
+   Autoplay requires history to be enabled. If history is disabled through
+   :class:`sonolink.models.HistorySettings` (``enabled=False``), autoplay will have no
+   reference track to discover from.
 
 State helpers
 -------------
 
-Pomice exposes ``Player.is_playing`` and ``Player.is_paused``. In SonoLink, replace those
-checks with :attr:`sonolink.Player.current` and :attr:`sonolink.Player.paused`:
+Pomice exposes ``Player.is_playing`` and ``Player.is_paused``. SonoLink provides the direct
+equivalents :attr:`sonolink.Player.is_playing` and :attr:`sonolink.Player.paused`:
 
 .. code-block:: python
 
@@ -370,7 +376,7 @@ checks with :attr:`sonolink.Player.current` and :attr:`sonolink.Player.paused`:
        ...
 
    # SonoLink
-   if player.current is not None:
+   if player.is_playing:
        ...
 
    if player.paused:
@@ -379,6 +385,7 @@ checks with :attr:`sonolink.Player.current` and :attr:`sonolink.Player.paused`:
 The common public player state in SonoLink is:
 
 * :attr:`sonolink.Player.current` — the track currently playing, or ``None``.
+* :attr:`sonolink.Player.is_playing` — whether a track is loaded **and** the player is not paused.
 * :attr:`sonolink.Player.paused` — whether the player is paused.
 * :attr:`sonolink.Player.position` — the current playback position in milliseconds.
 * :attr:`sonolink.Player.volume` — the current volume, between 0 and 1000.
