@@ -29,6 +29,12 @@ in specific versions.
 - Added a ``secure`` parameter to :meth:`Client.create_node` that builds an
   ``https://``/``wss://`` URI when using ``host`` and ``port``, so TLS nodes no
   longer require passing a full ``uri``.
+- Added ``Queue.__setitem__`` to replace the track(s) at an index or slice,
+  mirroring ``list`` assignment semantics.
+- Added :meth:`History.clear` to remove all tracks from the history.
+  Previously only reachable indirectly through :meth:`Queue.clear_history`.
+- Added a ``paused`` parameter to :meth:`Player.update` for pausing or
+  resuming playback.
 
 **Fixed**
 ~~~~~~~~~
@@ -47,6 +53,11 @@ in specific versions.
 **Changed**
 ~~~~~~~~~~~
 
+**Deprecated**
+~~~~~~~~~~~~~~
+
+- Deprecated :meth:`Queue.clear_history` in favor of :meth:`History.clear`.
+
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
 
@@ -57,6 +68,8 @@ in specific versions.
 - Added a unit test suite, run via a new ``tests`` workflow on every PR.
 - Added automatic version bumping after each release, so the development version
   and changelog are committed and pushed by the release workflow.
+- Corrected API inaccuracies in the library migration guides
+  (:doc:`/guides/migrations/index`).
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.3.0..HEAD
 

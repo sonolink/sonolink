@@ -61,7 +61,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-speed = ["curl-cffi>=0.14.0,<1"]
+speed = ["curl-cffi>=0.16.2,<1"]
 
 [dependency-groups]
 lint = ["ruff>=0.16.1,<0.17"]

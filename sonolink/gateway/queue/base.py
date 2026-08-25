@@ -27,7 +27,7 @@ from collections import Counter, deque
 from collections.abc import Iterable, Iterator
 from typing import TYPE_CHECKING, overload
 
-from typing_extensions import Any, Callable
+from typing_extensions import Any, Callable, cast
 
 from sonolink.models.track import Playable
 
@@ -272,3 +272,47 @@ class MutableQueueBase(ReadableCollection):
     def clear(self) -> None:
         """Remove all items from the queue."""
         self._items.clear()
+
+    @overload
+    def __setitem__(self, index: int, value: Playable) -> None: ...
+
+    @overload
+    def __setitem__(self, index: slice, value: Iterable[Playable]) -> None: ...
+
+    def __setitem__(
+        self,
+        index: int | slice,
+        value: Playable | Iterable[Playable],
+    ) -> None:
+        """Replace the track(s) at ``index`` with ``value``.
+
+        Mirrors ``list`` assignment semantics for both single indices and
+        slices. All values are validated before any change is applied, so a
+        failed assignment leaves the queue untouched.
+
+        .. versionadded:: 1.4.0
+
+        Parameters
+        ----------
+        index: :class:`int` | :class:`slice`
+            The position(s) to replace.
+        value: :class:`sonolink.models.Playable` | Iterable[:class:`sonolink.models.Playable`]
+            The track(s) to store at ``index``. A single track is expected for
+            an integer index; an iterable of tracks is expected for a slice.
+
+        Raises
+        ------
+        :exc:`TypeError`
+            When ``value`` is not an (iterable of) :class:`~sonolink.models.Playable`.
+        :exc:`IndexError`
+            When an integer ``index`` is out of range.
+        """
+        items = list(self._items)
+        if isinstance(index, slice):
+            items[index] = [
+                self._as_playable(item) for item in cast("Iterable[object]", value)
+            ]
+        else:
+            items[index] = self._as_playable(value)
+
+        self._items = deque(items)

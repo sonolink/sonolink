@@ -85,16 +85,12 @@ jobs:
               run: ruff check . --exclude docs/
 
     typecheck:
-        name: Typecheck / ${{ matrix.adapter }}
+        name: Typecheck
         permissions:
             contents: read
         runs-on: ubuntu-latest
         timeout-minutes: 15
         if: format('{0}', github.event.pull_request.user.id) != vars.RENOVATE_BOT_ID
-        strategy:
-            fail-fast: false
-            matrix:
-                adapter: [discord.py, py-cord, disnake, nextcord]
         steps:
             - name: Checkout
               uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -106,26 +102,24 @@ jobs:
               with:
                   python-version: "3.13"
                   cache: "pip"
-                  cache-dependency-path: |
-                      pyproject.toml
+                  cache-dependency-path: pyproject.toml
 
             - name: Install project and basedpyright
               run: pip install -U -e ".[speed]" --group typecheck
 
-            - name: Install ${{ matrix.adapter }} in isolation
-              run: |
-                  pip uninstall -y discord.py py-cord disnake nextcord 2>/dev/null || true
-                  pip install "${{ matrix.adapter }}"
-
-            - name: Run basedpyright
+            - name: Run basedpyright per adapter
               env:
                   TMPDIR: ${{ runner.temp }}
               run: |
-                  FILES=$(find sonolink -name '*.py' -not -name '_pycord.py' -not -name '_dpy.py' -not -name '_disnake.py' -not -name '_nextcord.py')
-                  case "${{ matrix.adapter }}" in
-                    "discord.py") FILES="$FILES $(find sonolink -name '_dpy.py')" ;;
-                    "py-cord")    FILES="$FILES $(find sonolink -name '_pycord.py')" ;;
-                    "disnake")    FILES="$FILES $(find sonolink -name '_disnake.py')" ;;
-                    "nextcord")   FILES="$FILES $(find sonolink -name '_nextcord.py')" ;;
-                  esac
-                  basedpyright $FILES
+                  set -e
+                  COMMON=$(find sonolink -name '*.py' ! -name '_pycord.py' ! -name '_dpy.py' ! -name '_disnake.py' ! -name '_nextcord.py')
+                  for pair in "discord.py _dpy.py" "py-cord _pycord.py" "disnake _disnake.py" "nextcord _nextcord.py"; do
+                      set -- $pair
+                      adapter="$1"; mod="$2"
+                      echo "::group::Typecheck / $adapter"
+                      pip install -q "$adapter"
+                      # shellcheck disable=SC2086
+                      basedpyright $COMMON $(find sonolink -name "$mod")
+                      pip uninstall -yq "$adapter"
+                      echo "::endgroup::"
+                  done

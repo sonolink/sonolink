@@ -97,7 +97,7 @@ automatic. If you need a specific node, retrieve it by ID:
 
 .. code-block:: python
 
-   node = sl_client.get_node(id="main")
+   node = sl_client.get_node("main")
    player = node.create_player(...)
 
 For most bots the automatic selection is sufficient and you will not need to call this
@@ -217,8 +217,7 @@ Lavalink.py defines filter classes (``Equalizer``, ``Karaoke``, ``Timescale``, `
 
    # Lavalink.py
    karaoke = lavalink.Karaoke(level=0.5)
-   player.set_filter(karaoke)
-   await player.apply_filters()
+   await player.set_filter(karaoke)
 
 SonoLink groups all filter configuration into a single :class:`sonolink.models.Filters`
 object applied with :meth:`sonolink.Player.set_filters`. The individual filter types are the
@@ -300,6 +299,12 @@ The event name mapping is:
      - :func:`on_sonolink_player_update(player, payload) <on_sonolink_player_update>`
    * - ``WebSocketClosedEvent``
      - :func:`on_sonolink_websocket_closed(player, payload) <on_sonolink_websocket_closed>`
+   * - ``TrackLoadFailedEvent``
+     - *(no direct SonoLink equivalent)*
+   * - ``IncomingWebSocketMessage``
+     - *(no direct SonoLink equivalent)*
+   * - ``PlayerErrorEvent``
+     - *(no direct SonoLink equivalent)*
    * - ``QueueEndEvent``
      - *(handled internally; configure autoplay instead — see below)*
    * - ``NodeChangedEvent``
@@ -363,8 +368,9 @@ Track history is enabled via :class:`sonolink.models.HistorySettings` and expose
 as its seed, so the two features work together.
 
 .. warning::
-   Autoplay requires history to be enabled. If :class:`sonolink.models.HistorySettings` is
-   left at its default, autoplay will have no reference track to discover from.
+   Autoplay requires history to be enabled. If history is disabled through
+   :class:`sonolink.models.HistorySettings` (``enabled=False``), autoplay will have no
+   reference track to discover from.
 
 Errors and exceptions
 ---------------------
