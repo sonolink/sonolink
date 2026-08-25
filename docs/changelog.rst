@@ -26,6 +26,8 @@ in specific versions.
   remaining for the current track, calculated as ``track.length - player.position``.
 - Added :attr:`Player.history` as a convenience alias for :attr:`Queue.history`,
   returning ``None`` when history tracking is disabled.
+- Added ``Queue.__setitem__`` to replace the track(s) at an index or slice,
+  mirroring ``list`` assignment semantics.
 
 **Fixed**
 ~~~~~~~~~
