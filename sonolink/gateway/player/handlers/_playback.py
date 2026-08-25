@@ -131,7 +131,7 @@ class PlaybackHandler(HandlerBase):
             self._player._queue.mode = QueueMode.NORMAL
 
         if clear_history:
-            self._player._queue.clear_history()
+            self._player._queue._history.clear()
 
         _log.debug(
             "Player %s: Stopped playback and reset state.", self._player.guild.id

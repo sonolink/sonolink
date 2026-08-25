@@ -50,7 +50,7 @@ class TestHistoryRecording:
         history._push(track)
         assert len(history) == 1
 
-        history._clear()
+        history.clear()
 
         assert len(history) == 0
 
@@ -66,6 +66,6 @@ class TestHistoryRecording:
 
 
 class TestHistoryIsReadOnly:
-    @pytest.mark.parametrize("name", ["add", "put", "append", "clear", "remove"])
+    @pytest.mark.parametrize("name", ["add", "put", "append", "remove"])
     def test_no_public_mutators(self, name: str) -> None:
         assert not hasattr(History(), name)

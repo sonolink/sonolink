@@ -62,6 +62,13 @@ class History(ReadableCollection):
         """
         return self._settings.enabled
 
+    def clear(self) -> None:
+        """Remove all tracks from the history.
+
+        .. versionadded:: 1.4.0
+        """
+        self._items.clear()
+
     def _push(self, track: Playable) -> None:
         if not self._settings.enabled:
             return
@@ -71,6 +78,3 @@ class History(ReadableCollection):
         new = self.__class__(settings=copy.copy(self._settings))
         new._items = deque(self._items, maxlen=self._settings.max_items)
         return new
-
-    def _clear(self) -> None:
-        self._items.clear()
