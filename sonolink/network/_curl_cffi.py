@@ -69,7 +69,7 @@ class CurlHTTPManager(BaseHTTPManager[AsyncSession[Response]]):
             await self.setup()
 
         assert self._session is not None
-        
+
         response = await self._session.request(
             method=cast("HttpMethod", method.upper()),
             url=url,
