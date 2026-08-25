@@ -29,7 +29,7 @@ body:
         - discord.py (v2.7+)
         - py-cord (v2.8+)
         - disnake (v2.12+)
-        - nextcord (3.1.1+)
+        - nextcord (3.2+)
     validations:
       required: true
   - type: dropdown
