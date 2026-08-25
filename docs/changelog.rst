@@ -14,7 +14,7 @@ in specific versions.
 ~~~~~~~~~
 
 - Added a ``no_replace`` parameter to :meth:`Player.play` that maps to
-  Lavalink's ``noReplace`` query parameter. 
+  Lavalink's ``noReplace`` query parameter.
 - Added :meth:`Queue.total_duration` to compute the total duration of all
   tracks in the queue, including the current track and AutoPlay-discovered
   tracks. AutoPlay tracks can be excluded via ``with_autoplay=False``.
@@ -26,6 +26,9 @@ in specific versions.
   remaining for the current track, calculated as ``track.length - player.position``.
 - Added :attr:`Player.history` as a convenience alias for :attr:`Queue.history`,
   returning ``None`` when history tracking is disabled.
+- Added a ``secure`` parameter to :meth:`Client.create_node` that builds an
+  ``https://``/``wss://`` URI when using ``host`` and ``port``, so TLS nodes no
+  longer require passing a full ``uri``.
 
 **Fixed**
 ~~~~~~~~~
@@ -34,9 +37,12 @@ in specific versions.
   and the next started via ``skip()``.
 - Fixed AutoPlay re-discovering and re-queueing tracks that were already
   recommended in a previous round, because only the seed reference was tracked.
-- Fixed duplicated history entries on track transitions in :meth:`Player.play`. 
+- Fixed duplicated history entries on track transitions in :meth:`Player.play`.
 - Fixed :meth:`Queue.move` placing tracks one position before the requested
   target index when moving them forward.
+- Fixed :meth:`Client.create_node` building a scheme-less URI (e.g.
+  ``host:port``) when given ``host`` and ``port``, which caused all REST
+  requests to fail client-side.
 
 **Changed**
 ~~~~~~~~~~~
@@ -46,7 +52,7 @@ in specific versions.
 
 - Removed the internal, never-read ``_ready`` attribute from the player.
 - Exposed ``SonoLinkException`` exception class to prevent docs building warnings.
-- Moved ``ruff`` and `basedpyright` into dependency-groups so CI workflows can install them 
+- Moved ``ruff`` and `basedpyright` into dependency-groups so CI workflows can install them
   individually via ``pip install --group <name>``.
 - Added a unit test suite, run via a new ``tests`` workflow on every PR.
 - Added automatic version bumping after each release, so the development version
