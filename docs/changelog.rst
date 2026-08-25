@@ -26,6 +26,8 @@ in specific versions.
   remaining for the current track, calculated as ``track.length - player.position``.
 - Added :attr:`Player.history` as a convenience alias for :attr:`Queue.history`,
   returning ``None`` when history tracking is disabled.
+- Added :meth:`History.clear` to remove all tracks from the history.
+  Previously only reachable indirectly through :meth:`Queue.clear_history`.
 - Added a ``paused`` parameter to :meth:`Player.update` for pausing or
   resuming playback.
 
@@ -43,12 +45,17 @@ in specific versions.
 **Changed**
 ~~~~~~~~~~~
 
+**Deprecated**
+~~~~~~~~~~~~~~
+
+- Deprecated :meth:`Queue.clear_history` in favor of :meth:`History.clear`.
+
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
 
 - Removed the internal, never-read ``_ready`` attribute from the player.
 - Exposed ``SonoLinkException`` exception class to prevent docs building warnings.
-- Moved ``ruff`` and `basedpyright` into dependency-groups so CI workflows can install them 
+- Moved ``ruff`` and `basedpyright` into dependency-groups so CI workflows can install them
   individually via ``pip install --group <name>``.
 - Added a unit test suite, run via a new ``tests`` workflow on every PR.
 - Added automatic version bumping after each release, so the development version

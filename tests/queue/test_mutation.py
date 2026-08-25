@@ -99,7 +99,8 @@ class TestOrdering:
         copied = queue_with_tracks.copy()
 
         copied.remove_at(0)
-        copied.clear_history()
+        assert copied.history is not None
+        copied.history.clear()
 
         assert copied.mode is QueueMode.LOOP_ALL
         assert copied.shuffle_mode is ShuffleMode.PERSISTENT
@@ -252,7 +253,7 @@ class TestState:
         assert queue_with_tracks.history is not None
         assert len(queue_with_tracks.history) == 1
 
-        queue_with_tracks.clear_history()
+        queue_with_tracks.history.clear()
 
         assert len(queue_with_tracks.history) == 0
 
