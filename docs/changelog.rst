@@ -26,6 +26,8 @@ in specific versions.
   remaining for the current track, calculated as ``track.length - player.position``.
 - Added :attr:`Player.history` as a convenience alias for :attr:`Queue.history`,
   returning ``None`` when history tracking is disabled.
+- Added a ``paused`` parameter to :meth:`Player.update` for pausing or
+  resuming playback.
 
 **Fixed**
 ~~~~~~~~~
