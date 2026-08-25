@@ -99,16 +99,16 @@ In SonoLink, this is essentially the same, but with some changes:
 Node management
 ---------------
 
-Lavaplay only allows for one node to be created per process, so its management resides only in one
-``Node`` class, which the players are bound to.
+Lavaplay keeps its node management in a single ``Node`` class, which the players are bound to,
+and offers no built-in selection between nodes.
 
 SonoLink handles all nodes internally, but still allows for node selection per player, exposing
 :meth:`sonolink.Node.create_player`, similar to Lavaplay's ``Node.create_player``.
 
 .. code-block:: python
 
-    node = sl_client.get_node(id="main")
-    player = node.create_player(...)
+   node = sl_client.get_node("main")
+   player = node.create_player(...)
 
 For most bots, the automatic node selection SonoLink offers is sufficient and you will not need to call this
 directly.
@@ -122,7 +122,7 @@ connect and update the player, either via a custom ``discord.VoiceProtocol`` sub
 .. code-block:: python
 
     # Lavaplay.py
-    player = lavalink.create_player(ctx.guild.id)
+   player = node.create_player(ctx.guild.id)
     await ctx.guild.change_voice_state(
         channel=ctx.author.voice.channel,
     )
@@ -257,17 +257,17 @@ See :doc:`/guides/filters` for the full filter reference.
 Events
 ------
 
-Lavaplay.py uses a ``@node.listener`` decorator on each ``Node`` instance to attach and handle events, passing
+Lavaplay.py uses a ``@node.listen`` decorator on each ``Node`` instance to attach and handle events, passing
 the event model or event name:
 
 .. code-block:: python
 
     # Lavaplay.py
-    @node.listener(lavaplay.TrackStartEvent)
+    @node.listen(lavaplay.TrackStartEvent)
     async def on_track_start(event: lavaplay.TrackStartEvent) -> None:
         print("New track started playing:", event.track.title)
 
-    @node.listener("TrackEndEvent")
+    @node.listen("TrackEndEvent")
     async def on_track_end(event: lavaplay.TrackEndEvent) -> None:
         print("Track finished playing:", event.track.title)
 
@@ -306,8 +306,10 @@ The event name mapping is:
       - :func:`on_sonolink_track_stuck(player, payload) <on_sonolink_track_stuck>`
     * - ``WebSocketClosedEvent``
       - :func:`on_sonolink_websocket_closed(player, payload) <on_sonolink_websocket_closed>`
+    * - ``ErrorEvent``
+      - *(no direct SonoLink equivalent)*
     * - ``PlayerUpdateEvent``
-      - :func:`on_sonolink_player_update(payload) <on_sonolink_player_update>`
+      - :func:`on_sonolink_player_update(player, payload) <on_sonolink_player_update>`
     * - *(no equivalent)*
       - :func:`on_sonolink_player_disconnect(player, payload) <on_sonolink_player_disconnect>`
 
@@ -365,8 +367,9 @@ Track history is enabled via :class:`sonolink.models.HistorySettings` and expose
 as a :class:`sonolink.History` object. Autoplay uses history as its seed, so the two features work together.
 
 .. warning::
-    Autoplay requires history to be enabled. If :class:`sonolink.models.HistorySettings` is left at its default,
-    autoplay will have no reference track to discover from.
+    Autoplay requires history to be enabled. If history is disabled through
+    :class:`sonolink.models.HistorySettings` (``enabled=False``), autoplay will have no
+    reference track to discover from.
 
 Errors and exceptions
 ---------------------
