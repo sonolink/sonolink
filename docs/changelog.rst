@@ -26,6 +26,8 @@ in specific versions.
   remaining for the current track, calculated as ``track.length - player.position``.
 - Added :attr:`Player.history` as a convenience alias for :attr:`Queue.history`,
   returning ``None`` when history tracking is disabled.
+- Added ``Queue.__setitem__`` to replace the track(s) at an index or slice,
+  mirroring ``list`` assignment semantics.
 - Added :meth:`History.clear` to remove all tracks from the history.
   Previously only reachable indirectly through :meth:`Queue.clear_history`.
 - Added a ``paused`` parameter to :meth:`Player.update` for pausing or
