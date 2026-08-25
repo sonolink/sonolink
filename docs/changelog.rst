@@ -51,6 +51,8 @@ in specific versions.
 - Added a unit test suite, run via a new ``tests`` workflow on every PR.
 - Added automatic version bumping after each release, so the development version
   and changelog are committed and pushed by the release workflow.
+- Corrected API inaccuracies in the library migration guides
+  (:doc:`/guides/migrations/index`).
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.3.0..HEAD
 
