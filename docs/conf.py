@@ -49,6 +49,11 @@ intersphinx_mapping = {
 
 nitpicky = True
 
+suppress_warnings = [
+    # Cannot resolve this with mocked ``discord`` during the build.
+    "sphinx_autodoc_typehints.forward_reference",
+]
+
 exclude_patterns = [
     "_build",
 ]
@@ -66,16 +71,19 @@ nitpick_ignore_regex = [
     ("py:class", r"BaseFilter|FrameworkLiteral"),
     ("py:class", r"sonolink\.gateway\.(event_models|client)\.[A-Z]"),
     ("py:class", r"sonolink\.utils\.snowflake\.Snowflake"),
-    # Artifacts of the typehints_formatter workaround in this file:
-    # Literal[...] annotations are rendered as plain text via a fake
-    # TypeVar, which Sphinx still attempts (and fails) to resolve as a
-    # class in some rendering paths (e.g. autodoc_class_signature="mixed",
-    # and the Client.create overloads in the private client factory).
-    ("py:class", r"sphinx_autodoc_typehints\.Literal"),
+    # Truncated Literal[...] targets emitted by some sphinx-autodoc-typehints
+    # versions when rendering Literal values natively.
+    ("py:class", r"sphinx_autodoc_typehints\.(`{0,2})Literal\b.*"),
     ("py:obj", r"typing\.Literal\['discord\.py'"),
-    # Third-party types/methods that exist in discord.py/py-cord/disnake/
-    # nextcord but aren't exposed at these paths in their published
-    # intersphinx inventory.
+    # Artifacts of mocking the libraries (autodoc_mock_imports)
+    ("py:class", r"class 'discord\.client\.Client'"),
+    ("py:class", r"Voice(Server|State)Update"),
+    # Fragments of composite annotations split at commas while Sphinx 9.1
+    # resolves signature cross-references. https://github.com/sphinx-doc/sphinx#14549
+    ("py:class", r"collections\.abc\.Mapping\[str"),
+    ("py:class", r"dict\[str"),
+    # Third-party types/methods that exist in libraries
+    # but aren't exposed at these paths in their published intersphinx inventory.
     ("py:class", r"(discord|disnake|nextcord)\.(types|raw_models)\..+"),
     ("py:class", r"discord\.voice\.VoiceProtocol\.discord\.Client"),
     ("py:meth", r"(disnake|nextcord)\.abc\.Connectable\.connect"),
