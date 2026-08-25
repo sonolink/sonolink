@@ -70,6 +70,7 @@ in specific versions.
   and changelog are committed and pushed by the release workflow.
 - Corrected API inaccuracies in the library migration guides
   (:doc:`/guides/migrations/index`).
+- Bumped the minimum ``nextcord`` version to 3.2 (adds DAVE support).
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.3.0..HEAD
 

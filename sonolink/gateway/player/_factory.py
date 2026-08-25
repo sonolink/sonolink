@@ -43,7 +43,7 @@ class PlayerFactory:
         "discord.py": {"pkg": "discord.py", "import_name": "discord", "min": "2.7"},
         "pycord": {"pkg": "py-cord", "import_name": "discord", "min": "2.8"},
         "disnake": {"pkg": "disnake", "import_name": "disnake", "min": "2.12"},
-        "nextcord": {"pkg": "nextcord", "import_name": "nextcord", "min": "3.1.1"},
+        "nextcord": {"pkg": "nextcord", "import_name": "nextcord", "min": "3.2"},
     }
 
     _available: ClassVar[dict[str, bool]] = {}
