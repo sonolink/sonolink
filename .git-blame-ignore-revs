@@ -3,3 +3,6 @@
 
 # refactor: ruff lint (#55)
 b3b659bbdbf43cb3ed4a1f90e1f5a9736537e35d
+
+# refactor(issue_templates): apply 4-space formatting
+14dbda8720fd997ad0c8aee478eaec5455dc793c
