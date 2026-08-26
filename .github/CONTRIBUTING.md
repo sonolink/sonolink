@@ -49,14 +49,9 @@ before opening an issue or pull request. All contributions are held to both.
 
 ## Usage of AI
 
-AI tools may be used in preparing contributions, but every contributor is
-fully responsible for the work they submit and must be able to explain and
-justify it without relying on an AI tool to do so. Issue descriptions, pull
-request descriptions, and all communication with maintainers must be written
-by the contributor in their own words. See the full
-[AI Contribution Policy](https://github.com/sonolink/sonolink/blob/main/.github/AI_POLICY.md)
-for details, including provisions for non-native English speakers and rules
-around quoting AI-generated output.
+AI tools may be used when preparing contributions, but contributors are fully responsible 
+for the work they submit and must be able to explain and justify it themselves. All use of 
+AI must comply with the [AI Contribution Policy](https://github.com/sonolink/arbiter/blob/main/.github/AI_POLICY.md).
 
 ## Code review
 
