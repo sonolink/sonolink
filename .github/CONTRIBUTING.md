@@ -51,7 +51,7 @@ before opening an issue or pull request. All contributions are held to both.
 
 AI tools may be used when preparing contributions, but contributors are fully responsible 
 for the work they submit and must be able to explain and justify it themselves. All use of 
-AI must comply with the [AI Contribution Policy](https://github.com/sonolink/arbiter/blob/main/.github/AI_POLICY.md).
+AI must comply with the [AI Contribution Policy](https://github.com/sonolink/sonolink/blob/main/.github/AI_POLICY.md).
 
 ## Code review
 
