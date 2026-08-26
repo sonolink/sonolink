@@ -10,7 +10,7 @@ const {
 const INVALID_LABEL = "status: invalid";
 const REQUIRED_HEADINGS = ["## Summary", "## Type of change", "## Checklist"];
 const TEMPLATE_URL =
-    "https://github.com/SonoLink/sonolink/blob/main/.github/pull_request_template.md";
+    "https://github.com/sonolink/sonolink/blob/main/.github/pull_request_template.md";
 
 // Hidden in the comment body so later runs can find and edit it instead of
 // posting a new one every time. Never shown to the user (HTML comments don't render)
