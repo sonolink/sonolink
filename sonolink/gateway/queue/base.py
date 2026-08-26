@@ -91,18 +91,49 @@ class MutableQueueBase(ReadableCollection):
 
     __slots__ = ()
 
-    def _materialize_tracks(
+    @overload
+    def __setitem__(self, index: int, value: Playable) -> None: ...
+
+    @overload
+    def __setitem__(self, index: slice, value: Iterable[Playable]) -> None: ...
+
+    def __setitem__(
         self,
-        tracks: Iterable[Playable] | Playable | Playlist,
-        *,
-        atomic: bool,
-    ) -> list[Playable]:
-        items = [tracks] if isinstance(tracks, Playable) else list(tracks)
+        index: int | slice,
+        value: Playable | Iterable[Playable],
+    ) -> None:
+        """Replace the track(s) at ``index`` with ``value``.
 
-        if not atomic:
-            return [t for t in items if isinstance(t, Playable)]
+        Mirrors ``list`` assignment semantics for both single indices and
+        slices. All values are validated before any change is applied, so a
+        failed assignment leaves the queue untouched.
 
-        return [self._as_playable(item) for item in items]
+        .. versionadded:: 1.4.0
+
+        Parameters
+        ----------
+        index: :class:`int` | :class:`slice`
+            The position(s) to replace.
+        value: :class:`sonolink.models.Playable` | Iterable[:class:`sonolink.models.Playable`]
+            The track(s) to store at ``index``. A single track is expected for
+            an integer index; an iterable of tracks is expected for a slice.
+
+        Raises
+        ------
+        :exc:`TypeError`
+            When ``value`` is not an (iterable of) :class:`~sonolink.models.Playable`.
+        :exc:`IndexError`
+            When an integer ``index`` is out of range.
+        """
+        items = list(self._items)
+        if isinstance(index, slice):
+            items[index] = [
+                self._as_playable(item) for item in cast("Iterable[object]", value)
+            ]
+        else:
+            items[index] = self._as_playable(value)
+
+        self._items = deque(items)
 
     def put(
         self,
@@ -273,46 +304,15 @@ class MutableQueueBase(ReadableCollection):
         """Remove all items from the queue."""
         self._items.clear()
 
-    @overload
-    def __setitem__(self, index: int, value: Playable) -> None: ...
-
-    @overload
-    def __setitem__(self, index: slice, value: Iterable[Playable]) -> None: ...
-
-    def __setitem__(
+    def _materialize_tracks(
         self,
-        index: int | slice,
-        value: Playable | Iterable[Playable],
-    ) -> None:
-        """Replace the track(s) at ``index`` with ``value``.
+        tracks: Iterable[Playable] | Playable | Playlist,
+        *,
+        atomic: bool,
+    ) -> list[Playable]:
+        items = [tracks] if isinstance(tracks, Playable) else list(tracks)
 
-        Mirrors ``list`` assignment semantics for both single indices and
-        slices. All values are validated before any change is applied, so a
-        failed assignment leaves the queue untouched.
+        if not atomic:
+            return [t for t in items if isinstance(t, Playable)]
 
-        .. versionadded:: 1.4.0
-
-        Parameters
-        ----------
-        index: :class:`int` | :class:`slice`
-            The position(s) to replace.
-        value: :class:`sonolink.models.Playable` | Iterable[:class:`sonolink.models.Playable`]
-            The track(s) to store at ``index``. A single track is expected for
-            an integer index; an iterable of tracks is expected for a slice.
-
-        Raises
-        ------
-        :exc:`TypeError`
-            When ``value`` is not an (iterable of) :class:`~sonolink.models.Playable`.
-        :exc:`IndexError`
-            When an integer ``index`` is out of range.
-        """
-        items = list(self._items)
-        if isinstance(index, slice):
-            items[index] = [
-                self._as_playable(item) for item in cast("Iterable[object]", value)
-            ]
-        else:
-            items[index] = self._as_playable(value)
-
-        self._items = deque(items)
+        return [self._as_playable(item) for item in items]
