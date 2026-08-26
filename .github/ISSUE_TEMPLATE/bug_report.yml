@@ -2,74 +2,74 @@ name: Bug Report
 description: Alert us to broken logic or unexpected library behavior
 labels: ["bug: unconfirmed"]
 body:
-  - type: textarea
-    id: summary
-    attributes:
-      label: Problem Summary
-      description: A clear and concise description of what the bug is.
-      placeholder: "e.g., The timescale filter throws a ValueError when speed is set to 2.0"
-    validations:
-      required: true
-  - type: textarea
-    id: reproduction
-    attributes:
-      label: Minimal Reproducible Example
-      description: Provide a small, self-contained code snippet that demonstrates the issue.
-      render: python
-      placeholder: |
-        import sonolink
-        # Your code here
-    validations:
-      required: true
-  - type: dropdown
-    id: discord_library
-    attributes:
-      label: Discord library
-      options:
-        - discord.py (v2.7+)
-        - py-cord (v2.8+)
-        - disnake (v2.12+)
-        - nextcord (3.2+)
-    validations:
-      required: true
-  - type: dropdown
-    id: os
-    attributes:
-      label: Operating System
-      options:
-        - Linux
-        - Windows
-        - macOS
-    validations:
-      required: true
-  - type: dropdown
-    id: python_version
-    attributes:
-      label: Python Version
-      description: >
-        Select the Python version you are using. 
-        **Note:** Any version not listed here is not officially supported by SonoLink.
-      options:
-        - "3.12"
-        - "3.13"
-        - "3.14"
-    validations:
-      required: true
-  - type: input
-    id: sonolink_version
-    attributes:
-      label: SonoLink Version
-      placeholder: "e.g., v1.0.0"
-    validations:
-      required: true
-  - type: checkboxes
-    id: checklist
-    attributes:
-      label: Preliminary Checks
-      options:
-        - label: I have verified I am on the latest version of SonoLink.
+    - type: textarea
+      id: summary
+      attributes:
+          label: Problem Summary
+          description: A clear and concise description of what the bug is.
+          placeholder: "e.g., The timescale filter throws a ValueError when speed is set to 2.0"
+      validations:
           required: true
-        - label: I have checked existing issues to ensure this isn't a duplicate.
+    - type: textarea
+      id: reproduction
+      attributes:
+          label: Minimal Reproducible Example
+          description: Provide a small, self-contained code snippet that demonstrates the issue.
+          render: python
+          placeholder: |
+              import sonolink
+              # Your code here
+      validations:
           required: true
-        - label: This behavior is not an "Expected Behavior" defined in the documentation.
+    - type: dropdown
+      id: discord_library
+      attributes:
+          label: Discord library
+          options:
+              - discord.py (v2.7+)
+              - py-cord (v2.8+)
+              - disnake (v2.12+)
+              - nextcord (3.2+)
+      validations:
           required: true
+    - type: dropdown
+      id: os
+      attributes:
+          label: Operating System
+          options:
+              - Linux
+              - Windows
+              - macOS
+      validations:
+          required: true
+    - type: dropdown
+      id: python_version
+      attributes:
+          label: Python Version
+          description: >
+              Select the Python version you are using.
+              **Note:** Any version not listed here is not officially supported by SonoLink.
+          options:
+              - "3.12"
+              - "3.13"
+              - "3.14"
+      validations:
+          required: true
+    - type: input
+      id: sonolink_version
+      attributes:
+          label: SonoLink Version
+          placeholder: "e.g., v1.0.0"
+      validations:
+          required: true
+    - type: checkboxes
+      id: checklist
+      attributes:
+          label: Preliminary Checks
+          options:
+              - label: I have verified I am on the latest version of SonoLink.
+                required: true
+              - label: I have checked existing issues to ensure this isn't a duplicate.
+                required: true
+              - label: This behavior is not an "Expected Behavior" defined in the documentation.
+                required: true

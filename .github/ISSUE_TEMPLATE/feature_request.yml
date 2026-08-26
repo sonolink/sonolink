@@ -2,64 +2,64 @@ name: Feature Proposal
 description: Propose a new capability or API enhancement for the library.
 labels: ["idea: new feature"]
 body:
-  - type: textarea
-    id: summary
-    attributes:
-      label: Proposal Summary
-      description: A concise title for this feature proposal.
-      placeholder: "e.g., Support for dynamic filter chaining"
-    validations:
-      required: true
-  - type: dropdown
-    id: scope
-    attributes:
-      label: Functional Scope
-      description: Which architectural component does this proposal target?
-      multiple: false
-      options:
-        - Core Library Logic
-        - Audio Processing & Filters
-        - Node & Connection Management
-        - Documentation & Typings
-        - Other / Miscellaneous
-    validations:
-      required: true
-  - type: textarea
-    id: problem_statement
-    attributes:
-      label: Problem Statement
-      description: What specific limitation or architectural friction does this feature address?
-      placeholder: "Currently, the library requires manual payload construction for..."
-    validations:
-      required: true
-  - type: textarea
-    id: proposed_implementation
-    attributes:
-      label: Proposed Implementation
-      description: Describe your ideal solution. Including a code snippet helps us understand the intended API.
-      render: python
-      placeholder: |
-        # Proposed API usage
-        await player.apply_complex_filter(...)
-    validations:
-      required: true
-  - type: textarea
-    id: current_workaround
-    attributes:
-      label: Current Workaround
-      description: How are you currently achieving this functionality, if at all?
-    validations:
-      required: false
-  - type: checkboxes
-    id: checklist
-    attributes:
-      label: Submission Requirements
-      options:
-        - label: I have verified this feature does not already exist in the latest version.
+    - type: textarea
+      id: summary
+      attributes:
+          label: Proposal Summary
+          description: A concise title for this feature proposal.
+          placeholder: "e.g., Support for dynamic filter chaining"
+      validations:
           required: true
-        - label: I have searched existing issues and discussions for similar proposals.
+    - type: dropdown
+      id: scope
+      attributes:
+          label: Functional Scope
+          description: Which architectural component does this proposal target?
+          multiple: false
+          options:
+              - Core Library Logic
+              - Audio Processing & Filters
+              - Node & Connection Management
+              - Documentation & Typings
+              - Other / Miscellaneous
+      validations:
           required: true
-        - label: >
-            I understand that if this proposal falls outside the library's scope, 
-            it may be closed as "status: wontfix".
+    - type: textarea
+      id: problem_statement
+      attributes:
+          label: Problem Statement
+          description: What specific limitation or architectural friction does this feature address?
+          placeholder: "Currently, the library requires manual payload construction for..."
+      validations:
           required: true
+    - type: textarea
+      id: proposed_implementation
+      attributes:
+          label: Proposed Implementation
+          description: Describe your ideal solution. Including a code snippet helps us understand the intended API.
+          render: python
+          placeholder: |
+              # Proposed API usage
+              await player.apply_complex_filter(...)
+      validations:
+          required: true
+    - type: textarea
+      id: current_workaround
+      attributes:
+          label: Current Workaround
+          description: How are you currently achieving this functionality, if at all?
+      validations:
+          required: false
+    - type: checkboxes
+      id: checklist
+      attributes:
+          label: Submission Requirements
+          options:
+              - label: I have verified this feature does not already exist in the latest version.
+                required: true
+              - label: I have searched existing issues and discussions for similar proposals.
+                required: true
+              - label: >
+                    I understand that if this proposal falls outside the library's scope,
+                    it may be closed as "status: wontfix".
+                required: true
