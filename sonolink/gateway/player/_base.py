@@ -429,8 +429,7 @@ class BasePlayer(abc.ABC):
         :class:`int`
             Remaining time in milliseconds.
         """
-        assert self.current is not None
-        if self.is_playing and not self.current.is_stream:
+        if self.is_playing and self.current and not self.current.is_stream:
             return self.current.length - self.position
         return 0
 
