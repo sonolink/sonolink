@@ -71,6 +71,8 @@ in specific versions.
 - Corrected API inaccuracies in the library migration guides
   (:doc:`/guides/migrations/index`).
 - Bumped the minimum ``nextcord`` version to 3.2 (adds DAVE support).
+- Added a `CONTRIBUTING <https://github.com/sonolink/sonolink/blob/main/.github/CONTRIBUTING.md>`_
+  guide with instructions for opening contributions.
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.3.0..HEAD
 
