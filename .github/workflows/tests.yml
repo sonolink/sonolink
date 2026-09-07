@@ -2,7 +2,7 @@ name: Test Suite
 on:
     workflow_dispatch:
     pull_request:
-        types: [opened, reopened, synchronize]
+        types: [ opened, reopened, synchronize ]
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
     cancel-in-progress: true
@@ -17,22 +17,22 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                python-version: ["3.12", "3.13", "3.14"]
+                python-version: [ "3.12", "3.13", "3.14" ]
         steps:
-            - name: Checkout
-              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-              with:
-                  persist-credentials: false
+          - name: Checkout
+            uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+            with:
+                persist-credentials: false
 
-            - name: Set up Python
-              uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
-              with:
-                  python-version: ${{ matrix.python-version }}
-                  cache: "pip"
-                  cache-dependency-path: pyproject.toml
+          - name: Set up Python
+            uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+            with:
+                python-version: ${{ matrix.python-version }}
+                cache: "pip"
+                cache-dependency-path: pyproject.toml
 
-            - name: Install project and test deps
-              run: pip install -U -e . --group tests
+          - name: Install project and test deps
+            run: pip install -U -e . --group tests
 
-            - name: Run pytest
-              run: pytest
+          - name: Run pytest
+            run: pytest

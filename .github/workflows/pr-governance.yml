@@ -3,7 +3,7 @@ name: Pull Request Governance
 on:
     workflow_dispatch:
     pull_request_target:
-        types: [opened, synchronize, reopened, edited, ready_for_review]
+        types: [ opened, synchronize, reopened, edited, ready_for_review ]
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
     cancel-in-progress: true
@@ -16,10 +16,10 @@ jobs:
             pull-requests: read
         if: format('{0}', github.event.pull_request.user.id) != vars.RENOVATE_BOT_ID
         steps:
-            - name: Check Semantic Title
-              uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          - name: Check Semantic Title
+            uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
+            env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     template-validation:
         name: Validate PR Template
@@ -30,38 +30,38 @@ jobs:
             issues: write
         if: format('{0}', github.event.pull_request.user.id) != vars.RENOVATE_BOT_ID
         steps:
-            - name: Checkout base branch
-              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-              with:
-                  persist-credentials: false
-            - name: Enforce Template
-              uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
-              with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
-                  script: |
-                      const path = require('path');
-                      const script = require(path.resolve('.github/scripts/template-validator.js'));
-                      await script({ github, context, core });
+          - name: Checkout base branch
+            uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+            with:
+                persist-credentials: false
+          - name: Enforce Template
+            uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
+            with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                script: |
+                    const path = require('path');
+                    const script = require(path.resolve('.github/scripts/template-validator.js'));
+                    await script({ github, context, core });
 
     apply-labels:
         name: Apply labels
         runs-on: ubuntu-latest
-        needs: [template-validation]
+        needs: [ template-validation ]
         timeout-minutes: 15
         permissions:
             pull-requests: write
             issues: write
         if: format('{0}', github.event.pull_request.user.id) != vars.RENOVATE_BOT_ID
         steps:
-            - name: Checkout base branch
-              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-              with:
-                  persist-credentials: false
-            - name: Auto-apply tag
-              uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
-              with:
-                  github-token: ${{ secrets.GITHUB_TOKEN }}
-                  script: |
-                      const path = require('path');
-                      const script = require(path.resolve('.github/scripts/auto-label.js'));
-                      await script({ github, context, core });
+          - name: Checkout base branch
+            uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+            with:
+                persist-credentials: false
+          - name: Auto-apply tag
+            uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
+            with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                script: |
+                    const path = require('path');
+                    const script = require(path.resolve('.github/scripts/auto-label.js'));
+                    await script({ github, context, core });
