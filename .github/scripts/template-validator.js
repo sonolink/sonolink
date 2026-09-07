@@ -72,7 +72,7 @@ function buildProblemComment(problems) {
         "This PR does not follow the template provided by the repository.",
         "",
         "Please make sure you use and fill our pull request template with all required sections provided.",
-        `(You can visit [.github/pull_request_template.md](${TEMPLATE_URL}) too see the template.)`,
+        `(You can visit [.github/pull_request_template.md](${TEMPLATE_URL}) to see the template.)`,
         "",
         "The problems detected were:",
         "",
