@@ -34,7 +34,7 @@ function findMissingHeadings(content) {
 /** "Type of change" only makes sense if at least one box under it is checked */
 function findUncheckedType(content) {
     const section = extractSection(content, "## Type of change");
-    if (section !== null && !/^-\s*\[[xX]\]/m.test(section)) {
+    if (section !== null && !/^[-*]\s*\[[xX]\]/m.test(section)) {
         return 'No checkbox selected under "## Type of change".';
     }
     return null;
