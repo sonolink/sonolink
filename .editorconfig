@@ -18,6 +18,9 @@ indent_size = 2
 [*.rst]
 indent_size = 3
 
+[{*.yml,*.yaml}]
+indent_size = 2
+
 [{Makefile,*.bat}]
 indent_style = tab
 indent_size = tab
