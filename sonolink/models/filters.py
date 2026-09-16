@@ -787,4 +787,4 @@ class Filters(BaseModel[filters.PlayerFilters]):
                 f"Can only combine filters of the same type, got {type(other).__name__}"
             )
 
-        return copy.deepcopy(self).merge(other)
+        return copy.deepcopy(self).merge(copy.deepcopy(other))
