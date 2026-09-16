@@ -74,7 +74,8 @@ class HTTPException(SonoLinkException):
     def timestamp(self) -> datetime.datetime:
         """Return the timestamp on which this exception was created."""
         return datetime.datetime.fromtimestamp(
-            self._underlying.timestamp, tz=datetime.timezone.utc
+            self._underlying.timestamp / 1000,
+            tz=datetime.timezone.utc,
         )
 
     @property
