@@ -39,6 +39,8 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed :attr:`Player.paused` being cleared by :attr:`~sonolink.gateway.TrackStartEvent`
+  even when a track was started / replaced with ``paused=True``.
 - Fixed :attr:`~sonolink.gateway.TrackStartEvent.original` being ``None`` after a track ended
   and the next started via ``skip()``.
 - Fixed AutoPlay re-discovering and re-queueing tracks that were already
