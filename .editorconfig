@@ -12,7 +12,7 @@ trim_trailing_whitespace = true
 [*.py]
 max_line_length = 125
 
-[*.html]
+[*.{html,css,js}]
 indent_size = 2
 
 [*.rst]

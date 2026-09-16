@@ -1,72 +1,72 @@
 const {
-    buildTarget,
-    getPrBody,
-    extractSection,
-    escapeRegExp,
-    removeLabelSafe,
+  buildTarget,
+  getPrBody,
+  extractSection,
+  escapeRegExp,
+  removeLabelSafe,
 } = require("./utils.js");
 
 // Checkbox text in the template -> label to apply when it's checked
 const TAGS = {
-    "Bug fix": "type: bugfix",
-    "New feature": "idea: new feature",
-    "Breaking change": "status: breaking change",
-    "Refactor": "type: refactor",
-    "CI / dependency update": "area: dependencies",
-    "Documentation update": "type: documentation",
+  "Bug fix": "type: bugfix",
+  "New feature": "idea: new feature",
+  "Breaking change": "status: breaking change",
+  "Refactor": "type: refactor",
+  "CI / dependency update": "area: dependencies",
+  "Documentation update": "type: documentation",
 };
 
 const AUTO_LABELS = new Set(Object.values(TAGS));
 
 /** Returns the list of labels implied by checked boxes in the section */
 function labelsFromSection(section) {
-    return Object.entries(TAGS)
-        .filter(([text]) => {
-            const regex = new RegExp(
-                `^-\\s*\\[[xX]\\]\\s*${escapeRegExp(text)}`,
-                "im",
-            );
-            return regex.test(section);
-        })
-        .map(([, label]) => label);
+  return Object.entries(TAGS)
+    .filter(([text]) => {
+      const regex = new RegExp(
+        `^-\\s*\\[[xX]\\]\\s*${escapeRegExp(text)}`,
+        "im",
+      );
+      return regex.test(section);
+    })
+    .map(([, label]) => label);
 }
 
 /** Removes any auto-label that's no longer implied by the checked boxes */
 async function removeStaleLabels(
-    github,
-    target,
-    currentLabels,
-    labelsToApply,
-    core,
+  github,
+  target,
+  currentLabels,
+  labelsToApply,
+  core,
 ) {
-    const stale = currentLabels.filter(
-        (name) => AUTO_LABELS.has(name) && !labelsToApply.includes(name),
-    );
-    await Promise.all(
-        stale.map((labelName) => {
-            core.info(`Removing label: ${labelName}`);
-            return removeLabelSafe(github, target, labelName, core, {
-                severity: "error",
-            });
-        }),
-    );
+  const stale = currentLabels.filter(
+    (name) => AUTO_LABELS.has(name) && !labelsToApply.includes(name),
+  );
+  await Promise.all(
+    stale.map((labelName) => {
+      core.info(`Removing label: ${labelName}`);
+      return removeLabelSafe(github, target, labelName, core, {
+        severity: "error",
+      });
+    }),
+  );
 }
 
 /** Adds whichever implied labels aren't already on the PR */
 async function addNewLabels(
-    github,
-    target,
-    currentLabels,
-    labelsToApply,
-    core,
+  github,
+  target,
+  currentLabels,
+  labelsToApply,
+  core,
 ) {
-    const toAdd = labelsToApply.filter((l) => !currentLabels.includes(l));
-    if (toAdd.length === 0) {
-        core.info("No new labels to add.");
-        return;
-    }
-    core.info(`Adding labels: ${toAdd.join(", ")}`);
-    await github.rest.issues.addLabels({ ...target, labels: toAdd });
+  const toAdd = labelsToApply.filter((l) => !currentLabels.includes(l));
+  if (toAdd.length === 0) {
+    core.info("No new labels to add.");
+    return;
+  }
+  core.info(`Adding labels: ${toAdd.join(", ")}`);
+  await github.rest.issues.addLabels({ ...target, labels: toAdd });
 }
 
 module.exports = async ({ github, context, core }) => {

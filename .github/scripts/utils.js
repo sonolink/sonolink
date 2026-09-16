@@ -2,37 +2,37 @@ const fs = require("fs");
 
 // Reads a text file, normalizing CRLF to LF
 function readFile(path) {
-    const content = fs.readFileSync(path, "utf8");
-    const eol = content.includes("\r\n") ? "\r\n" : "\n";
-    return { content: content.replace(/\r\n/g, "\n"), eol };
+  const content = fs.readFileSync(path, "utf8");
+  const eol = content.includes("\r\n") ? "\r\n" : "\n";
+  return { content: content.replace(/\r\n/g, "\n"), eol };
 }
 
 // Writes a text file, restoring the file's original EOL style if it wasn't LF
 function writeFile(path, content, eol) {
-    fs.writeFileSync(
-        path,
-        eol === "\n" ? content : content.replace(/\n/g, eol),
-    );
+  fs.writeFileSync(
+    path,
+    eol === "\n" ? content : content.replace(/\n/g, eol),
+  );
 }
 
 // Escapes regex special characters so a plain string can be dropped into a `new RegExp(...)`
 function escapeRegExp(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 // Shape that github.rest.issues.* calls expect (owner/repo/issue_number)
 function buildTarget(context, prNumber) {
-    return {
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        issue_number: prNumber,
-    };
+  return {
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    issue_number: prNumber,
+  };
 }
 
 /** Returns the trimmed PR body, or null if it's empty */
 function getPrBody(pr) {
-    const body = (pr.body || "").trim();
-    return body.length > 0 ? body : null;
+  const body = (pr.body || "").trim();
+  return body.length > 0 ? body : null;
 }
 
 /**
@@ -43,13 +43,13 @@ function getPrBody(pr) {
  * about line endings (PR bodies can go either way)
  */
 function extractSection(content, heading) {
-    const normalized = content.replace(/\r\n/g, "\n");
-    const regex = new RegExp(
-        `^${escapeRegExp(heading)}([\\s\\S]*?)(?=^## |$(?![\\s\\S]))`,
-        "im",
-    );
-    const match = normalized.match(regex);
-    return match ? match[1] : null;
+  const normalized = content.replace(/\r\n/g, "\n");
+  const regex = new RegExp(
+    `^${escapeRegExp(heading)}([\\s\\S]*?)(?=^## |$(?![\\s\\S]))`,
+    "im",
+  );
+  const match = normalized.match(regex);
+  return match ? match[1] : null;
 }
 
 /**
@@ -57,37 +57,37 @@ function extractSection(content, heading) {
  * (an html comment, invisible when rendered) embedded in its body
  */
 async function findMarkedComment(github, target, marker) {
-    const comments = await github.paginate(
-        github.rest.issues.listComments,
-        target,
-    );
-    return comments.find((c) => c.body.includes(marker)) ?? null;
+  const comments = await github.paginate(
+    github.rest.issues.listComments,
+    target,
+  );
+  return comments.find((c) => c.body.includes(marker)) ?? null;
 }
 
 /** Removes a label, treating "label not present" (404) as success rather than an error */
 async function removeLabelSafe(
-    github,
-    target,
-    labelName,
-    core,
-    { severity = "warning" } = {},
+  github,
+  target,
+  labelName,
+  core,
+  { severity = "warning" } = {},
 ) {
-    try {
-        await github.rest.issues.removeLabel({ ...target, name: labelName });
-    } catch (err) {
-        if (err.status !== 404) {
-            core[severity](`Failed to remove ${labelName}: ${err.message}`);
-        }
+  try {
+    await github.rest.issues.removeLabel({ ...target, name: labelName });
+  } catch (err) {
+    if (err.status !== 404) {
+      core[severity](`Failed to remove ${labelName}: ${err.message}`);
     }
+  }
 }
 
 module.exports = {
-    readFile,
-    writeFile,
-    escapeRegExp,
-    buildTarget,
-    getPrBody,
-    extractSection,
-    findMarkedComment,
-    removeLabelSafe,
+  readFile,
+  writeFile,
+  escapeRegExp,
+  buildTarget,
+  getPrBody,
+  extractSection,
+  findMarkedComment,
+  removeLabelSafe,
 };
