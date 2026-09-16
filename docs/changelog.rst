@@ -39,6 +39,7 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed :meth:`RESTClient.version` requesting ``/v4/version`` instead of ``/version``.
 - Fixed :attr:`~sonolink.gateway.TrackStartEvent.original` being ``None`` after a track ended
   and the next started via ``skip()``.
 - Fixed AutoPlay re-discovering and re-queueing tracks that were already
