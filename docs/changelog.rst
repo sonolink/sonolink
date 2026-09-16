@@ -40,6 +40,14 @@ in specific versions.
 ~~~~~~~~~
 
 - Fixed :attr:`sonolink.Playable.playlist` being ``None`` on tracks loaded from playlists
+- Fixed :attr:`~sonolink.HTTPException.timestamp` creating Lavalink's millisecond
+  error timestamps as seconds, which raised ``OSError``/``OverflowError`` when accessed.
+- Fixed :meth:`RESTClient.version` requesting ``/v4/version`` instead of ``/version``.
+- Fixed :attr:`Player.paused` being cleared by :attr:`~sonolink.gateway.TrackStartEvent`
+  even when a track was started / replaced with ``paused=True``.
+- Fixed :meth:`Player.play` with `no_replace=True` corrupting state when track gets rejected.
+- Fix pause/resume corrupting estimated playback position. :meth:`Player.pause` now saves 
+  the current interpolated position before freezing, preventing stale values on resume.
 - Fixed :attr:`~sonolink.gateway.TrackStartEvent.original` being ``None`` after a track ended
   and the next started via ``skip()``.
 - Fixed AutoPlay re-discovering and re-queueing tracks that were already

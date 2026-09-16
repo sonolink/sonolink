@@ -99,7 +99,11 @@ class RESTClient(
         return ws
 
     def _build_full_url(self, url: str) -> str:
-        return self._base_url + "/v4" + url if url.startswith("/") else url
+        if not url.startswith("/"):
+            return url
+        if url == "/version":
+            return self._base_url + url
+        return self._base_url + "/v4" + url
 
     def _build_ws_url(self, url: str) -> str:
         is_secure = self._base_url.startswith("https://")
