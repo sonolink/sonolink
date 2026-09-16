@@ -46,7 +46,7 @@ if TYPE_CHECKING:
 
 
 class CurlHTTPManager(BaseHTTPManager[AsyncSession[Response]]):
-    """Curl-CCFI implementation of the HTTP Manager."""
+    """Curl-CFFI implementation of the HTTP Manager."""
 
     def __init__(self, *, session: AsyncSession[Response] | None = None) -> None:
         self._session: AsyncSession[Response] | None = session

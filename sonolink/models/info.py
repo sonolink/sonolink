@@ -140,7 +140,7 @@ class ServerInfo(BaseModel[ServerInfoPayload]):
 
     @cached_property("_cs_build_time")
     def build_time(self) -> datetime.datetime:
-        """Return a :class:`datetime.datetime` object object representing the timestamp
+        """Return a :class:`datetime.datetime` object representing the timestamp
         on which the Lavalink jar was built.
         """
         return datetime.datetime.fromtimestamp(

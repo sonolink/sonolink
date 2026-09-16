@@ -780,7 +780,7 @@ class Filters(BaseModel[filters.PlayerFilters]):
         Returns
         -------
         :class:`Filters`
-            This filter instance after combining.
+            A new filter instance after combining.
         """
         if not isinstance(other, type(self)):
             raise TypeError(
