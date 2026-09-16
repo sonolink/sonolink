@@ -150,6 +150,11 @@ class PlaybackHandler(HandlerBase):
             data=data,
         )
 
+        if value and self._player._last_update != 0:
+            delta = int((time.monotonic() - self._player._last_update) * 1000)
+            self._player._last_position += delta
+            self._player._last_update = time.monotonic()
+        
         self._player._paused = value
         _log.debug("Player %s: Set paused state to %s", self._player.guild.id, value)
 
