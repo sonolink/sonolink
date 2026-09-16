@@ -78,7 +78,7 @@ class PlaybackHandler(HandlerBase):
         self._player._original_track = track
 
         try:
-            await node._manager.update_player(
+            response = await node._manager.update_player(
                 session_id=node._resume_session,
                 guild_id=str(self._player.guild.id),
                 data=data,
@@ -87,6 +87,12 @@ class PlaybackHandler(HandlerBase):
         except Exception as exc:
             self._player._original_track = None
             raise exc from None
+
+        if no_replace and (
+            response.track is None or response.track.encoded != track.encoded
+        ):
+            self._player._original_track = None
+            return track
 
         self._player._volume = volume
         self._player._paused = paused
@@ -149,6 +155,11 @@ class PlaybackHandler(HandlerBase):
             guild_id=str(self._player.guild.id),
             data=data,
         )
+
+        if value and self._player._last_update != 0:
+            delta = int((time.monotonic() - self._player._last_update) * 1000)
+            self._player._last_position += delta
+            self._player._last_update = time.monotonic()
 
         self._player._paused = value
         _log.debug("Player %s: Set paused state to %s", self._player.guild.id, value)

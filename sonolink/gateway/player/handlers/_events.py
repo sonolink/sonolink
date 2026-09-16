@@ -86,7 +86,6 @@ class EventsHandler(HandlerBase):
             case "TrackStartEvent":
                 payload = msgspec.convert(data, TrackStartEventPayload)
 
-                self._player._paused = False
                 self._player._node._client._dispatch(
                     "track_start",
                     self._player,
