@@ -7,6 +7,29 @@ Changelog
 This page keeps a detailed human friendly rendering of what's new and changed
 in specific versions.
 
+`Unreleased`_
+-------------
+
+**Added**
+~~~~~~~~~
+
+**Changed**
+~~~~~~~~~~~
+
+**Fixed**
+~~~~~~~~~
+
+**Removed**
+~~~~~~~~~~~
+
+**Deprecated**
+~~~~~~~~~~~~~~
+
+**Miscellaneous**
+~~~~~~~~~~~~~~~~~
+
+.. _unreleased: https://github.com/sonolink/sonolink/compare/v1.4.0..HEAD
+
 .. _vp1p4p0:
 
 v1.4.0 - 2026-09-16
