@@ -532,8 +532,8 @@ class BasePlayer(abc.ABC):
             The position in milliseconds at which to stop playback.
             If ``None``, the track plays to completion. Defaults to ``None``.
         volume : :class:`int` | None
-            Override the player volume for this track only. If ``None``,
-            the current player volume is used. Defaults to ``None``.
+            Set the player volume for playback. If ``None``, the current
+            player volume is used. Defaults to ``None``.
         paused : :class:`bool` | None
             If ``True``, the track begins in a paused state. If ``None``,
             the player's current pause state is preserved. Defaults to ``None``.
@@ -745,7 +745,7 @@ class BasePlayer(abc.ABC):
         seek : :class:`bool`
             If ``True``, the player seeks to the current position immediately
             after applying filters. This forces Lavalink to process the audio
-            through the new filter chain without a audible delay.
+            through the new filter chain without an audible delay.
             Defaults to ``False``.
 
         Raises

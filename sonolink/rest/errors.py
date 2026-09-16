@@ -38,7 +38,7 @@ __all__ = (
 
 
 class ErrorResponseType(msgspec.Struct, kw_only=True):
-    """Represents the error response on a HTTP request."""
+    """Represents the error response on an HTTP request."""
 
     timestamp: int
     status: int
@@ -57,7 +57,7 @@ class ErrorResponseType(msgspec.Struct, kw_only=True):
 
 
 class HTTPException(SonoLinkException):
-    """An error response received by a HTTP request."""
+    """An error response received by an HTTP request."""
 
     __slots__ = (
         "_cs_timestamp",
