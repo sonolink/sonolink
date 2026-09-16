@@ -39,6 +39,8 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed :meth:`Filters.combine` mutating the second operand. ``other`` is now
+  deep-copied before merging, so neither input is aliased or reordered.
 - Fixed :attr:`sonolink.Playable.playlist` being ``None`` on tracks loaded from playlists
 - Fixed :attr:`~sonolink.HTTPException.timestamp` creating Lavalink's millisecond
   error timestamps as seconds, which raised ``OSError``/``OverflowError`` when accessed.
