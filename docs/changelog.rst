@@ -39,6 +39,8 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed :attr:`Player.paused` being cleared by :attr:`~sonolink.gateway.TrackStartEvent`
+  even when a track was started / replaced with ``paused=True``.
 - Fixed :meth:`Player.play` with `no_replace=True` corrupting state when track gets rejected.
 - Fix pause/resume corrupting estimated playback position. :meth:`Player.pause` now saves 
   the current interpolated position before freezing, preventing stale values on resume.
