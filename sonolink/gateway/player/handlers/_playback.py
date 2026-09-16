@@ -78,7 +78,7 @@ class PlaybackHandler(HandlerBase):
         self._player._original_track = track
 
         try:
-            await node._manager.update_player(
+            response = await node._manager.update_player(
                 session_id=node._resume_session,
                 guild_id=str(self._player.guild.id),
                 data=data,
@@ -87,6 +87,12 @@ class PlaybackHandler(HandlerBase):
         except Exception as exc:
             self._player._original_track = None
             raise exc from None
+
+        if no_replace and (
+            response.track is None or response.track.encoded != track.encoded
+        ):
+            self._player._original_track = None
+            return track
 
         self._player._volume = volume
         self._player._paused = paused
