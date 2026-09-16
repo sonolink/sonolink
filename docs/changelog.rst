@@ -39,6 +39,8 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed :attr:`~sonolink.HTTPException.timestamp` creating Lavalink's millisecond
+  error timestamps as seconds, which raised ``OSError``/``OverflowError`` when accessed.
 - Fixed :meth:`RESTClient.version` requesting ``/v4/version`` instead of ``/version``.
 - Fixed :attr:`Player.paused` being cleared by :attr:`~sonolink.gateway.TrackStartEvent`
   even when a track was started / replaced with ``paused=True``.
