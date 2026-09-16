@@ -73,6 +73,8 @@ in specific versions.
 - Bumped the minimum ``nextcord`` version to 3.2 (adds DAVE support).
 - Added a `CONTRIBUTING <https://github.com/sonolink/sonolink/blob/main/.github/CONTRIBUTING.md>`_
   guide with instructions for opening contributions.
+- Corrected typos and clarified player volume and filter combination behavior in
+  the API documentation.
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.3.0..HEAD
 
