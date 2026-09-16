@@ -39,6 +39,7 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed :attr:`sonolink.Playable.playlist` being ``None`` on tracks loaded from playlists
 - Fixed :attr:`~sonolink.gateway.TrackStartEvent.original` being ``None`` after a track ended
   and the next started via ``skip()``.
 - Fixed AutoPlay re-discovering and re-queueing tracks that were already
