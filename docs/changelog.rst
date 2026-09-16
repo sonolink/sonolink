@@ -39,6 +39,8 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fix pause/resume corrupting estimated playback position. :meth:`Player.pause` now saves 
+  the current interpolated position before freezing, preventing stale values on resume.
 - Fixed :attr:`~sonolink.gateway.TrackStartEvent.original` being ``None`` after a track ended
   and the next started via ``skip()``.
 - Fixed AutoPlay re-discovering and re-queueing tracks that were already
