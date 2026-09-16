@@ -7,62 +7,59 @@ const CHANGELOG_FILE = "docs/changelog.rst";
 
 // The changelog header
 const INTRO_RE = new RegExp(
-    String.raw`\.\. currentmodule:: [^\n]*\n\n?\.\. _whats_new:\n\n` +
-        String.raw`Changelog\n=+\n\n` +
-        String.raw`This page keeps a detailed human friendly rendering of what's new and changed\n` +
-        String.raw`in specific versions\.\n\n`,
+  String.raw`\.\. currentmodule:: [^\n]*\n\n?\.\. _whats_new:\n\n` +
+    String.raw`Changelog\n=+\n\n` +
+    String.raw`This page keeps a detailed human friendly rendering of what's new and changed\n` +
+    String.raw`in specific versions\.\n\n`,
 );
 
 // Inserted when the changelog is missing its header
-const INTRO =
-    [
-        ".. currentmodule:: sonolink",
-        ".. _whats_new:",
-        "",
-        "Changelog",
-        "=".repeat("Changelog".length),
-        "",
-        "This page keeps a detailed human friendly rendering of what's new and changed",
-        "in specific versions.",
-    ].join("\n") + "\n\n";
+const INTRO = [
+  ".. currentmodule:: sonolink",
+  ".. _whats_new:",
+  "",
+  "Changelog",
+  "=".repeat("Changelog".length),
+  "",
+  "This page keeps a detailed human friendly rendering of what's new and changed",
+  "in specific versions.",
+].join("\n") + "\n\n";
 
 // Unreleased link and section
 const UNRELEASED_LINK_RE = /\.\. _unreleased: https:\/\/[^\n]+/;
 const UNRELEASED_SECTION_RE =
-    /(`Unreleased`_\n-+\n\n[\s\S]*?)(?=\n\.\. _vp|\n\.\. _unreleased:|$)/;
+  /(`Unreleased`_\n-+\n\n[\s\S]*?)(?=\n\.\. _vp|\n\.\. _unreleased:|$)/;
 
 // First release marker (anchor, link, Unreleased title, or version heading)
 // Used to discard a broken header when inserting a fresh one
 const BODY_START_RE =
-    /(?=\.\. _vp|\.\. _unreleased:|v\d+\.\d+\.\d+ - |`Unreleased`_)/;
+  /(?=\.\. _vp|\.\. _unreleased:|v\d+\.\d+\.\d+ - |`Unreleased`_)/;
 
 // Changelog categories
 const CHANGELOG_CATEGORIES = [
-    "Added",
-    "Changed",
-    "Fixed",
-    "Removed",
-    "Deprecated",
-    "Miscellaneous",
+  "Added",
+  "Changed",
+  "Fixed",
+  "Removed",
+  "Deprecated",
+  "Miscellaneous",
 ];
 
 // "Unreleased" section
 const UNRELEASED_SECTION = [
-    "`Unreleased`_",
-    "-------------",
+  "`Unreleased`_",
+  "-------------",
+  "",
+  ...CHANGELOG_CATEGORIES.flatMap((name) => [
+    `**${name}**`,
+    "~".repeat(name.length + 4),
     "",
-    ...CHANGELOG_CATEGORIES.flatMap((name) => [
-        `**${name}**`,
-        "~".repeat(name.length + 4),
-        "",
-    ]),
-]
-    .join("\n")
-    .trimEnd();
+  ]),
+].join("\n").trimEnd();
 
 // The version_info line in _version.py.
 const VERSION_INFO_RE =
-    /version_info = VersionInfo\(major=(\d+),\s*minor=(\d+),\s*patch=(\d+),\s*release_level="([^"]+)"\)/;
+  /version_info = VersionInfo\(major=(\d+),\s*minor=(\d+),\s*patch=(\d+),\s*release_level="([^"]+)"\)/;
 
 // Matches VersionInfo.as_str() in _version.py: alpha/beta/candidate get an
 // "a0"/"b0"/"rc0" suffix, final gets none
@@ -70,24 +67,24 @@ const SUFFIXES = { alpha: "a0", beta: "b0", candidate: "rc0" };
 
 // "1.4.0" without any release suffix
 const versionNumber = (version) =>
-    `${version.major}.${version.minor}.${version.patch}`;
+  `${version.major}.${version.minor}.${version.patch}`;
 
 let info = console.log;
 let warn = console.warn;
 
 function readVersion() {
-    const { content } = readFile(VERSION_FILE);
-    const match = content.match(VERSION_INFO_RE);
-    if (!match) {
-        throw new Error(`Could not find 'version_info' in ${VERSION_FILE}`);
-    }
-    const [, major, minor, patch, releaseLevel] = match;
-    return {
-        major: Number(major),
-        minor: Number(minor),
-        patch: Number(patch),
-        releaseLevel,
-    };
+  const { content } = readFile(VERSION_FILE);
+  const match = content.match(VERSION_INFO_RE);
+  if (!match) {
+    throw new Error(`Could not find 'version_info' in ${VERSION_FILE}`);
+  }
+  const [, major, minor, patch, releaseLevel] = match;
+  return {
+    major: Number(major),
+    minor: Number(minor),
+    patch: Number(patch),
+    releaseLevel,
+  };
 }
 
 function versionString(version) {
