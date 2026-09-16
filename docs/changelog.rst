@@ -7,8 +7,10 @@ Changelog
 This page keeps a detailed human friendly rendering of what's new and changed
 in specific versions.
 
-`Unreleased`_
--------------
+.. _vp1p4p0:
+
+v1.4.0 - 2026-09-16
+-------------------
 
 **Added**
 ~~~~~~~~~
@@ -86,8 +88,6 @@ in specific versions.
   guide with instructions for opening contributions.
 - Corrected typos and clarified player volume and filter combination behavior in
   the API documentation.
-
-.. _unreleased: https://github.com/sonolink/sonolink/compare/v1.3.0..HEAD
 
 .. _vp1p3p0:
 
