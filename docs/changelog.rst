@@ -39,6 +39,7 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed :meth:`Player.play` with `no_replace=True` corrupting state when track gets rejected.
 - Fixed :attr:`~sonolink.gateway.TrackStartEvent.original` being ``None`` after a track ended
   and the next started via ``skip()``.
 - Fixed AutoPlay re-discovering and re-queueing tracks that were already
