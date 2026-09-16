@@ -39,6 +39,7 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed :attr:`sonolink.Playable.playlist` being ``None`` on tracks loaded from playlists
 - Fixed :attr:`~sonolink.HTTPException.timestamp` creating Lavalink's millisecond
   error timestamps as seconds, which raised ``OSError``/``OverflowError`` when accessed.
 - Fixed :meth:`RESTClient.version` requesting ``/v4/version`` instead of ``/version``.
