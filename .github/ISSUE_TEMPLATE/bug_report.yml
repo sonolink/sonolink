@@ -31,7 +31,7 @@ body:
         - disnake (v2.12+)
         - nextcord (3.2+)
     validations:
-        required: true
+      required: true
   - type: dropdown
     id: os
     attributes:
