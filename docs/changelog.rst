@@ -39,6 +39,7 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed :meth:`RESTClient.version` requesting ``/v4/version`` instead of ``/version``.
 - Fixed :attr:`Player.paused` being cleared by :attr:`~sonolink.gateway.TrackStartEvent`
   even when a track was started / replaced with ``paused=True``.
 - Fixed :meth:`Player.play` with `no_replace=True` corrupting state when track gets rejected.
