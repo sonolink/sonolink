@@ -39,6 +39,8 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed :attr:`~sonolink.HTTPException.timestamp` creating Lavalink's millisecond
+  error timestamps as seconds, which raised ``OSError`/``OverflowError`` when accessed.
 - Fixed :attr:`~sonolink.gateway.TrackStartEvent.original` being ``None`` after a track ended
   and the next started via ``skip()``.
 - Fixed AutoPlay re-discovering and re-queueing tracks that were already
