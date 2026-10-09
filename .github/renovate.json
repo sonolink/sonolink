@@ -2,19 +2,20 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:recommended",
-        ":semanticPrefixFixDepsChoreOthers",
-        ":dependencyDashboard"
+        "helpers:pinGitHubActionDigests"
     ],
-    "schedule": ["before 8am on the first day of the month"],
-    "timezone": "UTC",
-    "assignees": ["vmphase"],
-    "github-actions": {
-        "pinDigests": true
-    },
+    "assignees": [
+        "vmphase"
+    ],
     "packageRules": [
         {
-            "matchManagers": ["pep621", "github-actions"],
-            "addLabels": ["area: dependencies"]
+            "matchManagers": [
+                "pep621",
+                "github-actions"
+            ],
+            "addLabels": [
+                "area: dependencies"
+            ]
         }
     ]
 }
