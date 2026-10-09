@@ -64,7 +64,7 @@ classifiers = [
 speed = ["curl-cffi>=0.16.2,<1"]
 
 [dependency-groups]
-lint = ["ruff>=0.16.1,<0.17"]
+lint = ["ruff>=0.17,<0.18"]
 typecheck = ["basedpyright>=1.39.9,<2"]
 docs = [
     "sphinx>=9.1.0",
