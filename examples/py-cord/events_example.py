@@ -10,7 +10,6 @@ you can check the guide at: https://sonolink.readthedocs.io/en/latest/guides/lav
 :copyright: (c) 2026-present SonoLink Development Team
 """
 
-
 from typing import Any
 
 import discord
