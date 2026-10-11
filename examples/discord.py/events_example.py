@@ -1,10 +1,14 @@
-# This example requires the discord.py[voice] (https://pypi.org/project/discord.py/) library to be installed.
-#
-# This example covers the procedure of creating a simple music bot using sonolink,
-# with event handlers for track lifecycle and node events.
-#
-# This requires an active Lavalink server, for more information on setting up one
-# you can check the guide at: https://sonolink.readthedocs.io/en/latest/guides/lavalink-setup.html
+"""
+This example requires the discord.py[voice] (https://pypi.org/project/discord.py/) library to be installed.
+
+This example covers the procedure of creating a simple music bot using sonolink,
+with event handlers for track lifecycle and node events.
+
+This requires an active Lavalink server, for more information on setting up one
+you can check the guide at: https://sonolink.readthedocs.io/en/latest/guides/lavalink-setup.html
+
+:copyright: (c) 2026-present SonoLink Development Team
+"""
 
 
 from typing import Any

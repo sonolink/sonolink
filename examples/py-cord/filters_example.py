@@ -1,12 +1,16 @@
-# This example requires the py-cord[voice] (https://pypi.org/project/py-cord/) library to be installed.
-#
-# This example covers the procedure of handling filters with sonolink, allowing you to apply audio filters to your players.
-# It demonstrates full usage of every filter type: Equalizer, Timescale, Karaoke,
-# Tremolo, Vibrato, Rotation, Distortion, ChannelMix, and LowPass.
-# https://sonolink.readthedocs.io/en/latest/guides/filters.html
-#
-# This requires an active Lavalink server, for more information on setting up one
-# you can check the guide at: https://sonolink.readthedocs.io/en/latest/guides/lavalink-setup.html
+"""
+This example requires the py-cord[voice] (https://pypi.org/project/py-cord/) library to be installed.
+
+This example covers the procedure of handling filters with sonolink, allowing you to apply audio filters to your players.
+It demonstrates full usage of every filter type: Equalizer, Timescale, Karaoke,
+Tremolo, Vibrato, Rotation, Distortion, ChannelMix, and LowPass.
+https://sonolink.readthedocs.io/en/latest/guides/filters.html
+
+This requires an active Lavalink server, for more information on setting up one
+you can check the guide at: https://sonolink.readthedocs.io/en/latest/guides/lavalink-setup.html
+
+:copyright: (c) 2026-present SonoLink Development Team
+"""
 
 from enum import StrEnum
 from typing import Any

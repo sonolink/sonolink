@@ -5,7 +5,7 @@ sonolink.rest
 Module that handles rest-related objects.
 
 :copyright: (c) 2026-present SonoLink Development Team
-:license: MIT
+:license: Apache-2.0
 """
 
 from .enums import *

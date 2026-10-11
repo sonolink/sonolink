@@ -75,7 +75,7 @@ The public API is easiest to understand from the outside in:
 License
 -------
 
-SonoLink is released under the `MIT License <https://github.com/sonolink/sonolink/blob/main/LICENSE>`_.
+SonoLink is released under the `Apache License 2.0 <https://github.com/sonolink/sonolink/blob/main/LICENSE>`_.
 
 Resources
 ---------
