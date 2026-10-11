@@ -1,10 +1,14 @@
-# This example requires the nextcord[voice] (https://pypi.org/project/nextcord/) library to be installed.
-#
-# This example covers an advanced music bot using sonolink, featuring a full
-# queue system, volume control, track history, seeking, and playlist support.
-#
-# This requires an active Lavalink server, for more information on setting up one
-# you can check the guide at: https://sonolink.readthedocs.io/en/latest/guides/lavalink-setup.html
+"""
+This example requires the nextcord[voice] (https://pypi.org/project/nextcord/) library to be installed.
+
+This example covers an advanced music bot using sonolink, featuring a full
+queue system, volume control, track history, seeking, and playlist support.
+
+This requires an active Lavalink server, for more information on setting up one
+you can check the guide at: https://sonolink.readthedocs.io/en/latest/guides/lavalink-setup.html
+
+:copyright: (c) 2026-present SonoLink Development Team
+"""
 
 from typing import Any
 

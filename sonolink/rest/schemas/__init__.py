@@ -5,7 +5,7 @@ sonolink.rest.schemas
 Submodule containing all the schemas used in the rest module.
 
 :copyright: (c) 2026-present SonoLink Development Team
-:license: MIT
+:license: Apache-2.0
 """
 
 from .filters import *

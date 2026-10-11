@@ -1,13 +1,17 @@
-# This example requires the disnake[voice] (https://pypi.org/project/disnake/) library to be installed.
-#
-# This example covers how to configure sonolink's settings objects and wire them
-# into your bot. Settings are split into two groups:
-#
-# - Node-level: CacheSettings, InactivitySettings (shared across all players)
-# - Player-level: AutoPlaySettings, HistorySettings (unique per player)
-#
-# This requires an active Lavalink server, for more information on setting up one
-# you can check the guide at: https://sonolink.readthedocs.io/en/latest/guides/lavalink-setup.html
+"""
+This example requires the disnake[voice] (https://pypi.org/project/disnake/) library to be installed.
+
+This example covers how to configure sonolink's settings objects and wire them
+into your bot. Settings are split into two groups:
+
+- Node-level: CacheSettings, InactivitySettings (shared across all players)
+- Player-level: AutoPlaySettings, HistorySettings (unique per player)
+
+This requires an active Lavalink server, for more information on setting up one
+you can check the guide at: https://sonolink.readthedocs.io/en/latest/guides/lavalink-setup.html
+
+:copyright: (c) 2026-present SonoLink Development Team
+"""
 
 from typing import Any
 

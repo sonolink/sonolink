@@ -1,6 +1,11 @@
 """
 sonolink.rest.http
 ~~~~~~~~~~~~~~~~~~
+
+Module that handles the REST HTTP client.
+
+:copyright: (c) 2026-present SonoLink Development Team
+:license: Apache-2.0
 """
 
 from __future__ import annotations

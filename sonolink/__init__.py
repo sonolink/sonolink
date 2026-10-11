@@ -5,7 +5,7 @@ sonolink
 A high-performance Lavalink v4 wrapper for Python, inspired by WaveLink.
 
 :copyright: (c) 2026-present SonoLink Development Team
-:license: MIT
+:license: Apache-2.0
 """
 
 from . import gateway, models, rest, utils
