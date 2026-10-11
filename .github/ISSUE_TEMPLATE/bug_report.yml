@@ -1,6 +1,6 @@
 name: Bug Report
 description: Alert us to broken logic or unexpected library behavior
-labels: [ "bug: unconfirmed" ]
+labels: ["bug: unconfirmed"]
 body:
   - type: textarea
     id: summary
@@ -52,6 +52,7 @@ body:
         - "3.12"
         - "3.13"
         - "3.14"
+        - "3.15"
     validations:
       required: true
   - type: input

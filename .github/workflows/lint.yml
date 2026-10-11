@@ -119,7 +119,10 @@ jobs:
             set -- $pair
             adapter="$1"; mod="$2"
             echo "::group::Typecheck / $adapter"
-            pip install -q "$adapter"
+            case "$adapter" in
+              py-cord) pip install -q --ignore-requires-python "py-cord>=2.8,<3" ;;
+              *) pip install -q "$adapter" ;;
+            esac
             # shellcheck disable=SC2086
             basedpyright $COMMON $(find sonolink -name "$mod")
             pip uninstall -yq "$adapter"

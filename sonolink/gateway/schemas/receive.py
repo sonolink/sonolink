@@ -73,7 +73,10 @@ class PlayerState(msgspec.Struct):
     @property
     def time(self) -> datetime.datetime:
         """The timestamp of when this state is from."""
-        return datetime.datetime.fromtimestamp(self._time / 1000)
+        return datetime.datetime.fromtimestamp(
+            self._time / 1000,
+            tz=datetime.timezone.utc,
+        )
 
 
 class StatsEvent(msgspec.Struct):
