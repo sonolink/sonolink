@@ -1,0 +1,54 @@
+name: Arbiterer
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  arbiterer:
+    name: Check Discord account
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Verify Discord account
+        uses: sonolink/arbiterer@3abf9580144ff141bcc813a1b79dac1196f330fb # v1
+        with:
+          exempt-associations: OWNER,MEMBER
+          close-on-failure: true
+          rules: |
+            const GUILD = "1471146455002775624";
+            const MIN_ACCOUNT_AGE_DAYS = 30;
+            const DAY_MS = 24 * 60 * 60 * 1000;
+            const IS_GUEST = 1 << 4;
+
+            if (!user.mfa_enabled) {
+              core.setFailed("Enable two-factor authentication on your Discord account.");
+              return;
+            }
+
+            const createdAt = Number((BigInt(user.id) >> 22n) + 1420070400000n);
+            const accountAgeDays = Math.floor((Date.now() - createdAt) / DAY_MS);
+            if (accountAgeDays < MIN_ACCOUNT_AGE_DAYS) {
+              core.setFailed(`Your Discord account must be at least ${MIN_ACCOUNT_AGE_DAYS} days old (currently ${accountAgeDays} days).`);
+              return;
+            }
+
+            const member = await resolveMember(GUILD);
+            if (!member) {
+              core.setFailed("Join the SonoLink Discord server at https://discord.gg/tPHVWBPedt.");
+              return;
+            }
+
+            if (member.pending) {
+              core.setFailed("Complete the SonoLink Discord membership screening before contributing.");
+              return;
+            }
+
+            if (((member.flags ?? 0) & IS_GUEST) !== 0) {
+              core.setFailed("Discord guest members are not eligible. Join the SonoLink Discord server as a full member.");
+              return;
+            }
