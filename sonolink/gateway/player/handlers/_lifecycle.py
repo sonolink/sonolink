@@ -129,14 +129,12 @@ class LifecycleHandler(HandlerBase):
             self._player._queue.reset()
             self._player._connection._connected_flag.clear()
 
-            if node is None or node.client is None:
-                return
-
-            event_payload = PlayerDisconnectEvent(
-                trigger=trigger,
-                extra_data=extra_event_data,
-            )
-            node.client._dispatch("player_disconnect", self._player, event_payload)
+            if node is not None and node.client is not None:
+                event_payload = PlayerDisconnectEvent(
+                    trigger=trigger,
+                    extra_data=extra_event_data,
+                )
+                node.client._dispatch("player_disconnect", self._player, event_payload)
 
     async def move_to(self, node: Node, /) -> None:
         if self._player._node is node:
