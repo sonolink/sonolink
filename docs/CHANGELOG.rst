@@ -19,6 +19,9 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed a ``SyntaxWarning`` on Python 3.14+ caused by a ``return`` inside the
+  ``finally`` block of the player disconnect lifecycle.
+
 **Removed**
 ~~~~~~~~~~~
 

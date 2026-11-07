@@ -40,7 +40,7 @@ Getting Started
    :maxdepth: 1
    :caption: Meta
 
-   changelog
+   CHANGELOG
    version_guarantees
 
 Who should read what
