@@ -7,31 +7,23 @@ Changelog
 This page keeps a detailed human friendly rendering of what's new and changed
 in specific versions.
 
-`Unreleased`_
--------------
+.. _vp1p4p1:
 
-**Added**
-~~~~~~~~~
-
-**Changed**
-~~~~~~~~~~~
+v1.4.1 - 2026-11-07
+-------------------
 
 **Fixed**
 ~~~~~~~~~
 
+- FIxed missing exports in ``__all__`` for ``sonolink.*`` and ``sonolink.gateway``.
 - Fixed a ``SyntaxWarning`` on Python 3.14+ caused by a ``return`` inside the
   ``finally`` block of the player disconnect lifecycle.
 
-**Removed**
-~~~~~~~~~~~
-
-**Deprecated**
-~~~~~~~~~~~~~~
-
 **Miscellaneous**
 ~~~~~~~~~~~~~~~~~
-
-.. _unreleased: https://github.com/sonolink/sonolink/compare/v1.4.0..HEAD
+- Mentioned support for new Python 3.15 in related files.
+- Re-licensed sonolink from MIT to Apache 2.0.
+- Added a new way to contact maintainers in case of a security issue (email).
 
 .. _vp1p4p0:
 
