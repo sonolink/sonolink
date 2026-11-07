@@ -3,7 +3,7 @@ const { readFile, writeFile } = require("./utils.js");
 const { execSync } = require("child_process");
 
 const VERSION_FILE = "sonolink/_version.py";
-const CHANGELOG_FILE = "docs/changelog.rst";
+const CHANGELOG_FILE = "docs/CHANGELOG.rst";
 
 // The changelog header
 const INTRO_RE = new RegExp(
