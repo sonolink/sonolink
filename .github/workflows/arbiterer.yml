@@ -15,7 +15,7 @@ jobs:
       id-token: write
     steps:
       - name: Verify Discord account
-        uses: sonolink/arbiterer@3abf9580144ff141bcc813a1b79dac1196f330fb # v1
+        uses: sonolink/arbiterer@b864fd907bfe80aad68df0d21ec1dea462d26d73 # v1
         with:
           exempt-associations: OWNER,MEMBER
           close-on-failure: true
