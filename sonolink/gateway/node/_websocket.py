@@ -19,7 +19,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import TYPE_CHECKING, Any, Callable, Coroutine, cast
+from typing import TYPE_CHECKING, Any, Callable, Coroutine
 
 import msgspec
 
@@ -73,7 +73,7 @@ class WebsocketClient(NodeComponent):
         while True:
             try:
                 msg = await self.node._ws.receive()
-            except (ConnectionError, RuntimeError) as exc:
+            except (OSError, ValueError, RuntimeError) as exc:
                 _log.warning("%r lost connection unexpectedly: %s", self.node, exc)
                 await self._handle_disconnect()
                 break
@@ -86,8 +86,23 @@ class WebsocketClient(NodeComponent):
                 _log.debug("Received a None message from the websocket. Ignoring.")
                 continue
 
-            data = cast(dict[str, Any], msgspec.json.decode(msg.data))
-            event_type = data.pop("op", None)
+            if not isinstance(msg.data, (bytes, bytearray, str)):
+                _log.debug("Received empty or non-text message. Ignoring.")
+                continue
+
+            try:
+                data = msgspec.json.decode(msg.data, type=dict[str, Any])
+                event_type = data.pop("op", None)
+            except (TypeError, ValueError) as exc:
+                # Malformed payload from a plugin or intermediary should not
+                # kill the reader task and leave the node silently disconnected.
+                _log.warning(
+                    "Node %r: Dropping malformed payload: %s",
+                    self.node._id,
+                    exc,
+                )
+                continue
+
             _log.debug("Received event OP=%s ; D=%r", event_type, data)
 
             try:

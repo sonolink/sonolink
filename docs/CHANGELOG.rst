@@ -19,6 +19,10 @@ in specific versions.
 **Fixed**
 ~~~~~~~~~
 
+- Fixed a malformed websocket payload killing the node's reader task and
+  leaving the node silently disconnected. Bad frames are now dropped with a
+  warning instead.
+
 **Removed**
 ~~~~~~~~~~~
 
