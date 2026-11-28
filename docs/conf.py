@@ -35,6 +35,11 @@ extensions = [
     "pythonref",
 ]
 
+extlinks = {
+    "gh-issue": ("https://github.com/sonolink/sonolink/issues/%s", "#%s"),
+    "gh-commit": ("https://github.com/sonolink/sonolink/commit/%s", "%s"),
+}
+
 # Intersphinx link to standard Python docs
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
