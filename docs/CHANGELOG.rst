@@ -29,7 +29,7 @@ in specific versions.
 ~~~~~~~~~~~~~~~~~
 
 - Added ``:gh-commit:`` and ``:gh-issue:`` roles for linking to GitHub commits and issues, respectively, on changelog
-  entries. (:gh-issue:`tbd`)
+  entries. (:gh-issue:`145`)
 
 .. _unreleased: https://github.com/sonolink/sonolink/compare/v1.4.1..HEAD
 
